@@ -5,25 +5,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.njitdev.sa_android.messageboard.MessageBoardActivity">
+    tools:context="com.njitdev.sa_android.test.TestActivity">
 
     <TextView
-        android:id="@+id/textMessageboardCounter"
+        android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
-        android:layout_marginLeft="32dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="32dp"/>
+        android:text="Welcome to Test"
+        tools:layout_editor_absoluteX="62dp"
+        tools:layout_editor_absoluteY="45dp"/>
 
     <Button
-        android:id="@+id/buttonMessageboardReturn"
+        android:id="@+id/buttonTestReturn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="32dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="32dp"
         android:text="Button"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textMessageboardCounter"/>
+        app:layout_constraintTop_toBottomOf="@+id/textView2"
+        tools:layout_editor_absoluteX="62dp"/>
 </android.support.constraint.ConstraintLayout>
