@@ -15,7 +15,8 @@
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="32dp"
         android:layout_marginLeft="32dp"
-        app:layout_constraintLeft_toLeftOf="parent"/>
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginStart="32dp"/>
 
     <Button
         android:id="@+id/buttonTestReturn"
@@ -24,6 +25,13 @@
         android:layout_marginTop="32dp"
         android:text="Button"
         app:layout_constraintTop_toBottomOf="@+id/textView2"
-        android:layout_marginLeft="0dp"
         app:layout_constraintLeft_toLeftOf="@+id/textView2"/>
+
+    <ListView
+        android:id="@+id/listViewTest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        app:layout_constraintLeft_toLeftOf="@+id/buttonTestReturn"
+        app:layout_constraintTop_toBottomOf="@+id/buttonTestReturn"/>
 </android.support.constraint.ConstraintLayout>

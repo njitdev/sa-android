@@ -22,9 +22,9 @@ public class HomeActivity extends AppCompatActivity {
         SAGlobal.getInstance().sharedRequestQueue = Volley.newRequestQueue(getApplicationContext());
 
         Button buttonHomeMessageBoard = (Button)findViewById(R.id.buttonHomeMessageBoard);
-        buttonHomeMessageBoard.setText("Show Message");
+        buttonHomeMessageBoard.setText("留言板");
         buttonHomeMessageBoard.setOnClickListener(
-                new View.OnClickListener() {
+                new View.OnClickListener()  {
             @Override
             public void onClick(View v) {
                 openMessageBoard();

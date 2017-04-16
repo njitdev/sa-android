@@ -3,7 +3,9 @@ package com.njitdev.sa_android.test;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 
 import com.njitdev.sa_android.R;
 
@@ -23,5 +25,20 @@ public class TestActivity extends AppCompatActivity {
                         finish();
                     }
                 });
+
+        populateListView();
+    }
+
+    private void populateListView(){
+        String[] data = {"yellow","blue","New Color!"};
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                this,
+                R.layout.dl3,
+                data);
+
+        ListView list = (ListView) findViewById(R.id.listViewTest);
+        list.setAdapter(adapter);
+
     }
 }

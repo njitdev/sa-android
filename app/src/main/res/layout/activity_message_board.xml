@@ -15,15 +15,17 @@
         android:layout_marginLeft="32dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="32dp"/>
+        android:layout_marginTop="32dp"
+        android:layout_marginStart="32dp"/>
 
-    <Button
-        android:id="@+id/buttonMessageboardReturn"
-        android:layout_width="wrap_content"
+    <ListView
+        android:id="@+id/listViewMessageboardText"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"
+        app:layout_constraintLeft_toLeftOf="@+id/textMessageboardCounter"
+        app:layout_constraintRight_toRightOf="parent"
         android:layout_marginTop="16dp"
-        android:text="Button"
-        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textMessageboardCounter"/>
 </android.support.constraint.ConstraintLayout>

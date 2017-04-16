@@ -18,9 +18,20 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".messageboard.MessageBoardActivity">
+        <activity
+            android:name=".messageboard.MessageBoardActivity"
+            android:label="留言板"
+            android:parentActivityName=".home.HomeActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".home.HomeActivity"/>
         </activity>
         <activity android:name=".test.TestActivity">
+        </activity>
+        <activity android:name=".messageboard.NewMessage"
+                  android:label="添加新留言"
+                  android:parentActivityName=".messageboard.MessageBoardActivity">
+
         </activity>
     </application>
 
