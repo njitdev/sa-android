@@ -1,6 +1,5 @@
 package com.njitdev.sa_android;
 
-import com.njitdev.sa_android.home.HomeActivity;
 import com.njitdev.sa_android.messageboard.Models;
 import com.njitdev.sa_android.utils.ModelListener;
 
@@ -9,7 +8,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Example local unit test, which will execute on the development machine (host).

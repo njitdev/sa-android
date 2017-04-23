@@ -18,24 +18,23 @@ import java.util.ArrayList;
  */
 
 public class Models {
-
     private static  String baseURL = SAConfig.baseURL;
 
-  static void fetchList(final ModelListener listener) {
-
+    static void fetchList(final ModelListener listener) {
         JsonObjectRequest r = new JsonObjectRequest(Request.Method.GET,
                 baseURL + "/app/msgboard/gdut/posts?page=0",
                 null, new Response.Listener<JSONObject>() {
+
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                    Thread.sleep(1000);
+//                    Thread.sleep(1000);
 
                     JSONObject result = response.getJSONObject("result");
                     JSONArray posts = result.getJSONArray("posts");
 
                     ArrayList<Post> list = new ArrayList<>();
-                    for(int i=0;i<posts.length();i++){
+                    for(int i = 0; i < posts.length(); i++){
                         JSONObject post = posts.getJSONObject(i);
 
                         Post p = new Post();
@@ -62,13 +61,11 @@ public class Models {
         });
 
         SAGlobal.getInstance().sharedRequestQueue.add(r);
-
   }
-
 }
 
 class Post{
-    int id;
+    String id;
     String user_name;
     String user_title;
     String user_department;

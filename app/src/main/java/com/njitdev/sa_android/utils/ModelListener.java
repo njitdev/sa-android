@@ -7,5 +7,4 @@ package com.njitdev.sa_android.utils;
 
 public interface ModelListener {
     void onData(boolean success, Object object);
-    //void onData( Object object);
 }

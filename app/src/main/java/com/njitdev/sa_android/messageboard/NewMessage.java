@@ -1,8 +1,8 @@
 package com.njitdev.sa_android.messageboard;
 
+import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 
 import com.njitdev.sa_android.R;
 

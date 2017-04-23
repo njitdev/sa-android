@@ -1,14 +1,10 @@
 package com.njitdev.sa_android.messageboard;
 
 import android.content.Context;
-import android.support.annotation.LayoutRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.njitdev.sa_android.R;
@@ -41,9 +37,8 @@ public class MessageAdapter extends ArrayAdapter<Post>{
             holder.userName = (TextView) convertView.findViewById(R.id.messageBoardRowUserName);
             holder.messageContext = (TextView) convertView.findViewById(R.id.messageBoardRowtext);
             holder.time = (TextView) convertView.findViewById(R.id.messageBoardRowTime);
-
             convertView.setTag(holder);
-        }else {
+        } else {
             holder = (ViewHolder)convertView.getTag();
         }
 
@@ -61,11 +56,9 @@ public class MessageAdapter extends ArrayAdapter<Post>{
         return convertView;
     }
 
-
     public static class ViewHolder {
         TextView userName;
         TextView messageContext;
         TextView time;
     }
 }
-
