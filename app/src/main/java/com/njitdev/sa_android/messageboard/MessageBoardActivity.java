@@ -64,10 +64,11 @@ public class MessageBoardActivity extends AppCompatActivity {
             @Override
             public void onData(boolean success, Object object) {
                 if(object == null){
-                    textMessageboardCounter.setText("Fail to get messages");
+                    textMessageboardCounter.setText("获取留言信息失败");
                 }else{
                    posts = (ArrayList<Post>)object;
-                   textMessageboardCounter.setText("共有 "+posts.size()+" 条留言");
+                  // textMessageboardCounter.setText("共有 "+posts.size()+" 条留言");
+                    textMessageboardCounter.setText("");
                     messageList();
                 }
             }
@@ -76,14 +77,17 @@ public class MessageBoardActivity extends AppCompatActivity {
     }
 
     private void messageList(){
-        List<String> message = new ArrayList<String>();
+     /*   List<String> message = new ArrayList<String>();
         for(Post p:posts){
             message.add(p.text);
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                 this,R.layout.dl3, message);
+
+*/
         ListView list = (ListView)findViewById(R.id.listViewMessageboardText);
-        list.setAdapter(adapter);
+        MessageAdapter adapter1 = new MessageAdapter(list.getContext(),R.layout.message_board_rowcontext,posts);
+        list.setAdapter(adapter1);
     }
 
 }

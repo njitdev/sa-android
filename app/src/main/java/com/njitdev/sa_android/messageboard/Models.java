@@ -23,7 +23,8 @@ public class Models {
 
   static void fetchList(final ModelListener listener) {
 
-        JsonObjectRequest r = new JsonObjectRequest(Request.Method.GET, baseURL + "/app/msgboard/posts?page=0",
+        JsonObjectRequest r = new JsonObjectRequest(Request.Method.GET,
+                baseURL + "/app/msgboard/gdut/posts?page=0",
                 null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -39,9 +40,9 @@ public class Models {
 
                         Post p = new Post();
 //                        p.id = post.getInt("_id");
-                     //   p.user_name = post.getString("user_name");
+                        p.user_name = post.getString("user_name");
                         p.text = post.getString("text");
-                     //   p.creation_time = post.getString("creation_time");
+                        p.creation_time = post.getString("creation_time");
                         list.add(p);
                     }
 
