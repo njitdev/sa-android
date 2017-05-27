@@ -25,6 +25,10 @@ public class MessageAdapter extends ArrayAdapter<Post>{
         mPosts = posts;
     }
 
+    public void addMoreItemToAdapter(List<Post> list){
+        mPosts.addAll(list);
+    }
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;

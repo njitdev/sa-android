@@ -18,11 +18,11 @@ import java.util.ArrayList;
  */
 
 public class Models {
-    private static  String baseURL = SAConfig.baseURL;
+    private static String baseURL = SAConfig.baseURL;
 
-    static void fetchList(final ModelListener listener) {
+    static void fetchList(final ModelListener listener, int count) {
         JsonObjectRequest r = new JsonObjectRequest(Request.Method.GET,
-                baseURL + "/app/msgboard/gdut/posts?page=0",
+                baseURL + "/app/msgboard/gdut/posts?page="+count,
                 null, new Response.Listener<JSONObject>() {
 
             @Override
