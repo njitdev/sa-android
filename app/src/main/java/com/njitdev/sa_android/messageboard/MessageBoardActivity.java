@@ -31,10 +31,15 @@ import java.util.Map;
 
 public class MessageBoardActivity extends AppCompatActivity {
     ArrayList<Post> posts = new ArrayList<>();
-    String id;
-    String message;
-    int count=0;
+    int pageNum=0;
     MessageAdapter adapter1;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_message_board);
+        fetchMessage(pageNum);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -42,6 +47,7 @@ public class MessageBoardActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+    //nevigation bar
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -50,35 +56,41 @@ public class MessageBoardActivity extends AppCompatActivity {
                 return true;
 
             case R.id.MessageBoardnewMessage:
-                AlertDialog.Builder mBuilder = new AlertDialog.Builder(MessageBoardActivity.this);
-                View mView = getLayoutInflater().inflate(R.layout.activity_new_message, null);
-                mBuilder.setView(mView);
-                final AlertDialog dialog = mBuilder.create();
-                dialog.show();
-
-
-                Button b = (Button) mView.findViewById(R.id.ButtonNewMessage);
-                final TextView idtv = (TextView) mView.findViewById(R.id.textViewNewMessageID);
-                final TextView messagetv = (TextView) mView.findViewById(R.id.textViewNewMessageMessage);
-                b.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        id = idtv.getText().toString();
-                        message = messagetv.getText().toString();
-                        if(id.length()==0||message.length()==0){
-                            Toast.makeText(getApplicationContext(), "用户名或留言不能为空", Toast.LENGTH_LONG).show();
-                        }else {
-                            createNewMessage();
-                            dialog.cancel();
-                        }
-                    }
-                });
-            return true;
+                newMessage();
+                return true;
         }
         return onOptionsItemSelected(item);
     }
 
-    public void createNewMessage(){
+    //new Message & send data to server;
+    public void newMessage(){
+        //show dialog;
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(MessageBoardActivity.this);
+        View mView = getLayoutInflater().inflate(R.layout.activity_new_message, null);
+        mBuilder.setView(mView);
+        final AlertDialog dialog = mBuilder.create();
+        dialog.show();
+
+        //check and get input value;
+        Button b = (Button) mView.findViewById(R.id.ButtonNewMessage);
+        final TextView idtv = (TextView) mView.findViewById(R.id.textViewNewMessageID);
+        final TextView messagetv = (TextView) mView.findViewById(R.id.textViewNewMessageMessage);
+        b.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String id = idtv.getText().toString();
+                String message = messagetv.getText().toString();
+                if(id.length()==0||message.length()==0){
+                    Toast.makeText(getApplicationContext(), "用户名或留言不能为空", Toast.LENGTH_LONG).show();
+                }else {
+                    sendNewMessagetoServer(message,id);
+                    dialog.cancel();
+                }
+            }
+        });
+    }
+
+    public void sendNewMessagetoServer(String message, String id){
         String url = SAConfig.baseURL + "/app/msgboard/gdut/posts";
         Map<String, String> postMessage = new HashMap<>();
         postMessage.put("installation_id", "IDbyIris");
@@ -92,7 +104,8 @@ public class MessageBoardActivity extends AppCompatActivity {
             @Override
             public void onResponse(JSONObject response) {
                 Toast.makeText(getApplicationContext(), "添加留言成功", Toast.LENGTH_LONG).show();
-                showMessage();
+                posts.clear();
+                fetchMessage(0);
             }
         }, new Response.ErrorListener() {
             @Override
@@ -104,13 +117,7 @@ public class MessageBoardActivity extends AppCompatActivity {
         SAGlobal.getInstance().sharedRequestQueue.add(jsonObjectRequest);
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_message_board);
-        fetchMessage(count);
-    }
-
+    //fetch json data and show
     private void fetchMessage(int page){
         final TextView textMessageboardCounter = (TextView) findViewById(R.id.textMessageboardCounter);
         textMessageboardCounter.setText("正在更新留言信息");
@@ -131,16 +138,11 @@ public class MessageBoardActivity extends AppCompatActivity {
     }
 
     private void showMessage() {
-        if (adapter1 != null) {
-            adapter1.notifyDataSetChanged();
-            return;
-        }
 
         final ListView list = (ListView) findViewById(R.id.listViewMessageboardText);
+        initAdapter(list);
 
-        adapter1 = new MessageAdapter(list.getContext(), R.layout.message_board_rowcontext, posts);
-        list.setAdapter(adapter1);
-
+        //set listenser for scroll down;
         list.setOnScrollListener(new AbsListView.OnScrollListener() {
 
             @Override
@@ -148,8 +150,8 @@ public class MessageBoardActivity extends AppCompatActivity {
                 if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE
                         && (list.getLastVisiblePosition() - list.getHeaderViewsCount() -
                         list.getFooterViewsCount()) >= (adapter1.getCount() - 1)) {
-                    count++;
-                    fetchMessage(count);
+                    pageNum++;
+                    fetchMessage(pageNum);
                 }
             }
 
@@ -158,5 +160,15 @@ public class MessageBoardActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void initAdapter(ListView mylist){
+        if (adapter1 != null) {
+            adapter1.notifyDataSetChanged();
+            return;
+        }
+        adapter1 = new MessageAdapter(mylist.getContext(), R.layout.message_board_rowcontext, posts);
+        mylist.setAdapter(adapter1);
+
     }
 }
