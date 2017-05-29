@@ -20,7 +20,8 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        SAGlobal.getInstance().sharedRequestQueue = Volley.newRequestQueue(getApplicationContext());
+        // Initialize shared request queue
+        SAGlobal.sharedRequestQueue = Volley.newRequestQueue(getApplicationContext());
 
         Button buttonHomeMessageBoard = (Button)findViewById(R.id.buttonHomeMessageBoard);
         buttonHomeMessageBoard.setOnClickListener(

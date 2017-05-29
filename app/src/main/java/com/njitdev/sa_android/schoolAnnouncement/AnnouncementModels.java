@@ -17,58 +17,53 @@ import java.util.ArrayList;
  * Created by WZ on 5/28/17.
  */
 
-public class AnnouncementModels {
-    private static String SAnnouncementURL = SAConfig.SAnnouncementURL;
+class AnnouncementModels {
+    private static String baseURL = SAConfig.baseURL + "/school/" + SAConfig.schoolIdentifier + "/announcements";
 
-    static void fetchList(final ModelListener listener, int category) {
-        JsonObjectRequest r = new JsonObjectRequest(Request.Method.GET,
-                SAnnouncementURL + category,
-                null, new Response.Listener<JSONObject>() {
+    static void fetchList(int category, final ModelListener listener) {
+        JsonObjectRequest r = new JsonObjectRequest(Request.Method.GET, baseURL + "?category=" + category,  null, new Response.Listener<JSONObject>() {
 
             @Override
             public void onResponse(JSONObject response) {
                 try {
-
                     JSONArray result = response.getJSONArray("result");
 
                     ArrayList<Article> list = new ArrayList<>();
                     for(int i = 0; i < result.length(); i++){
-                        JSONObject post = result.getJSONObject(i);
+                        JSONObject object = result.getJSONObject(i);
 
                         Article article = new Article();
-                        article.article_title = post.getString("article_title");
-                        article.article_department = post.getString("article_department");
+
+                        // Required fields
+                        article.article_id = object.getString("article_id");
+                        article.article_title = object.getString("article_title");
+
+                        // Optional fields
+                        if (object.has("article_department")) article.article_department = object.getString("article_department");
+                        if (object.has("article_date")) article.article_date = object.getString("article_date");
+
                         list.add(article);
                     }
-
-                    listener.onData(true,list);
-
+                    listener.onData(list, "ok");
                 } catch (Exception e) {
                     e.printStackTrace();
-                    listener.onData(false, null);
+                    listener.onData(null, "获取通知信息失败");
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 error.printStackTrace();
-                listener.onData(false, null);
+                listener.onData(null, "获取通知信息失败");
             }
         });
-
-        SAGlobal.getInstance().sharedRequestQueue.add(r);
+        SAGlobal.sharedRequestQueue.add(r);
     }
 }
 
-class Article{
+class Article {
+    String article_id;
     String article_title;
     String article_department;
-
-    public String getArticle_title() {
-        return article_title;
-    }
-
-    public String getArticle_department() {
-        return article_department;
-    }
+    String article_date;
 }
