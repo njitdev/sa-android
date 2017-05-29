@@ -33,7 +33,7 @@
         </activity>
 
         <activity
-            android:name=".schoolAnnouncement.schoolAnnouncementActivity"
+            android:name=".school_announcement.SchoolAnnouncementActivity"
             android:label="校内通知">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

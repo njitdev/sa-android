@@ -1,12 +1,10 @@
-package com.njitdev.sa_android.schoolAnnouncement;
+package com.njitdev.sa_android.school_announcement;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.widget.AbsListView;
-import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -17,7 +15,7 @@ import com.njitdev.sa_android.utils.ModelListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class schoolAnnouncementActivity extends AppCompatActivity {
+public class SchoolAnnouncementActivity extends AppCompatActivity {
 
     private List<Article> mArticles = new ArrayList<>();
     private List<String> articleTitles = new ArrayList<>();
@@ -62,7 +60,7 @@ public class schoolAnnouncementActivity extends AppCompatActivity {
         list.setAdapter(announcementsAdapter);
     }
 
-    private void fetchAnnouncementsList(int category){
+    private void fetchAnnouncementsList(int category) {
 
         mTextMessage.setText("正在更新通知信息");
 
@@ -83,7 +81,7 @@ public class schoolAnnouncementActivity extends AppCompatActivity {
 
     private void updateListView() {
         articleTitles.clear();
-        for (int i = 0; i < mArticles.size(); i++){
+        for (int i = 0; i < mArticles.size(); i++) {
             articleTitles.add(mArticles.get(i).article_title);
         }
         announcementsAdapter.notifyDataSetChanged();

@@ -16,7 +16,7 @@ public class TestActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
 
-        Button buttonTestReturn = (Button)findViewById(R.id.buttonTestReturn);
+        Button buttonTestReturn = (Button) findViewById(R.id.buttonTestReturn);
         buttonTestReturn.setText("return");
         buttonTestReturn.setOnClickListener(
                 new View.OnClickListener() {
@@ -29,8 +29,8 @@ public class TestActivity extends AppCompatActivity {
         populateListView();
     }
 
-    private void populateListView(){
-        String[] data = {"yellow","blue","New Color!"};
+    private void populateListView() {
+        String[] data = {"yellow", "blue", "New Color!"};
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                 this,

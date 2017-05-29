@@ -19,42 +19,44 @@ import java.util.Map;
  * Created by WZ on 4/9/17.
  */
 
-public class Models {
+public class MessageBoardModels {
     private static String baseURL = SAConfig.baseURL + "/app/msgboard/" + SAConfig.schoolIdentifier;
 
     static void fetchList(int page, final ModelListener listener) {
-        JsonObjectRequest r = new JsonObjectRequest(Request.Method.GET, baseURL + "/posts?page=" + page,  null,
-                                                    new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    JSONObject result = response.getJSONObject("result");
-                    JSONArray posts = result.getJSONArray("posts");
+        JsonObjectRequest r = new JsonObjectRequest(Request.Method.GET, baseURL + "/posts?page=" + page, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            JSONObject result = response.getJSONObject("result");
+                            JSONArray posts = result.getJSONArray("posts");
 
-                    ArrayList<Post> list = new ArrayList<>();
-                    for(int i = 0; i < posts.length(); i++){
-                        JSONObject post = posts.getJSONObject(i);
+                            ArrayList<Post> list = new ArrayList<>();
+                            for (int i = 0; i < posts.length(); i++) {
+                                JSONObject post = posts.getJSONObject(i);
 
-                        Post p = new Post();
+                                Post p = new Post();
 
-                        // Required fields
-                        p.user_name = post.getString("user_name");
-                        p.text = post.getString("text");
-                        p.creation_time = post.getString("creation_time");
+                                // Required fields
+                                p.user_name = post.getString("user_name");
+                                p.text = post.getString("text");
+                                p.creation_time = post.getString("creation_time");
 
-                        // Optional fields
-                        if (post.has("user_title")) p.user_title = post.getString("user_title");
-                        if (post.has("user_department")) p.user_department = post.getString("user_department");
+                                // Optional fields
+                                if (post.has("user_title"))
+                                    p.user_title = post.getString("user_title");
+                                if (post.has("user_department"))
+                                    p.user_department = post.getString("user_department");
 
-                        list.add(p);
+                                list.add(p);
+                            }
+                            listener.onData(list, "ok");
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            listener.onData(null, "获取留言信息失败");
+                        }
                     }
-                    listener.onData(list, "ok");
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    listener.onData(null, "获取留言信息失败");
-                }
-            }
-        }, new Response.ErrorListener() {
+                }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 error.printStackTrace();
@@ -93,7 +95,7 @@ public class Models {
     }
 }
 
-class Post{
+class Post {
     String user_name;
     String user_contact;
     String user_title;

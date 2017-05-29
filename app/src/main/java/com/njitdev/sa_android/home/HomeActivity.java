@@ -9,7 +9,7 @@ import android.widget.Button;
 import com.android.volley.toolbox.Volley;
 import com.njitdev.sa_android.R;
 import com.njitdev.sa_android.messageboard.MessageBoardActivity;
-import com.njitdev.sa_android.schoolAnnouncement.schoolAnnouncementActivity;
+import com.njitdev.sa_android.school_announcement.SchoolAnnouncementActivity;
 import com.njitdev.sa_android.test.TestActivity;
 import com.njitdev.sa_android.utils.SAGlobal;
 
@@ -23,16 +23,16 @@ public class HomeActivity extends AppCompatActivity {
         // Initialize shared request queue
         SAGlobal.sharedRequestQueue = Volley.newRequestQueue(getApplicationContext());
 
-        Button buttonHomeMessageBoard = (Button)findViewById(R.id.buttonHomeMessageBoard);
+        Button buttonHomeMessageBoard = (Button) findViewById(R.id.buttonHomeMessageBoard);
         buttonHomeMessageBoard.setOnClickListener(
-                new View.OnClickListener()  {
-            @Override
-            public void onClick(View v) {
-                openMessageBoard();
-            }
-        });
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        openMessageBoard();
+                    }
+                });
 
-        Button buttonHomeTest = (Button)findViewById(R.id.buttonHomeTest);
+        Button buttonHomeTest = (Button) findViewById(R.id.buttonHomeTest);
         buttonHomeTest.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
@@ -41,7 +41,7 @@ public class HomeActivity extends AppCompatActivity {
                     }
                 });
 
-        Button buttonHomeSchoolAnnouncement = (Button)findViewById(R.id.buttonHomeSchoolAnnouncement);
+        Button buttonHomeSchoolAnnouncement = (Button) findViewById(R.id.buttonHomeSchoolAnnouncement);
         buttonHomeSchoolAnnouncement.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
@@ -61,8 +61,8 @@ public class HomeActivity extends AppCompatActivity {
         startActivity(intent2);
     }
 
-    public void schoolAnnouncement(){
-        Intent intent3 = new Intent(this, schoolAnnouncementActivity.class);
+    public void schoolAnnouncement() {
+        Intent intent3 = new Intent(this, SchoolAnnouncementActivity.class);
         startActivity(intent3);
     }
 }

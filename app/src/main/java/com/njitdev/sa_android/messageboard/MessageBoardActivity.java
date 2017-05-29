@@ -36,7 +36,7 @@ public class MessageBoardActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.messageboard,menu);
+        getMenuInflater().inflate(R.menu.messageboard, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -75,7 +75,8 @@ public class MessageBoardActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {}
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+            }
         });
     }
 
@@ -91,7 +92,7 @@ public class MessageBoardActivity extends AppCompatActivity {
     //fetch json data and show
     private void fetchMessage(int page) {
         setBusy(true);
-        Models.fetchList(page, new ModelListener() {
+        MessageBoardModels.fetchList(page, new ModelListener() {
             @Override
             public void onData(Object result, String message) {
                 setBusy(false);
@@ -140,7 +141,7 @@ public class MessageBoardActivity extends AppCompatActivity {
                     post.user_contact = user_contact;
 
                     setBusy(true);
-                    Models.submitPost("IDbyIris", post, new ModelListener() {
+                    MessageBoardModels.submitPost("IDbyIris", post, new ModelListener() {
                         @Override
                         public void onData(Object result, String message) {
                             setBusy(false);

@@ -1,4 +1,4 @@
-package com.njitdev.sa_android.schoolAnnouncement;
+package com.njitdev.sa_android.school_announcement;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -21,15 +21,15 @@ class AnnouncementModels {
     private static String baseURL = SAConfig.baseURL + "/school/" + SAConfig.schoolIdentifier + "/announcements";
 
     static void fetchList(int category, final ModelListener listener) {
-        JsonObjectRequest r = new JsonObjectRequest(Request.Method.GET, baseURL + "?category=" + category,  null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest r = new JsonObjectRequest(Request.Method.GET, baseURL + "?category=" + category, null, new Response.Listener<JSONObject>() {
 
             @Override
             public void onResponse(JSONObject response) {
                 try {
                     JSONArray result = response.getJSONArray("result");
-
                     ArrayList<Article> list = new ArrayList<>();
-                    for(int i = 0; i < result.length(); i++){
+
+                    for (int i = 0; i < result.length(); i++) {
                         JSONObject object = result.getJSONObject(i);
 
                         Article article = new Article();
@@ -39,8 +39,10 @@ class AnnouncementModels {
                         article.article_title = object.getString("article_title");
 
                         // Optional fields
-                        if (object.has("article_department")) article.article_department = object.getString("article_department");
-                        if (object.has("article_date")) article.article_date = object.getString("article_date");
+                        if (object.has("article_department"))
+                            article.article_department = object.getString("article_department");
+                        if (object.has("article_date"))
+                            article.article_date = object.getString("article_date");
 
                         list.add(article);
                     }
