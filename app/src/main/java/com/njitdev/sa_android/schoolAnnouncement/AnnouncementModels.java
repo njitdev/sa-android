@@ -1,4 +1,4 @@
-package com.njitdev.sa_android.messageboard;
+package com.njitdev.sa_android.schoolAnnouncement;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -14,35 +14,31 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 /**
- * Created by WZ on 4/9/17.
+ * Created by WZ on 5/28/17.
  */
 
-public class Models {
-    private static String baseURL = SAConfig.baseURL;
+public class AnnouncementModels {
+    private static String SAnnouncementURL = SAConfig.SAnnouncementURL;
 
-    static void fetchList(final ModelListener listener, int count) {
+    static void fetchList(final ModelListener listener, int category) {
         JsonObjectRequest r = new JsonObjectRequest(Request.Method.GET,
-                baseURL + "/app/msgboard/gdut/posts?page="+count,
+                SAnnouncementURL + category,
                 null, new Response.Listener<JSONObject>() {
 
             @Override
             public void onResponse(JSONObject response) {
                 try {
-//                    Thread.sleep(1000);
 
-                    JSONObject result = response.getJSONObject("result");
-                    JSONArray posts = result.getJSONArray("posts");
+                    JSONArray result = response.getJSONArray("result");
 
-                    ArrayList<Post> list = new ArrayList<>();
-                    for(int i = 0; i < posts.length(); i++){
-                        JSONObject post = posts.getJSONObject(i);
+                    ArrayList<Article> list = new ArrayList<>();
+                    for(int i = 0; i < result.length(); i++){
+                        JSONObject post = result.getJSONObject(i);
 
-                        Post p = new Post();
-//                        p.id = post.getInt("_id");
-                        p.user_name = post.getString("user_name");
-                        p.text = post.getString("text");
-                        p.creation_time = post.getString("creation_time");
-                        list.add(p);
+                        Article article = new Article();
+                        article.article_title = post.getString("article_title");
+                        article.article_department = post.getString("article_department");
+                        list.add(article);
                     }
 
                     listener.onData(true,list);
@@ -64,11 +60,15 @@ public class Models {
     }
 }
 
-class Post{
-    String id;
-    String user_name;
-    String user_title;
-    String user_department;
-    String text;
-    String creation_time;
+class Article{
+    String article_title;
+    String article_department;
+
+    public String getArticle_title() {
+        return article_title;
+    }
+
+    public String getArticle_department() {
+        return article_department;
+    }
 }
