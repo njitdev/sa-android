@@ -13,13 +13,24 @@
         android:id="@+id/buttonHomeMessageBoard"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="-27dp"
+        android:layout_marginLeft="32dp"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="32dp"
         android:layout_weight="1"
-        android:text="Button"
+        android:text="留言板"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
+
+    <Button
+        android:id="@+id/buttonHomeSchoolAnnouncement"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="校内通知"
+        app:layout_constraintLeft_toLeftOf="@+id/buttonHomeMessageBoard"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginLeft="100dp"
+        android:layout_marginTop="32dp"/>
 
     <Button
         android:id="@+id/buttonHomeTest"

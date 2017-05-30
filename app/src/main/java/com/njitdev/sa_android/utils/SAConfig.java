@@ -6,4 +6,5 @@ package com.njitdev.sa_android.utils;
 
 public class SAConfig {
     public static String baseURL = "https://sa-api-dev.njitdev.com";
+    public static String schoolIdentifier = "gdut";
 }

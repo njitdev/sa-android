@@ -7,10 +7,5 @@ import com.android.volley.RequestQueue;
  */
 
 public class SAGlobal {
-    private static final SAGlobal ourInstance = new SAGlobal();
-    public RequestQueue sharedRequestQueue;
-    public static SAGlobal getInstance() {
-        return ourInstance;
-    }
-    private SAGlobal() {}
+    public static RequestQueue sharedRequestQueue;
 }

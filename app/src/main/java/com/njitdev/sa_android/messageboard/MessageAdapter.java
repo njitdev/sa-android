@@ -1,6 +1,7 @@
 package com.njitdev.sa_android.messageboard;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +16,7 @@ import java.util.List;
  * Created by WZ on 4/16/17.
  */
 
-public class MessageAdapter extends ArrayAdapter<Post>{
+public class MessageAdapter extends ArrayAdapter<Post> {
     protected Context mContext;
     protected List<Post> mPosts;
 
@@ -26,10 +27,10 @@ public class MessageAdapter extends ArrayAdapter<Post>{
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         ViewHolder holder;
 
-        if(convertView == null) {
+        if (convertView == null) {
             convertView = LayoutInflater.from(mContext).inflate(
                     R.layout.message_board_rowcontext, null
             );
@@ -39,7 +40,7 @@ public class MessageAdapter extends ArrayAdapter<Post>{
             holder.time = (TextView) convertView.findViewById(R.id.messageBoardRowTime);
             convertView.setTag(holder);
         } else {
-            holder = (ViewHolder)convertView.getTag();
+            holder = (ViewHolder) convertView.getTag();
         }
 
         Post post = mPosts.get(position);
@@ -50,8 +51,8 @@ public class MessageAdapter extends ArrayAdapter<Post>{
         String message = post.text;
         holder.messageContext.setText(message);
 
-     //   String time = post.creation_time;
-     //   holder.time.setText(time);
+        //   String time = post.creation_time;
+        //   holder.time.setText(time);
 
         return convertView;
     }
