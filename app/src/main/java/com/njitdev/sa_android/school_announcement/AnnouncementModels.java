@@ -21,7 +21,8 @@ class AnnouncementModels {
     private static String baseURL = SAConfig.baseURL + "/school/" + SAConfig.schoolIdentifier + "/announcements";
 
     static void fetchList(int category, final ModelListener listener) {
-        JsonObjectRequest r = new JsonObjectRequest(Request.Method.GET, baseURL + "?category=" + category, null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest r = new JsonObjectRequest(Request.Method.GET, baseURL + "?category=" + category, null,
+                new Response.Listener<JSONObject>() {
 
             @Override
             public void onResponse(JSONObject response) {

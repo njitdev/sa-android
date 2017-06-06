@@ -75,7 +75,7 @@ public class SchoolAnnouncementActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(SchoolAnnouncementActivity.this,AnnouncementArticleBodyActivity.class);
-                intent.putExtra("articleID",position);
+                intent.putExtra("articleID", mArticles.get(position).article_id);
                 startActivity(intent);
             }
         });
