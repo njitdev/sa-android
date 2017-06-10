@@ -24,7 +24,7 @@ public class AnnouncementArticleBodyActivity extends AppCompatActivity {
 
         Bundle bundle = getIntent().getExtras();
         if(bundle != null){
-            Toast.makeText(getApplicationContext(),bundle.getString("articleID"),Toast.LENGTH_SHORT).show();
+           // Toast.makeText(getApplicationContext(),bundle.getString("articleID"),Toast.LENGTH_SHORT).show();
             articleID = Integer.parseInt(bundle.getString("articleID"));
         }
         fetchArticleBody();
