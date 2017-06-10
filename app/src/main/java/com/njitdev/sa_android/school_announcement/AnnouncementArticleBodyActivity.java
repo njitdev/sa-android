@@ -1,8 +1,12 @@
 package com.njitdev.sa_android.school_announcement;
 
+import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Display;
 import android.view.View;
+import android.view.WindowManager;
+import android.webkit.WebView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,10 +48,14 @@ public class AnnouncementArticleBodyActivity extends AppCompatActivity {
                 if(result == null){
                     Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
                 }else {
-                    TextView tx = (TextView) findViewById(R.id.textViewforArticle);
-                    tx.setText(result.toString());
+                    WebView wb = (WebView) findViewById(R.id.webViewforArticle);
+                    wb.getSettings().setJavaScriptEnabled(true);
+                    wb.loadData(result.toString(),"text/html;charset=utf-8",null);
+                    wb.getSettings().setLoadWithOverviewMode(true);
+                    wb.getSettings().setUseWideViewPort(true);
                 }
             }
         });
     }
+
 }
