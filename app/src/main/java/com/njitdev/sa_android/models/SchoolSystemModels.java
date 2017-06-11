@@ -6,7 +6,6 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.njitdev.sa_android.R;
 import com.njitdev.sa_android.utils.ModelListener;
 import com.njitdev.sa_android.utils.SAConfig;
 import com.njitdev.sa_android.utils.SAGlobal;
