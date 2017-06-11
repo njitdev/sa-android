@@ -3,11 +3,14 @@ package com.njitdev.sa_android.home;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.android.volley.toolbox.Volley;
 import com.njitdev.sa_android.R;
+import com.njitdev.sa_android.login.LoginActivity;
 import com.njitdev.sa_android.messageboard.MessageBoardActivity;
 import com.njitdev.sa_android.school_announcement.SchoolAnnouncementActivity;
 import com.njitdev.sa_android.test.TestActivity;
@@ -49,6 +52,22 @@ public class HomeActivity extends AppCompatActivity {
                         schoolAnnouncement();
                     }
                 });
+
+        Button btnLogin = (Button) findViewById(R.id.btnLogin);
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(HomeActivity.this, LoginActivity.class);
+                startActivity(i);
+            }
+        });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        TextView lblSessionID = (TextView) findViewById(R.id.lblSessionID);
+        lblSessionID.setText("session_id: " + SAGlobal.student_session_id);
     }
 
     public void openMessageBoard() {

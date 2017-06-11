@@ -8,4 +8,6 @@ import com.android.volley.RequestQueue;
 
 public class SAGlobal {
     public static RequestQueue sharedRequestQueue;
+    public static String student_session_id;
+    public static String installation_id = "aaa";
 }
