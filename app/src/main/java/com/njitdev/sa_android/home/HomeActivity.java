@@ -8,6 +8,7 @@ import android.widget.Button;
 
 import com.android.volley.toolbox.Volley;
 import com.njitdev.sa_android.R;
+import com.njitdev.sa_android.library.LibraryActivity;
 import com.njitdev.sa_android.messageboard.MessageBoardActivity;
 import com.njitdev.sa_android.school_announcement.SchoolAnnouncementActivity;
 import com.njitdev.sa_android.test.TestActivity;
@@ -49,6 +50,15 @@ public class HomeActivity extends AppCompatActivity {
                         schoolAnnouncement();
                     }
                 });
+
+        Button btnLibrary = (Button) findViewById(R.id.btnLibrary);
+        btnLibrary.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomeActivity.this, LibraryActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     public void openMessageBoard() {
