@@ -29,7 +29,7 @@ public class LoginActivity extends AppCompatActivity {
         // Fill with saved credentials if available
         String studentLogin = SAUtils.readKVStore(getApplicationContext(), "student_login");
         String studentPassword = SAUtils.readKVStore(getApplicationContext(), "student_password");
-        if (studentLogin != null || studentPassword != null) {
+        if (studentLogin != null && studentPassword != null) {
             txtStudentLogin.setText(studentLogin);
             txtStudentPassword.setText(studentPassword);
         }
