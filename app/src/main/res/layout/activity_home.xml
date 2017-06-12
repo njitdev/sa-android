@@ -10,6 +10,17 @@
     tools:layout_editor_absoluteX="0dp">
 
     <Button
+        android:id="@+id/btnLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="32dp"
+        android:layout_weight="1"
+        android:text="登录"
+        app:layout_constraintLeft_toLeftOf="@+id/buttonHomeSchoolAnnouncement"
+        app:layout_constraintTop_toBottomOf="@+id/buttonHomeSchoolAnnouncement" />
+
+    <Button
         android:id="@+id/buttonHomeMessageBoard"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -55,6 +66,18 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonHomeTest"/>
 
+    <TextView
+        android:id="@+id/lblSessionID"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="16dp"
+        android:text="session_id"
+        android:textSize="10sp"
+        app:layout_constraintLeft_toLeftOf="@+id/textView"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent" />
 
 
 </android.support.constraint.ConstraintLayout>
