@@ -67,7 +67,7 @@ public class MessageBoardActivity extends AppCompatActivity {
         final ListView listView = (ListView) findViewById(R.id.listViewMessageboardText);
 
         // Create adapter
-        mAdapter = new MessageBoardAdapter(listView.getContext(), R.layout.listitem_message_board, mPosts);
+        mAdapter = new MessageBoardAdapter(listView.getContext(), R.layout.list_item_message_board, mPosts);
         listView.setAdapter(mAdapter);
 
         // Set listener for scroll down;
@@ -195,7 +195,7 @@ class MessageBoardAdapter extends ArrayAdapter<Post> {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         if (convertView == null) {
-            convertView = LayoutInflater.from(mContext).inflate(R.layout.listitem_message_board, parent, false);
+            convertView = LayoutInflater.from(mContext).inflate(R.layout.list_item_message_board, parent, false);
         }
 
         TextView lblUserName = (TextView) convertView.findViewById(R.id.lblUserName);
