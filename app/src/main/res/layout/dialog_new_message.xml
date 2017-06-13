@@ -44,6 +44,7 @@
         android:ems="10"
         android:hint="留言"
         android:inputType="textMultiLine"
+        android:maxHeight="90dp"
         android:textSize="13sp"
         app:layout_constraintLeft_toLeftOf="@+id/lblUserName"
         app:layout_constraintRight_toRightOf="@+id/txtUserContact"
