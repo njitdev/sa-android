@@ -1,6 +1,7 @@
 package com.njitdev.sa_android.library;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -9,6 +10,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -51,6 +54,20 @@ public class LibraryActivity extends AppCompatActivity {
                 });
             }
         });
+//        // Hide keyboard
+//        View view = this.getCurrentFocus();
+//        if (view != null) {
+//            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+//            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+//        }
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(LibraryActivity.this, BookDetailsActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }
 
@@ -75,12 +92,25 @@ class LibraryAdapter extends ArrayAdapter {
 
         // Controls
         TextView lblTitle = (TextView) convertView.findViewById(R.id.lblTitle);
-        TextView lblSubtitle = (TextView) convertView.findViewById(R.id.lblSubtitle);
+        TextView lblAuthor = (TextView) convertView.findViewById(R.id.lblAuthor);
+        TextView lblInventory = (TextView) convertView.findViewById(R.id.lblInventory);
+        TextView lblAvailable = (TextView) convertView.findViewById(R.id.lblAvailable);
+        TextView lblYear = (TextView) convertView.findViewById(R.id.lblYear);
+        TextView lblPublisher = (TextView) convertView.findViewById(R.id.lblPublisher);
+        TextView lblAcqNum = (TextView) convertView.findViewById(R.id.lblAcqNum);
+
 
         // Data
         Book b = mBooks.get(position);
         lblTitle.setText(b.title);
-        lblSubtitle.setText(b.author);
+        lblAuthor.setText(b.author);
+        String storeNum = "馆藏:" + b.inventory;
+        String availableNum = "可借:" + b.available;
+        lblInventory.setText(storeNum);
+        lblAvailable.setText(availableNum);
+        lblYear.setText(b.year);
+        lblPublisher.setText(b.publisher);
+        lblAcqNum.setText(b.acquisition_number);
 
         return convertView;
     }

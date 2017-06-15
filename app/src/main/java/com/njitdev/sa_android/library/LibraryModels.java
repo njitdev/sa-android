@@ -57,6 +57,40 @@ class LibraryModels {
         });
         SAGlobal.sharedRequestQueue.add(r);
     }
+
+    public static void details(String bookId, final ModelListener listener) {
+        JsonObjectRequest r = new JsonObjectRequest(Request.Method.GET, baseURL + "/details?book_id=" +bookId, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                // Parse response here
+                ArrayList<Details> detailResult = new ArrayList<Details>();
+                try {
+                    JSONArray bookDetails = response.getJSONArray("result");
+                    for (int i = 0; i < bookDetails.length(); i++) {
+                        JSONObject jsonDetails = bookDetails.getJSONObject(i);
+                        Details details = new Details();
+                        details.location = jsonDetails.getString("location");
+                        details.login_number = jsonDetails.getString("login_number");
+                        details.year = jsonDetails.getString("year");
+                        details.acquisition_number = jsonDetails.getString("acquisition_number");
+                        details.type = jsonDetails.getString("type");
+                        details.inventory = jsonDetails.getString("inventory");
+                        details.availability = jsonDetails.getString("availability");
+                        detailResult.add(details);
+                    }
+                    listener.onData(detailResult, "OK");
+                } catch (JSONException e) {
+                    listener.onData(null, "解析数据失败");
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                listener.onData(null, "连接学校服务器超时");
+            }
+        });
+        SAGlobal.sharedRequestQueue.add(r);
+    }
 }
 
 class Book {
@@ -68,4 +102,14 @@ class Book {
     String acquisition_number;
     String inventory;
     String available;
+}
+
+class Details {
+    String location;
+    String login_number;
+    String year;
+    String acquisition_number;
+    String type;
+    String inventory;
+    String availability;
 }

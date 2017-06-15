@@ -26,7 +26,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".home.HomeActivity" />
         </activity>
-        <activity android:name=".test.TestActivity"></activity>
+        <activity android:name=".test.TestActivity" />
         <activity
             android:name=".school_announcement.SchoolAnnouncementActivity"
             android:label="校内通知">
@@ -34,7 +34,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".home.HomeActivity" />
         </activity>
-        <activity android:name=".library.LibraryActivity"></activity>
+        <activity android:name=".library.LibraryActivity" />
+        <activity android:name=".library.BookDetailsActivity"></activity>
     </application>
 
 </manifest>
