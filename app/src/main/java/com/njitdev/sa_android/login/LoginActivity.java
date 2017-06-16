@@ -49,7 +49,7 @@ public class LoginActivity extends AppCompatActivity {
                 setUIBusy(true);
 
                 // Send login info
-                SchoolSystemModels.submitAuthInfo(SAGlobal.installation_id, studentLogin, studentPassword, null, new ModelListener<String>() {
+                SchoolSystemModels.submitAuthInfo(SAUtils.installationID(getApplicationContext()), studentLogin, studentPassword, null, new ModelListener<String>() {
                     @Override
                     public void onData(String result, String message) {
                         setUIBusy(false);

@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.njitdev.sa_android.R;
 import com.njitdev.sa_android.utils.ModelListener;
 import com.njitdev.sa_android.utils.SAGlobal;
+import com.njitdev.sa_android.utils.SAUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -145,7 +146,7 @@ public class MessageBoardActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "用户名或留言不能为空", Toast.LENGTH_LONG).show();
                 } else {
                     Post post = new Post();
-                    post.installation_id = SAGlobal.installation_id;
+                    post.installation_id = SAUtils.installationID(getApplicationContext());
                     post.user_name = user_name;
                     post.text = text;
                     post.user_contact = user_contact;
