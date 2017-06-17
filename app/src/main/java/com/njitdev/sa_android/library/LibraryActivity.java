@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.njitdev.sa_android.R;
 import com.njitdev.sa_android.utils.ModelListener;
@@ -34,7 +35,7 @@ public class LibraryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_library);
 
         // Create adapter
-        ListView listView = (ListView) findViewById(R.id.listView);
+        final ListView listView = (ListView) findViewById(R.id.listView);
         final ArrayAdapter libraryAdapter = new LibraryAdapter(this, android.R.layout.simple_list_item_1, mBooks);
         listView.setAdapter(libraryAdapter);
 
@@ -46,6 +47,10 @@ public class LibraryActivity extends AppCompatActivity {
                 LibraryModels.search(txtKeyword.getText().toString(), new ModelListener() {
                     @Override
                     public void onData(Object result, String message) {
+                        if (result == null) {
+                            Toast.makeText(LibraryActivity.this, message, Toast.LENGTH_SHORT).show();
+                            return;
+                        }
                         // Update data of adapter
                         mBooks.clear();
                         mBooks.addAll((ArrayList<Book>)result);
@@ -65,6 +70,9 @@ public class LibraryActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(LibraryActivity.this, BookDetailsActivity.class);
+                String book_id = mBooks.get(position).id;
+                // Pass book id to details activity
+                intent.putExtra("Book_Id", book_id);
                 startActivity(intent);
             }
         });
@@ -98,7 +106,6 @@ class LibraryAdapter extends ArrayAdapter {
         TextView lblYear = (TextView) convertView.findViewById(R.id.lblYear);
         TextView lblPublisher = (TextView) convertView.findViewById(R.id.lblPublisher);
         TextView lblAcqNum = (TextView) convertView.findViewById(R.id.lblAcqNum);
-
 
         // Data
         Book b = mBooks.get(position);

@@ -1,5 +1,7 @@
 package com.njitdev.sa_android.library;
 
+import android.telecom.Call;
+
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -26,7 +28,7 @@ class LibraryModels {
 
             @Override
             public void onResponse(JSONObject response) {
-                ArrayList<Book> result = new ArrayList<Book>();
+                ArrayList<Book> result = new ArrayList<>();
                 try {
                     JSONArray books = response.getJSONArray("result");
                     for (int i = 0; i < books.length(); i++) {
@@ -63,22 +65,23 @@ class LibraryModels {
             @Override
             public void onResponse(JSONObject response) {
                 // Parse response here
-                ArrayList<Details> detailResult = new ArrayList<Details>();
+                ArrayList<BookInventory> result = new ArrayList<>();
                 try {
-                    JSONArray bookDetails = response.getJSONArray("result");
-                    for (int i = 0; i < bookDetails.length(); i++) {
-                        JSONObject jsonDetails = bookDetails.getJSONObject(i);
-                        Details details = new Details();
-                        details.location = jsonDetails.getString("location");
-                        details.login_number = jsonDetails.getString("login_number");
-                        details.year = jsonDetails.getString("year");
-                        details.acquisition_number = jsonDetails.getString("acquisition_number");
-                        details.type = jsonDetails.getString("type");
-                        details.inventory = jsonDetails.getString("inventory");
-                        details.availability = jsonDetails.getString("availability");
-                        detailResult.add(details);
+                    JSONArray bookInventorys = response.getJSONObject("result").getJSONArray("inventory");
+                    for (int i = 0; i < bookInventorys.length(); i++) {
+                        JSONObject jsonDetails = bookInventorys.getJSONObject(i);
+                        BookInventory bookInventory = new BookInventory();
+
+                        if (jsonDetails.has("location")) bookInventory.location = jsonDetails.getString("location");
+                        if (jsonDetails.has("login_number")) bookInventory.login_number = jsonDetails.getString("login_number");
+                        if (jsonDetails.has("year")) bookInventory.year = jsonDetails.getString("year");
+                        if (jsonDetails.has("acquisition_number")) bookInventory.acquisition_number = jsonDetails.getString("acquisition_number");
+                        if (jsonDetails.has("type")) bookInventory.type = jsonDetails.getString("type");
+                        if (jsonDetails.has("inventory")) bookInventory.inventory = jsonDetails.getString("inventory");
+                        if (jsonDetails.has("availability")) bookInventory.availability = jsonDetails.getString("availability");
+                        result.add(bookInventory);
                     }
-                    listener.onData(detailResult, "OK");
+                    listener.onData(result, "OK");
                 } catch (JSONException e) {
                     listener.onData(null, "解析数据失败");
                 }
@@ -104,7 +107,7 @@ class Book {
     String available;
 }
 
-class Details {
+class BookInventory {
     String location;
     String login_number;
     String year;
