@@ -36,7 +36,7 @@ public class LibraryActivity extends AppCompatActivity {
 
         // Create adapter
         final ListView listView = (ListView) findViewById(R.id.listView);
-        final ArrayAdapter libraryAdapter = new LibraryAdapter(this, android.R.layout.simple_list_item_1, mBooks);
+        final ArrayAdapter libraryAdapter = new LibraryAdapter(this, R.layout.list_item_library_search, mBooks);
         listView.setAdapter(libraryAdapter);
 
         Button btnSearch = (Button) findViewById(R.id.btnSearch);
@@ -55,16 +55,16 @@ public class LibraryActivity extends AppCompatActivity {
                         mBooks.clear();
                         mBooks.addAll((ArrayList<Book>)result);
                         libraryAdapter.notifyDataSetChanged();
+                        // Hide keyboard
+                        View view = LibraryActivity.this.getCurrentFocus();
+                        if (view != null) {
+                            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                        }
                     }
                 });
             }
         });
-//        // Hide keyboard
-//        View view = this.getCurrentFocus();
-//        if (view != null) {
-//            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-//            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-//        }
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -90,11 +90,13 @@ public class LibraryActivity extends AppCompatActivity {
 class LibraryAdapter extends ArrayAdapter {
 
     private Context mContext;
+    private int mResource;
     private List<Book> mBooks;
 
     public LibraryAdapter(@NonNull Context context, @LayoutRes int resource, @NonNull List<Book> objects) {
         super(context, resource, objects);
         mContext = context;
+        mResource = resource;
         mBooks = objects;
     }
 
@@ -103,7 +105,7 @@ class LibraryAdapter extends ArrayAdapter {
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.list_item_library_search, parent, false);
+            convertView = inflater.inflate(mResource, parent, false);
         }
 
         // Controls

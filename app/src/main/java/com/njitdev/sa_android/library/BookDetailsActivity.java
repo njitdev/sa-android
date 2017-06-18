@@ -31,7 +31,7 @@ public class BookDetailsActivity extends AppCompatActivity {
 
         // Create adapter
         ListView listView = (ListView) findViewById(R.id.listView);
-        final DetailAdapter detailAdapter = new DetailAdapter(this, android.R.layout.simple_list_item_1, mInventory);
+        final DetailAdapter detailAdapter = new DetailAdapter(this, R.layout.list_item_book_details, mInventory);
         listView.setAdapter(detailAdapter);
 
         String book_id = getIntent().getStringExtra("book_id");
@@ -79,11 +79,13 @@ public class BookDetailsActivity extends AppCompatActivity {
 class DetailAdapter extends ArrayAdapter {
 
     private Context mContext;
+    private int mResource;
     private List<BookInventory> mInventory;
 
     public DetailAdapter(@NonNull Context context, @LayoutRes int resource, @NonNull List<BookInventory> objects) {
         super(context, resource, objects);
         mContext = context;
+        mResource = resource;
         mInventory = objects;
     }
 
@@ -92,7 +94,7 @@ class DetailAdapter extends ArrayAdapter {
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.list_item_book_details, parent, false);
+            convertView = inflater.inflate(mResource, parent, false);
         }
 
         // Controls
