@@ -70,9 +70,17 @@ public class LibraryActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(LibraryActivity.this, BookDetailsActivity.class);
-                String book_id = mBooks.get(position).id;
-                // Pass book id to details activity
-                intent.putExtra("Book_Id", book_id);
+                Book book = mBooks.get(position);
+                // Pass book info to details activity
+                intent.putExtra("book_id", book.id);
+                intent.putExtra("book_title", book.title);
+                intent.putExtra("book_author", book.author);
+                intent.putExtra("book_publisher", book.publisher);
+                intent.putExtra("book_year", book.year);
+                intent.putExtra("book_acquisition_number", book.acquisition_number);
+                intent.putExtra("book_inventory", book.inventory);
+                intent.putExtra("book_available", book.available);
+
                 startActivity(intent);
             }
         });

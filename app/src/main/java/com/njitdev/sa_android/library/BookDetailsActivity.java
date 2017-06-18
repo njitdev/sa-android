@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,9 +34,16 @@ public class BookDetailsActivity extends AppCompatActivity {
         final DetailAdapter detailAdapter = new DetailAdapter(this, android.R.layout.simple_list_item_1, mInventory);
         listView.setAdapter(detailAdapter);
 
-        // How to get ID?
-        String bookId = getIntent().getStringExtra("Book_Id");
-        LibraryModels.details(bookId, new ModelListener() {
+        String book_id = getIntent().getStringExtra("book_id");
+        String book_title = getIntent().getStringExtra("book_title");
+        String book_author = getIntent().getStringExtra("book_author");
+        String book_publisher = getIntent().getStringExtra("book_publisher");
+        String book_year = getIntent().getStringExtra("book_year");
+        String book_acquisition_number = getIntent().getStringExtra("book_acquisition_number");
+        String book_inventory = getIntent().getStringExtra("book_inventory");
+        String book_available = getIntent().getStringExtra("book_available");
+
+        LibraryModels.details(book_id, new ModelListener() {
                     @Override
                     public void onData(Object result, String message) {
                         if (result == null) {
@@ -49,7 +55,23 @@ public class BookDetailsActivity extends AppCompatActivity {
                         detailAdapter.notifyDataSetChanged();
                     }
                 });
+        TextView lblTitle = (TextView) findViewById(R.id.lblTitle);
+        TextView lblAuthor = (TextView) findViewById(R.id.lblAuthor);
+        TextView lblInventory = (TextView) findViewById(R.id.lblInventory);
+        TextView lblAvailable = (TextView) findViewById(R.id.lblAvailable);
+        TextView lblYear = (TextView) findViewById(R.id.lblYear);
+        TextView lblPublisher = (TextView) findViewById(R.id.lblPublisher);
+        TextView lblAcqNum = (TextView) findViewById(R.id.lblAcqNum);
 
+        if (book_title != null) lblTitle.setText(book_title);
+        if (book_author != null) lblAuthor.setText(book_author);
+        String storeNum = "馆藏:" + book_inventory;
+        String availableNum = "可借:" + book_available;
+        if (book_inventory != null) lblInventory.setText(storeNum);
+        if (book_available != null) lblAvailable.setText(availableNum);
+        if (book_year != null) lblYear.setText(book_year);
+        if (book_publisher != null) lblPublisher.setText(book_publisher);
+        if (book_acquisition_number != null) lblAcqNum.setText(book_acquisition_number);
     }
 }
 
@@ -65,7 +87,6 @@ class DetailAdapter extends ArrayAdapter {
         mInventory = objects;
     }
 
-
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -75,17 +96,17 @@ class DetailAdapter extends ArrayAdapter {
         }
 
         // Controls
-        TextView txtLocation = (TextView) convertView.findViewById(R.id.txtLocation);
-        TextView txtAvailability = (TextView) convertView.findViewById(R.id.txtAvailability);
-        TextView txtAcquisition_number = (TextView) convertView.findViewById(R.id.txtAcquisition_number);
-        TextView txtType = (TextView) convertView.findViewById(R.id.txtType);
+        TextView lblLocation = (TextView) convertView.findViewById(R.id.lblLocation);
+        TextView lblAvailability = (TextView) convertView.findViewById(R.id.lblAvailability);
+        TextView lblAcquisition_number = (TextView) convertView.findViewById(R.id.lblAcquisition_number);
+        TextView lblType = (TextView) convertView.findViewById(R.id.lblType);
 
         // Data
         BookInventory b = mInventory.get(position);
-        txtLocation.setText(b.location);
-        txtAvailability.setText(b.availability);
-        txtAcquisition_number.setText(b.acquisition_number);
-        txtType.setText(b.type);
+        lblLocation.setText(b.location);
+        lblAvailability.setText(b.availability);
+        lblAcquisition_number.setText(b.acquisition_number);
+        lblType.setText(b.type);
 
         return convertView;
     }
