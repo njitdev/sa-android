@@ -14,7 +14,7 @@
         android:layout_height="17dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="16dp"
-        android:text="TextView"
+        android:text="   "
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -24,7 +24,7 @@
         android:layout_height="17dp"
         android:layout_marginLeft="0dp"
         android:layout_marginTop="8dp"
-        android:text="TextView"
+        android:text="   "
         app:layout_constraintLeft_toLeftOf="@+id/lblLocation"
         app:layout_constraintTop_toBottomOf="@+id/lblLocation" />
 
@@ -32,19 +32,27 @@
         android:id="@+id/lblLoginNumber"
         android:layout_width="wrap_content"
         android:layout_height="17dp"
-        android:text="TextView"
-        app:layout_constraintTop_toTopOf="@+id/lblLocation"
-        android:layout_marginTop="0dp"
         android:layout_marginRight="16dp"
-        app:layout_constraintRight_toRightOf="parent" />
+        android:layout_marginTop="0dp"
+        android:text="   "
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/lblLocation" />
 
     <TextView
         android:id="@+id/lblType"
         android:layout_width="wrap_content"
         android:layout_height="17dp"
-        android:layout_marginTop="0dp"
-        android:text="TextView"
-        app:layout_constraintTop_toTopOf="@+id/lblAvailability"
         android:layout_marginLeft="0dp"
-        app:layout_constraintLeft_toLeftOf="@+id/lblLoginNumber" />
+        android:layout_marginTop="0dp"
+        android:text="   "
+        app:layout_constraintLeft_toLeftOf="@+id/lblLoginNumber"
+        app:layout_constraintTop_toTopOf="@+id/lblAvailability" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        tools:layout_editor_absoluteX="-19dp"
+        tools:layout_editor_absoluteY="-17dp" />
 </android.support.constraint.ConstraintLayout>
