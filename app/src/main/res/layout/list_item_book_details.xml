@@ -48,11 +48,4 @@
         app:layout_constraintLeft_toLeftOf="@+id/lblLoginNumber"
         app:layout_constraintTop_toTopOf="@+id/lblAvailability" />
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        tools:layout_editor_absoluteX="-19dp"
-        tools:layout_editor_absoluteY="-17dp" />
 </android.support.constraint.ConstraintLayout>
