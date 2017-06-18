@@ -86,6 +86,7 @@ public class LibraryActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(LibraryActivity.this, BookDetailsActivity.class);
                 Book book = mBooks.get(position);
+
                 // Pass book info to details activity
                 intent.putExtra("book_id", book.id);
                 intent.putExtra("book_title", book.title);

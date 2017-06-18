@@ -81,6 +81,7 @@ public class BookDetailsActivity extends AppCompatActivity {
         if (book_available != null) lblAvailable.setText(availableNum);
         if (book_year != null) lblYear.setText(book_year);
         if (book_publisher != null) lblPublisher.setText(book_publisher);
+
         if (book_acquisition_number != null) lblAcqNum.setText(book_acquisition_number);
     }
 }
