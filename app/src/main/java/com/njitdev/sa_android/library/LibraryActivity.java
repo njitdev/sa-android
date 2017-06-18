@@ -16,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +35,9 @@ public class LibraryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_library);
 
+        // Set not busy
+        setUIBusy(false);
+
         // Create adapter
         final ListView listView = (ListView) findViewById(R.id.listView);
         final ArrayAdapter libraryAdapter = new LibraryAdapter(this, R.layout.list_item_library_search, mBooks);
@@ -41,24 +45,35 @@ public class LibraryActivity extends AppCompatActivity {
 
         Button btnSearch = (Button) findViewById(R.id.btnSearch);
         final EditText txtKeyword = (EditText) findViewById(R.id.txtKeyword);
+
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                // Set busy
+                setUIBusy(true);
+
                 LibraryModels.search(txtKeyword.getText().toString(), new ModelListener() {
                     @Override
                     public void onData(Object result, String message) {
+
+                        // Set not busy
+                        setUIBusy(false);
+
                         if (result == null) {
                             Toast.makeText(LibraryActivity.this, message, Toast.LENGTH_SHORT).show();
                             return;
                         }
+
                         // Update data of adapter
                         mBooks.clear();
-                        mBooks.addAll((ArrayList<Book>)result);
+                        mBooks.addAll((ArrayList<Book>) result);
                         libraryAdapter.notifyDataSetChanged();
+
                         // Hide keyboard
                         View view = LibraryActivity.this.getCurrentFocus();
                         if (view != null) {
-                            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                         }
                     }
@@ -84,6 +99,23 @@ public class LibraryActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    private void setUIBusy(Boolean busy) {
+        Button btnSearch = (Button) findViewById(R.id.btnSearch);
+        EditText txtKeyword = (EditText) findViewById(R.id.txtKeyword);
+
+        // Enable / disable
+        btnSearch.setEnabled(!busy);
+        txtKeyword.setEnabled(!busy);
+
+        // Spinner
+        ProgressBar pbSearch = (ProgressBar) findViewById(R.id.pbSearch);
+        if (busy) {
+            pbSearch.setVisibility(View.VISIBLE);
+        } else {
+            pbSearch.setVisibility(View.INVISIBLE);
+        }
     }
 }
 

@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +34,11 @@ public class BookDetailsActivity extends AppCompatActivity {
         ListView listView = (ListView) findViewById(R.id.listView);
         final DetailAdapter detailAdapter = new DetailAdapter(this, R.layout.list_item_book_details, mInventory);
         listView.setAdapter(detailAdapter);
+        final ProgressBar pbDetail = (ProgressBar) findViewById(R.id.pbDetail);
+
+        // Set visible
+        pbDetail.setVisibility(View.VISIBLE);
+
 
         String book_id = getIntent().getStringExtra("book_id");
         String book_title = getIntent().getStringExtra("book_title");
@@ -46,6 +52,10 @@ public class BookDetailsActivity extends AppCompatActivity {
         LibraryModels.details(book_id, new ModelListener() {
                     @Override
                     public void onData(Object result, String message) {
+
+                        // Set invisible
+                        pbDetail.setVisibility(View.INVISIBLE);
+
                         if (result == null) {
                             Toast.makeText(BookDetailsActivity.this, message, Toast.LENGTH_SHORT).show();
                             return;
@@ -75,7 +85,6 @@ public class BookDetailsActivity extends AppCompatActivity {
     }
 }
 
-
 class DetailAdapter extends ArrayAdapter {
 
     private Context mContext;
@@ -100,14 +109,14 @@ class DetailAdapter extends ArrayAdapter {
         // Controls
         TextView lblLocation = (TextView) convertView.findViewById(R.id.lblLocation);
         TextView lblAvailability = (TextView) convertView.findViewById(R.id.lblAvailability);
-        TextView lblAcquisition_number = (TextView) convertView.findViewById(R.id.lblAcquisition_number);
+        TextView lblLoginNumber = (TextView) convertView.findViewById(R.id.lblLoginNumber);
         TextView lblType = (TextView) convertView.findViewById(R.id.lblType);
 
         // Data
         BookInventory b = mInventory.get(position);
         lblLocation.setText(b.location);
         lblAvailability.setText(b.availability);
-        lblAcquisition_number.setText(b.acquisition_number);
+        lblLoginNumber.setText(b.login_number);
         lblType.setText(b.type);
 
         return convertView;
