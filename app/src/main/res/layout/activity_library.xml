@@ -10,18 +10,17 @@
         android:id="@+id/txtKeyword"
         android:layout_width="0dp"
         android:layout_height="51dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:ems="10"
         android:hint="关键字"
         android:inputType="textPersonName"
-        android:text="demo_keyword"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintRight_toLeftOf="@+id/btnSearch"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/btnSearch"
@@ -47,7 +46,9 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtKeyword"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="1.0"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp" />
 
     <ProgressBar
         android:id="@+id/pbSearch"
@@ -62,6 +63,7 @@
         app:layout_constraintLeft_toLeftOf="@+id/listView"
         app:layout_constraintRight_toRightOf="@+id/listView"
         app:layout_constraintTop_toTopOf="@+id/listView"
-        app:layout_constraintVertical_bias="0.5" />
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp" />
 
 </android.support.constraint.ConstraintLayout>
