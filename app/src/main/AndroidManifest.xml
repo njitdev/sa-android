@@ -27,7 +27,9 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".home.HomeActivity" />
         </activity>
+
         <activity android:name=".test.TestActivity" />
+
         <activity
             android:name=".school_announcement.SchoolAnnouncementActivity"
             android:label="校内通知">
@@ -35,6 +37,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".home.HomeActivity" />
         </activity>
+
         <activity
             android:name=".library.LibraryActivity"
             android:label="图书馆">
@@ -42,6 +45,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".home.HomeActivity" />
         </activity>
+
         <activity
             android:name=".library.BookDetailsActivity"
             android:label="图书详情">
@@ -49,6 +53,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".library.LibraryActivity" />
         </activity>
-    </application>
 
+        <activity android:name=".login.LoginActivity"></activity>
+    </application>
 </manifest>
