@@ -9,6 +9,7 @@ import android.widget.Button;
 import com.android.volley.toolbox.Volley;
 import com.njitdev.sa_android.R;
 import com.njitdev.sa_android.messageboard.MessageBoardActivity;
+import com.njitdev.sa_android.messageboard.TestTabActivity;
 import com.njitdev.sa_android.school_announcement.SchoolAnnouncementActivity;
 import com.njitdev.sa_android.test.TestActivity;
 import com.njitdev.sa_android.utils.SAGlobal;
@@ -57,7 +58,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void test() {
-        Intent intent2 = new Intent(this, TestActivity.class);
+        Intent intent2 = new Intent(this, TestTabActivity.class);
         startActivity(intent2);
     }
 

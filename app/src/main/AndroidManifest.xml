@@ -42,6 +42,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".school_announcement.SchoolAnnouncementActivity"/>
         </activity>
+        <activity
+            android:name=".messageboard.TestTabActivity"
+            android:label="@string/title_activity_test_tab"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
     </application>
 
 </manifest>

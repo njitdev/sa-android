@@ -9,6 +9,7 @@ import com.njitdev.sa_android.utils.SAConfig;
 import com.njitdev.sa_android.utils.SAGlobal;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -20,44 +21,70 @@ import java.util.ArrayList;
 class AnnouncementModels {
     private static String baseURL = SAConfig.baseURL + "/school/" + SAConfig.schoolIdentifier + "/announcements";
 
-    static void fetchList(int category, final ModelListener listener) {
+    private static String articleURL = baseURL + "/article";
+
+    static void fetchArticleList(int category, final ModelListener listener) {
         JsonObjectRequest r = new JsonObjectRequest(Request.Method.GET, baseURL + "?category=" + category, null,
                 new Response.Listener<JSONObject>() {
 
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    JSONArray result = response.getJSONArray("result");
-                    ArrayList<Article> list = new ArrayList<>();
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            JSONArray result = response.getJSONArray("result");
+                            ArrayList<Article> list = new ArrayList<>();
 
-                    for (int i = 0; i < result.length(); i++) {
-                        JSONObject object = result.getJSONObject(i);
+                            for (int i = 0; i < result.length(); i++) {
+                                JSONObject object = result.getJSONObject(i);
 
-                        Article article = new Article();
+                                Article article = new Article();
 
-                        // Required fields
-                        article.article_id = object.getString("article_id");
-                        article.article_title = object.getString("article_title");
+                                // Required fields
+                                article.article_id = object.getString("article_id");
+                                article.article_title = object.getString("article_title");
 
-                        // Optional fields
-                        if (object.has("article_department"))
-                            article.article_department = object.getString("article_department");
-                        if (object.has("article_date"))
-                            article.article_date = object.getString("article_date");
+                                // Optional fields
+                                if (object.has("article_department"))
+                                    article.article_department = object.getString("article_department");
+                                if (object.has("article_date"))
+                                    article.article_date = object.getString("article_date");
 
-                        list.add(article);
+                                list.add(article);
+                            }
+                            listener.onData(list, "ok");
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            listener.onData(null, "获取通知信息失败");
+                        }
                     }
-                    listener.onData(list, "ok");
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    listener.onData(null, "获取通知信息失败");
-                }
-            }
-        }, new Response.ErrorListener() {
+                }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 error.printStackTrace();
                 listener.onData(null, "获取通知信息失败");
+            }
+        });
+        SAGlobal.sharedRequestQueue.add(r);
+    }
+
+    static void fetchArticleBody(String articleID, final ModelListener listener) {
+        JsonObjectRequest r = new JsonObjectRequest(Request.Method.GET, articleURL + "?article_id=" + articleID, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            JSONObject article = response.getJSONObject("result");
+                            String article_body = article.getString("article_body");
+                            listener.onData(article_body, "ok");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            listener.onData(null, "fail");
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+                listener.onData(null, "onErrorListenerfail");
             }
         });
         SAGlobal.sharedRequestQueue.add(r);
