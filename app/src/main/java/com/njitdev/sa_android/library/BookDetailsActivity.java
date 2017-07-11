@@ -39,7 +39,6 @@ public class BookDetailsActivity extends AppCompatActivity {
         // Set visible
         pbDetail.setVisibility(View.VISIBLE);
 
-
         String book_id = getIntent().getStringExtra("book_id");
         String book_title = getIntent().getStringExtra("book_title");
         String book_author = getIntent().getStringExtra("book_author");
@@ -65,6 +64,7 @@ public class BookDetailsActivity extends AppCompatActivity {
                         detailAdapter.notifyDataSetChanged();
                     }
                 });
+
         TextView lblTitle = (TextView) findViewById(R.id.lblTitle);
         TextView lblAuthor = (TextView) findViewById(R.id.lblAuthor);
         TextView lblInventory = (TextView) findViewById(R.id.lblInventory);

@@ -1,7 +1,5 @@
 package com.njitdev.sa_android.library;
 
-import android.telecom.Call;
-
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -67,9 +65,9 @@ class LibraryModels {
                 // Parse response here
                 ArrayList<BookInventory> result = new ArrayList<>();
                 try {
-                    JSONArray bookInventorys = response.getJSONObject("result").getJSONArray("inventory");
-                    for (int i = 0; i < bookInventorys.length(); i++) {
-                        JSONObject jsonDetails = bookInventorys.getJSONObject(i);
+                    JSONArray bookInventories = response.getJSONObject("result").getJSONArray("inventory");
+                    for (int i = 0; i < bookInventories.length(); i++) {
+                        JSONObject jsonDetails = bookInventories.getJSONObject(i);
                         BookInventory bookInventory = new BookInventory();
 
                         if (jsonDetails.has("location") && !jsonDetails.isNull("location")) bookInventory.location = jsonDetails.getString("location");
