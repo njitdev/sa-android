@@ -20,10 +20,9 @@ import java.util.ArrayList;
 
 class AnnouncementModels {
     private static String baseURL = SAConfig.baseURL + "/school/" + SAConfig.schoolIdentifier + "/announcements";
-
     private static String articleURL = baseURL + "/article";
 
-    static void fetchArticleList(int category, final ModelListener listener) {
+    static void fetchArticleList(int category, final ModelListener<ArrayList<Article>> listener) {
         JsonObjectRequest r = new JsonObjectRequest(Request.Method.GET, baseURL + "?category=" + category, null,
                 new Response.Listener<JSONObject>() {
 
@@ -66,7 +65,7 @@ class AnnouncementModels {
         SAGlobal.sharedRequestQueue.add(r);
     }
 
-    static void fetchArticleBody(String articleID, final ModelListener listener) {
+    static void fetchArticleBody(String articleID, final ModelListener<String> listener) {
         JsonObjectRequest r = new JsonObjectRequest(Request.Method.GET, articleURL + "?article_id=" + articleID, null,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -77,14 +76,14 @@ class AnnouncementModels {
                             listener.onData(article_body, "ok");
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            listener.onData(null, "fail");
+                            listener.onData(null, "获取通知信息失败");
                         }
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 error.printStackTrace();
-                listener.onData(null, "onErrorListenerfail");
+                listener.onData(null, "获取通知信息失败");
             }
         });
         SAGlobal.sharedRequestQueue.add(r);

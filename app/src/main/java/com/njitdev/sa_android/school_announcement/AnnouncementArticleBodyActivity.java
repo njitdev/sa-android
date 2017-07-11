@@ -12,7 +12,7 @@ import com.njitdev.sa_android.utils.ModelListener;
 
 public class AnnouncementArticleBodyActivity extends AppCompatActivity {
 
-    String articleID;
+    private String articleID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,7 +21,6 @@ public class AnnouncementArticleBodyActivity extends AppCompatActivity {
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            //articleID = Integer.parseInt(bundle.getString("articleID"));
             articleID = bundle.getString("articleID");
         }
         fetchArticleBody();
@@ -38,16 +37,15 @@ public class AnnouncementArticleBodyActivity extends AppCompatActivity {
 
     private void fetchArticleBody() {
         setBusy(true);
-        AnnouncementModels.fetchArticleBody(articleID, new ModelListener() {
+        AnnouncementModels.fetchArticleBody(articleID, new ModelListener<String>() {
             @Override
-            public void onData(Object result, String message) {
-                //setBusy(false);
+            public void onData(String result, String message) {
+                setBusy(false);
                 if (result == null) {
                     Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
                 } else {
                     WebView wb = (WebView) findViewById(R.id.webViewforArticle);
-                    wb.getSettings().setJavaScriptEnabled(true);
-                    wb.loadData(result.toString(), "text/html;charset=utf-8", null);
+                    wb.loadData(result, "text/html;charset=utf-8", null);
                     wb.getSettings().setLoadWithOverviewMode(true);
                     wb.getSettings().setUseWideViewPort(true);
                 }

@@ -22,7 +22,6 @@ import android.widget.Toast;
 
 import com.njitdev.sa_android.R;
 import com.njitdev.sa_android.utils.ModelListener;
-import com.njitdev.sa_android.utils.SAGlobal;
 import com.njitdev.sa_android.utils.SAUtils;
 
 import java.util.ArrayList;
@@ -30,8 +29,8 @@ import java.util.List;
 
 public class MessageBoardActivity extends AppCompatActivity {
 
-    MessageBoardAdapter mAdapter;
-    ArrayList<Post> mPosts = new ArrayList<>();
+    private MessageBoardAdapter mAdapter;
+    private ArrayList<Post> mPosts = new ArrayList<>();
     int mPageNum = 0; // Current page number
 
     @Override
@@ -57,7 +56,7 @@ public class MessageBoardActivity extends AppCompatActivity {
                 NavUtils.navigateUpFromSameTask(this);
                 return true;
 
-            case R.id.MessageBoardnewMessage:
+            case R.id.MessageBoardNewMessage:
                 newPostDialog();
                 return true;
         }
@@ -119,10 +118,10 @@ public class MessageBoardActivity extends AppCompatActivity {
     }
 
     // New post dialog
-    public void newPostDialog() {
+    private void newPostDialog() {
         // Create dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(MessageBoardActivity.this);
-        final View dialogView = getLayoutInflater().inflate(R.layout.dialog_new_message, (ViewGroup) this.findViewById(R.id.content));
+        final View dialogView = getLayoutInflater().inflate(R.layout.dialog_new_message, null);
         builder.setView(dialogView);
         final AlertDialog dialog = builder.create();
         dialog.show();
@@ -184,11 +183,13 @@ public class MessageBoardActivity extends AppCompatActivity {
 class MessageBoardAdapter extends ArrayAdapter<Post> {
 
     private Context mContext;
+    private int mResource;
     private List<Post> mPosts;
 
     MessageBoardAdapter(Context context, int resource, List<Post> posts) {
         super(context, resource, posts);
         mContext = context;
+        mResource = resource;
         mPosts = posts;
     }
 
@@ -196,7 +197,7 @@ class MessageBoardAdapter extends ArrayAdapter<Post> {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         if (convertView == null) {
-            convertView = LayoutInflater.from(mContext).inflate(R.layout.list_item_message_board, parent, false);
+            convertView = LayoutInflater.from(mContext).inflate(mResource, parent, false);
         }
 
         TextView lblUserName = (TextView) convertView.findViewById(R.id.lblUserName);

@@ -47,12 +47,6 @@
                 android:value=".school_announcement.SchoolAnnouncementActivity"/>
         </activity>
 
-        <activity
-            android:name=".messageboard.TestTabActivity"
-            android:label="@string/title_activity_test_tab"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-
         <activity android:name=".login.LoginActivity"></activity>
 
     </application>

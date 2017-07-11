@@ -34,11 +34,10 @@ public class TestActivity extends AppCompatActivity {
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                 this,
-                R.layout.dl3,
+                android.R.layout.simple_list_item_1,
                 data);
 
         ListView list = (ListView) findViewById(R.id.listViewTest);
         list.setAdapter(adapter);
-
     }
 }
