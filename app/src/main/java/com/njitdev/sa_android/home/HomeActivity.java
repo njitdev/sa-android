@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.android.volley.toolbox.Volley;
 import com.njitdev.sa_android.R;
+import com.njitdev.sa_android.library.LibraryActivity;
 import com.njitdev.sa_android.login.LoginActivity;
 import com.njitdev.sa_android.messageboard.MessageBoardActivity;
 import com.njitdev.sa_android.school_announcement.SchoolAnnouncementActivity;
@@ -51,6 +52,15 @@ public class HomeActivity extends AppCompatActivity {
                         schoolAnnouncement();
                     }
                 });
+
+        Button btnLibrary = (Button) findViewById(R.id.btnLibrary);
+        btnLibrary.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomeActivity.this, LibraryActivity.class);
+                startActivity(intent);
+            }
+        });
 
         Button btnLogin = (Button) findViewById(R.id.btnLogin);
         btnLogin.setOnClickListener(new View.OnClickListener() {
