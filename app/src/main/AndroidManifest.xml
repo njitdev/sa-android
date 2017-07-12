@@ -48,7 +48,8 @@
 
         <activity
             android:name=".library.LibraryActivity"
-            android:label="图书馆">
+            android:label="图书馆"
+            android:configChanges="orientation|screenSize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".home.HomeActivity" />

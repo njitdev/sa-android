@@ -98,21 +98,21 @@
         app:layout_constraintLeft_toLeftOf="@+id/lblTitle" />
 
     <ProgressBar
-        android:id="@+id/pbDetail"
+        android:id="@+id/pbBusy"
         style="?android:attr/progressBarStyle"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        app:layout_constraintTop_toTopOf="@+id/listView"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="@+id/listView"
-        android:layout_marginBottom="8dp"
-        android:layout_marginRight="8dp"
-        app:layout_constraintRight_toRightOf="@+id/listView"
-        app:layout_constraintVertical_bias="0.494"
-        android:layout_marginLeft="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp" />
+        app:layout_constraintRight_toRightOf="@+id/listView"
+        app:layout_constraintTop_toTopOf="@+id/listView"
+        app:layout_constraintVertical_bias="0.494" />
 
     <ListView
         android:id="@+id/listView"
