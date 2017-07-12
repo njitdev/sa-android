@@ -11,13 +11,14 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity android:name=".home.HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".messageboard.MessageBoardActivity"
             android:label="留言板"
@@ -26,7 +27,9 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".home.HomeActivity" />
         </activity>
-        <activity android:name=".test.TestActivity"></activity>
+
+        <activity android:name=".test.TestActivity" />
+
         <activity
             android:name=".school_announcement.SchoolAnnouncementActivity"
             android:label="校内通知">
@@ -34,7 +37,23 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".home.HomeActivity" />
         </activity>
+
+        <activity
+            android:name=".library.LibraryActivity"
+            android:label="图书馆">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".home.HomeActivity" />
+        </activity>
+
+        <activity
+            android:name=".library.BookDetailsActivity"
+            android:label="图书详情">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".library.LibraryActivity" />
+        </activity>
+
         <activity android:name=".login.LoginActivity"></activity>
     </application>
-
 </manifest>
