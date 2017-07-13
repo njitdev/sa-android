@@ -39,8 +39,17 @@
         </activity>
 
         <activity
+            android:name=".school_announcement.AnnouncementArticleBodyActivity"
+            android:label="通知浏览">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".school_announcement.SchoolAnnouncementActivity"/>
+        </activity>
+
+        <activity
             android:name=".library.LibraryActivity"
-            android:label="图书馆">
+            android:label="图书馆"
+            android:configChanges="orientation|screenSize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".home.HomeActivity" />
@@ -54,6 +63,13 @@
                 android:value=".library.LibraryActivity" />
         </activity>
 
-        <activity android:name=".login.LoginActivity"></activity>
+        <activity
+            android:name=".login.LoginActivity"
+            android:label="登录">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".home.HomeActivity" />
+        </activity>
+
     </application>
 </manifest>

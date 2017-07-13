@@ -24,6 +24,7 @@ import java.util.List;
 public class BookDetailsActivity extends AppCompatActivity {
 
     private List<BookInventory> mInventory = new ArrayList<>();
+    private DetailsAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,12 +33,12 @@ public class BookDetailsActivity extends AppCompatActivity {
 
         // Create adapter
         ListView listView = (ListView) findViewById(R.id.listView);
-        final DetailAdapter detailAdapter = new DetailAdapter(this, R.layout.list_item_book_details, mInventory);
-        listView.setAdapter(detailAdapter);
-        final ProgressBar pbDetail = (ProgressBar) findViewById(R.id.pbDetail);
+        mAdapter = new DetailsAdapter(this, R.layout.list_item_book_details, mInventory);
+        listView.setAdapter(mAdapter);
+        final ProgressBar pbBusy = (ProgressBar) findViewById(R.id.pbBusy);
 
-        // Set visible
-        pbDetail.setVisibility(View.VISIBLE);
+        // Show ProgressBar
+        pbBusy.setVisibility(View.VISIBLE);
 
         String book_id = getIntent().getStringExtra("book_id");
         String book_title = getIntent().getStringExtra("book_title");
@@ -48,20 +49,20 @@ public class BookDetailsActivity extends AppCompatActivity {
         String book_inventory = getIntent().getStringExtra("book_inventory");
         String book_available = getIntent().getStringExtra("book_available");
 
-        LibraryModels.details(book_id, new ModelListener() {
+        LibraryModels.details(book_id, new ModelListener<ArrayList<BookInventory>>() {
                     @Override
-                    public void onData(Object result, String message) {
+                    public void onData(ArrayList<BookInventory> result, String message) {
 
-                        // Set invisible
-                        pbDetail.setVisibility(View.INVISIBLE);
+                        // Hide ProgressBar
+                        pbBusy.setVisibility(View.INVISIBLE);
 
                         if (result == null) {
                             Toast.makeText(BookDetailsActivity.this, message, Toast.LENGTH_SHORT).show();
                             return;
                         }
                         mInventory.clear();
-                        mInventory.addAll((ArrayList<BookInventory>)result);
-                        detailAdapter.notifyDataSetChanged();
+                        mInventory.addAll(result);
+                        mAdapter.notifyDataSetChanged();
                     }
                 });
 
@@ -86,13 +87,13 @@ public class BookDetailsActivity extends AppCompatActivity {
     }
 }
 
-class DetailAdapter extends ArrayAdapter {
+class DetailsAdapter extends ArrayAdapter {
 
     private Context mContext;
     private int mResource;
     private List<BookInventory> mInventory;
 
-    public DetailAdapter(@NonNull Context context, @LayoutRes int resource, @NonNull List<BookInventory> objects) {
+    DetailsAdapter(@NonNull Context context, @LayoutRes int resource, @NonNull List<BookInventory> objects) {
         super(context, resource, objects);
         mContext = context;
         mResource = resource;

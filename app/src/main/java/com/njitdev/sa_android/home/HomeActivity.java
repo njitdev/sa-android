@@ -31,7 +31,8 @@ public class HomeActivity extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        openMessageBoard();
+                        Intent intent = new Intent(HomeActivity.this, MessageBoardActivity.class);
+                        startActivity(intent);
                     }
                 });
 
@@ -40,7 +41,8 @@ public class HomeActivity extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        test();
+                        Intent intent = new Intent(HomeActivity.this, TestActivity.class);
+                        startActivity(intent);
                     }
                 });
 
@@ -49,7 +51,8 @@ public class HomeActivity extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        schoolAnnouncement();
+                        Intent intent = new Intent(HomeActivity.this, SchoolAnnouncementActivity.class);
+                        startActivity(intent);
                     }
                 });
 
@@ -77,20 +80,5 @@ public class HomeActivity extends AppCompatActivity {
         super.onStart();
         TextView lblSessionID = (TextView) findViewById(R.id.lblSessionID);
         lblSessionID.setText("session_id: " + SAGlobal.student_session_id);
-    }
-
-    public void openMessageBoard() {
-        Intent intent = new Intent(this, MessageBoardActivity.class);
-        startActivity(intent);
-    }
-
-    public void test() {
-        Intent intent2 = new Intent(this, TestActivity.class);
-        startActivity(intent2);
-    }
-
-    public void schoolAnnouncement() {
-        Intent intent3 = new Intent(this, SchoolAnnouncementActivity.class);
-        startActivity(intent3);
     }
 }

@@ -5,7 +5,7 @@
       tools:context=".messageboard.MessageBoardActivity">
 
     <item
-        android:id="@+id/MessageBoardnewMessage"
+        android:id="@+id/MessageBoardNewMessage"
         android:icon="@drawable/ic_mode_edit_black_24dp"
         android:title=""
         app:showAsAction = "always"

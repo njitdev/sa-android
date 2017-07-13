@@ -29,6 +29,7 @@ import java.util.List;
 public class LibraryActivity extends AppCompatActivity {
 
     private List<Book> mBooks = new ArrayList<>();
+    private LibraryAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,9 +40,9 @@ public class LibraryActivity extends AppCompatActivity {
         setUIBusy(false);
 
         // Create adapter
+        mAdapter = new LibraryAdapter(this, R.layout.list_item_library_search, mBooks);
         final ListView listView = (ListView) findViewById(R.id.listView);
-        final ArrayAdapter libraryAdapter = new LibraryAdapter(this, R.layout.list_item_library_search, mBooks);
-        listView.setAdapter(libraryAdapter);
+        listView.setAdapter(mAdapter);
 
         Button btnSearch = (Button) findViewById(R.id.btnSearch);
         final EditText txtKeyword = (EditText) findViewById(R.id.txtKeyword);
@@ -57,9 +58,9 @@ public class LibraryActivity extends AppCompatActivity {
                     // Set busy
                     setUIBusy(true);
 
-                    LibraryModels.search(txtKeyword.getText().toString(), new ModelListener() {
+                    LibraryModels.search(txtKeyword.getText().toString(), new ModelListener<ArrayList<Book>>() {
                         @Override
-                        public void onData(Object result, String message) {
+                        public void onData(ArrayList<Book> result, String message) {
 
                             // Set not busy
                             setUIBusy(false);
@@ -71,8 +72,8 @@ public class LibraryActivity extends AppCompatActivity {
 
                             // Update data of adapter
                             mBooks.clear();
-                            mBooks.addAll((ArrayList<Book>) result);
-                            libraryAdapter.notifyDataSetChanged();
+                            mBooks.addAll(result);
+                            mAdapter.notifyDataSetChanged();
 
                             // Hide keyboard
                             View view = LibraryActivity.this.getCurrentFocus();
