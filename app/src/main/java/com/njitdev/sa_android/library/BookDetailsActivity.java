@@ -68,21 +68,20 @@ public class BookDetailsActivity extends AppCompatActivity {
         String book_available = getIntent().getStringExtra("book_available");
 
         LibraryModels.details(book_id, new ModelListener<ArrayList<BookInventory>>() {
-                    @Override
-                    public void onData(ArrayList<BookInventory> result, String message) {
+            @Override
+            public void onData(ArrayList<BookInventory> result, String message) {
+                // Hide ProgressBar
+                pbBusy.setVisibility(View.INVISIBLE);
 
-                        // Hide ProgressBar
-                        pbBusy.setVisibility(View.INVISIBLE);
-
-                        if (result == null) {
-                            Toast.makeText(BookDetailsActivity.this, message, Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-                        mInventory.clear();
-                        mInventory.addAll(result);
-                        mAdapter.notifyDataSetChanged();
-                    }
-                });
+                if (result == null) {
+                    Toast.makeText(BookDetailsActivity.this, message, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                mInventory.clear();
+                mInventory.addAll(result);
+                mAdapter.notifyDataSetChanged();
+            }
+        });
 
         TextView lblTitle = (TextView) findViewById(R.id.lblTitle);
         TextView lblAuthor = (TextView) findViewById(R.id.lblAuthor);
@@ -105,7 +104,7 @@ public class BookDetailsActivity extends AppCompatActivity {
     }
 }
 
-class DetailsAdapter extends ArrayAdapter {
+class DetailsAdapter extends ArrayAdapter<BookInventory> {
 
     private Context mContext;
     private int mResource;

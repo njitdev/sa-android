@@ -144,7 +144,7 @@ public class LibraryActivity extends AppCompatActivity {
     }
 }
 
-class LibraryAdapter extends ArrayAdapter {
+class LibraryAdapter extends ArrayAdapter<Book> {
 
     private Context mContext;
     private int mResource;

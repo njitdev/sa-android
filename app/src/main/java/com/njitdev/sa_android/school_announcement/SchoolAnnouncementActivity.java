@@ -24,6 +24,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,7 +53,8 @@ public class SchoolAnnouncementActivity extends AppCompatActivity {
         setContentView(R.layout.activity_school_announcement);
 
         // Remove ActionBar shadow
-        getSupportActionBar().setElevation(0);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) actionBar.setElevation(0);
 
         // Initialize TabLayout
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabCategories);
@@ -63,7 +65,8 @@ public class SchoolAnnouncementActivity extends AppCompatActivity {
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                fetchAnnouncementsList((Integer) tab.getTag());
+                Integer category = (Integer) tab.getTag();
+                if (category != null) fetchAnnouncementsList(category);
             }
 
             @Override
@@ -116,8 +119,7 @@ public class SchoolAnnouncementActivity extends AppCompatActivity {
             public void onData(ArrayList<Article> result, String message) {
                 setBusy(false);
                 if (result != null) {
-                    ArrayList<Article> articles = (ArrayList<Article>) result;
-                    mArticles.addAll(articles);
+                    mArticles.addAll(result);
                     mAdapter.notifyDataSetChanged();
                 } else {
                     Toast.makeText(SchoolAnnouncementActivity.this, message, Toast.LENGTH_SHORT).show();

@@ -50,7 +50,7 @@ public class TestActivity extends AppCompatActivity {
     private void populateListView() {
         String[] data = {"yellow", "blue", "New Color!"};
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 this,
                 android.R.layout.simple_list_item_1,
                 data);

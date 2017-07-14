@@ -137,9 +137,12 @@ public class MessageBoardActivity extends AppCompatActivity {
 
     // New post dialog
     private void newPostDialog() {
+        // Create dialogView
+        final ViewGroup nullParent = null; // This is to avoid warning
+        final View dialogView = getLayoutInflater().inflate(R.layout.dialog_new_message, nullParent);
+
         // Create dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(MessageBoardActivity.this);
-        final View dialogView = getLayoutInflater().inflate(R.layout.dialog_new_message, null);
         builder.setView(dialogView);
         final AlertDialog dialog = builder.create();
         dialog.show();
@@ -148,6 +151,7 @@ public class MessageBoardActivity extends AppCompatActivity {
         Button btnSubmitMessage = (Button) dialogView.findViewById(R.id.btnSubmitMessage);
         Button btnCancel = (Button) dialogView.findViewById(R.id.btnCancel);
 
+        // Submit button onClick
         btnSubmitMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
