@@ -1,3 +1,21 @@
+/*
+    sa-android
+    Copyright (C) 2017 sa-android authors
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package com.njitdev.sa_android.school_announcement;
 
 import android.content.Context;
@@ -6,6 +24,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,7 +53,8 @@ public class SchoolAnnouncementActivity extends AppCompatActivity {
         setContentView(R.layout.activity_school_announcement);
 
         // Remove ActionBar shadow
-        getSupportActionBar().setElevation(0);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) actionBar.setElevation(0);
 
         // Initialize TabLayout
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabCategories);
@@ -45,7 +65,8 @@ public class SchoolAnnouncementActivity extends AppCompatActivity {
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                fetchAnnouncementsList((Integer) tab.getTag());
+                Integer category = (Integer) tab.getTag();
+                if (category != null) fetchAnnouncementsList(category);
             }
 
             @Override
@@ -98,8 +119,7 @@ public class SchoolAnnouncementActivity extends AppCompatActivity {
             public void onData(ArrayList<Article> result, String message) {
                 setBusy(false);
                 if (result != null) {
-                    ArrayList<Article> articles = (ArrayList<Article>) result;
-                    mArticles.addAll(articles);
+                    mArticles.addAll(result);
                     mAdapter.notifyDataSetChanged();
                 } else {
                     Toast.makeText(SchoolAnnouncementActivity.this, message, Toast.LENGTH_SHORT).show();
@@ -145,4 +165,3 @@ class AnnouncementsAdapter extends ArrayAdapter<Article> {
         return convertView;
     }
 }
-

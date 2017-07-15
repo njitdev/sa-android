@@ -1,3 +1,21 @@
+/*
+    sa-android
+    Copyright (C) 2017 sa-android authors
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package com.njitdev.sa_android.library;
 
 import android.content.Context;
@@ -50,21 +68,20 @@ public class BookDetailsActivity extends AppCompatActivity {
         String book_available = getIntent().getStringExtra("book_available");
 
         LibraryModels.details(book_id, new ModelListener<ArrayList<BookInventory>>() {
-                    @Override
-                    public void onData(ArrayList<BookInventory> result, String message) {
+            @Override
+            public void onData(ArrayList<BookInventory> result, String message) {
+                // Hide ProgressBar
+                pbBusy.setVisibility(View.INVISIBLE);
 
-                        // Hide ProgressBar
-                        pbBusy.setVisibility(View.INVISIBLE);
-
-                        if (result == null) {
-                            Toast.makeText(BookDetailsActivity.this, message, Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-                        mInventory.clear();
-                        mInventory.addAll(result);
-                        mAdapter.notifyDataSetChanged();
-                    }
-                });
+                if (result == null) {
+                    Toast.makeText(BookDetailsActivity.this, message, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                mInventory.clear();
+                mInventory.addAll(result);
+                mAdapter.notifyDataSetChanged();
+            }
+        });
 
         TextView lblTitle = (TextView) findViewById(R.id.lblTitle);
         TextView lblAuthor = (TextView) findViewById(R.id.lblAuthor);
@@ -87,7 +104,7 @@ public class BookDetailsActivity extends AppCompatActivity {
     }
 }
 
-class DetailsAdapter extends ArrayAdapter {
+class DetailsAdapter extends ArrayAdapter<BookInventory> {
 
     private Context mContext;
     private int mResource;
