@@ -1,4 +1,4 @@
-## sa-android
+## sa-android [![Build Status](https://travis-ci.org/njitdev/sa-android.svg?branch=master)](https://travis-ci.org/njitdev/sa-android)
 
 A generic school app for college students.
 
