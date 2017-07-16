@@ -33,6 +33,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.toolbox.Volley;
 import com.njitdev.sa_android.R;
@@ -51,8 +52,8 @@ import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
 
-    private HomeMenuAdapter mMenuAdapter;
-    private List<HomeMenuItem> mMenuItems;
+    private String mLastSessionID = ""; // Help detecting new user sessions
+    private StudentBasicInfo mStudentBasicInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +64,7 @@ public class HomeActivity extends AppCompatActivity {
         SAGlobal.sharedRequestQueue = Volley.newRequestQueue(getApplicationContext());
 
         // Initialize menu list
-        initMenu();
+        updateMenu();
 
         // TODO: For testing
         Button buttonHomeTest = (Button) findViewById(R.id.buttonHomeTest);
@@ -81,10 +82,17 @@ public class HomeActivity extends AppCompatActivity {
         super.onStart();
         TextView lblSessionID = (TextView) findViewById(R.id.lblSessionID);
         lblSessionID.setText("session_id: " + SAGlobal.student_session_id);
+
+        // Update data
+        autoUpdateData();
     }
 
     // Create main menu
-    private void initMenu() {
+    // This re-creates adapter and list items every time
+    private void updateMenu() {
+        HomeMenuAdapter mMenuAdapter;
+        List<HomeMenuItem> mMenuItems;
+
         mMenuItems = new ArrayList<>();
         mMenuAdapter = new HomeMenuAdapter(this, R.layout.list_item_home, mMenuItems);
         ListView listView = (ListView) findViewById(R.id.listView);
@@ -125,7 +133,23 @@ public class HomeActivity extends AppCompatActivity {
         mMenuItems.clear();
 
         // Login / user info
-        mMenuItems.add(new HomeMenuItem("<用户信息>", null, R.drawable.ic_user));
+        HomeMenuItem item = new HomeMenuItem("", null, R.drawable.ic_user);
+        if (mStudentBasicInfo != null) {
+            item.title = mStudentBasicInfo.student_name;
+
+            // Subtitle
+            item.subtitle = "";
+            if (mStudentBasicInfo.student_department != null)
+                item.subtitle += mStudentBasicInfo.student_department;
+
+            if (mStudentBasicInfo.student_enroll_year != null)
+                item.subtitle += ", " + mStudentBasicInfo.student_enroll_year + " 级";
+
+        } else {
+            item.title = "点此登录";
+            item.subtitle = null;
+        }
+        mMenuItems.add(item);
 
         // Class schedule
         mMenuItems.add(new HomeMenuItem("课程表", null, R.drawable.ic_class_schedule));
@@ -142,13 +166,28 @@ public class HomeActivity extends AppCompatActivity {
         mMenuAdapter.notifyDataSetChanged();
     }
 
+    // Automatically update school systems data and attempt to login if required
+    // TODO: Currently this just assumes user is logged in
     private void autoUpdateData() {
-        SchoolSystemModels.studentBasicInfo(SAGlobal.student_session_id, null, new ModelListener<StudentBasicInfo>() {
-            @Override
-            public void onData(StudentBasicInfo result, String message) {
 
-            }
-        });
+        // If session changed
+        if (SAGlobal.student_session_id != null && !SAGlobal.student_session_id.equals(mLastSessionID)) {
+            // Copy string
+            mLastSessionID = new String(SAGlobal.student_session_id);
+
+            // Fetch basic info
+            SchoolSystemModels.studentBasicInfo(SAGlobal.student_session_id, null, new ModelListener<StudentBasicInfo>() {
+                @Override
+                public void onData(StudentBasicInfo result, String message) {
+                    if (result == null) {
+                        Toast.makeText(HomeActivity.this, message, Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    mStudentBasicInfo = result;
+                    updateMenu();
+                }
+            });
+        }
     }
 }
 

@@ -19,10 +19,10 @@
 package com.njitdev.sa_android.models.school;
 
 public class StudentBasicInfo {
-    String student_id;
-    String student_name;
-    String student_enroll_year;
-    String student_department;
-    String student_major;
-    String student_class;
+    public String student_id;
+    public String student_name;
+    public String student_enroll_year;
+    public String student_department;
+    public String student_major;
+    public String student_class;
 }
