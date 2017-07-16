@@ -16,7 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.njitdev.sa_android.models;
+package com.njitdev.sa_android.models.school;
 
 import android.util.Log;
 
@@ -72,4 +72,9 @@ public class SchoolSystemModels {
         });
         SAGlobal.sharedRequestQueue.add(req);
     }
+
+    public static void studentBasicInfo(String session_id, String student_id, ModelListener<StudentBasicInfo> listener) {
+
+    }
 }
+

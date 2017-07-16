@@ -6,7 +6,7 @@
 
     <item
         android:id="@+id/MessageBoardNewMessage"
-        android:icon="@drawable/ic_mode_edit_black_24dp"
+        android:icon="@drawable/ic_edit_white"
         android:title=""
         app:showAsAction = "always"
         />

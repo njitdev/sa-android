@@ -16,7 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.njitdev.sa_android.library;
+package com.njitdev.sa_android.models.library;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -32,7 +32,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-class LibraryModels {
+public class LibraryModels {
     private static String baseURL = SAConfig.baseURL + "/library/" + SAConfig.schoolIdentifier;
 
     public static void search(String keyword, final ModelListener<ArrayList<Book>> listener) {
@@ -126,25 +126,4 @@ class LibraryModels {
         });
         SAGlobal.sharedRequestQueue.add(r);
     }
-}
-
-class Book {
-    String id;
-    String title;
-    String author;
-    String publisher;
-    String year;
-    String acquisition_number;
-    String inventory;
-    String available;
-}
-
-class BookInventory {
-    String location;
-    String login_number;
-    String year;
-    String acquisition_number;
-    String type;
-    String inventory;
-    String availability;
 }

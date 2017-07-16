@@ -39,8 +39,11 @@ import com.njitdev.sa_android.R;
 import com.njitdev.sa_android.library.LibraryActivity;
 import com.njitdev.sa_android.login.LoginActivity;
 import com.njitdev.sa_android.messageboard.MessageBoardActivity;
-import com.njitdev.sa_android.school_announcement.SchoolAnnouncementActivity;
+import com.njitdev.sa_android.models.school.SchoolSystemModels;
+import com.njitdev.sa_android.models.school.StudentBasicInfo;
+import com.njitdev.sa_android.announcements.AnnouncementsActivity;
 import com.njitdev.sa_android.test.TestActivity;
+import com.njitdev.sa_android.utils.ModelListener;
 import com.njitdev.sa_android.utils.SAGlobal;
 
 import java.util.ArrayList;
@@ -108,7 +111,7 @@ public class HomeActivity extends AppCompatActivity {
                         break;
                     case 4:
                         // Announcements
-                        startActivity(new Intent(HomeActivity.this, SchoolAnnouncementActivity.class));
+                        startActivity(new Intent(HomeActivity.this, AnnouncementsActivity.class));
                         break;
                     case 5:
                         // Message baord
@@ -137,6 +140,15 @@ public class HomeActivity extends AppCompatActivity {
 
         // Update ListView
         mMenuAdapter.notifyDataSetChanged();
+    }
+
+    private void autoUpdateData() {
+        SchoolSystemModels.studentBasicInfo(SAGlobal.student_session_id, null, new ModelListener<StudentBasicInfo>() {
+            @Override
+            public void onData(StudentBasicInfo result, String message) {
+
+            }
+        });
     }
 }
 

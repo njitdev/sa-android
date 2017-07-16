@@ -16,7 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.njitdev.sa_android.school_announcement;
+package com.njitdev.sa_android.models.announcements;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -32,11 +32,11 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-class AnnouncementModels {
+public class AnnouncementModels {
     private static String baseURL = SAConfig.baseURL + "/school/" + SAConfig.schoolIdentifier + "/announcements";
     private static String articleURL = baseURL + "/article";
 
-    static void fetchArticleList(int category, final ModelListener<ArrayList<Article>> listener) {
+    public static void fetchArticleList(int category, final ModelListener<ArrayList<Article>> listener) {
         JsonObjectRequest r = new JsonObjectRequest(Request.Method.GET, baseURL + "?category=" + category, null,
                 new Response.Listener<JSONObject>() {
 
@@ -79,7 +79,7 @@ class AnnouncementModels {
         SAGlobal.sharedRequestQueue.add(r);
     }
 
-    static void fetchArticleBody(String articleID, final ModelListener<String> listener) {
+    public static void fetchArticleBody(String articleID, final ModelListener<String> listener) {
         JsonObjectRequest r = new JsonObjectRequest(Request.Method.GET, articleURL + "?article_id=" + articleID, null,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -104,9 +104,3 @@ class AnnouncementModels {
     }
 }
 
-class Article {
-    String article_id;
-    String article_title;
-    String article_department;
-    String article_date;
-}

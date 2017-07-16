@@ -16,7 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.njitdev.sa_android.messageboard;
+package com.njitdev.sa_android.models.messageboard;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -38,7 +38,7 @@ public class MessageBoardModels {
     private static String baseURL = SAConfig.baseURL + "/app/msgboard/" + SAConfig.schoolIdentifier;
 
     // Fetch list of posts
-    static void fetchList(int page, final ModelListener<List<Post>> listener) {
+    public static void fetchList(int page, final ModelListener<List<Post>> listener) {
         JsonObjectRequest r = new JsonObjectRequest(Request.Method.GET, baseURL + "/posts?page=" + page, null,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -84,7 +84,7 @@ public class MessageBoardModels {
     }
 
     // Submit new post
-    static void submitPost(Post post, final ModelListener<Boolean> listener) {
+    public static void submitPost(Post post, final ModelListener<Boolean> listener) {
         // Prepare parameters
         Map<String, String> map = new HashMap<>();
         map.put("installation_id", post.installation_id);
@@ -107,14 +107,4 @@ public class MessageBoardModels {
         });
         SAGlobal.sharedRequestQueue.add(jsonObjectRequest);
     }
-}
-
-class Post {
-    String installation_id;
-    String user_name;
-    String user_contact;
-    String user_title;
-    String user_department;
-    String text;
-    String creation_time;
 }

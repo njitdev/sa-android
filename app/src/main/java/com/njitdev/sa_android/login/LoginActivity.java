@@ -27,7 +27,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.njitdev.sa_android.R;
-import com.njitdev.sa_android.models.SchoolSystemModels;
+import com.njitdev.sa_android.models.school.SchoolSystemModels;
 import com.njitdev.sa_android.utils.ModelListener;
 import com.njitdev.sa_android.utils.SAGlobal;
 import com.njitdev.sa_android.utils.SAUtils;

@@ -16,7 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.njitdev.sa_android.school_announcement;
+package com.njitdev.sa_android.announcements;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -26,16 +26,17 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.njitdev.sa_android.R;
+import com.njitdev.sa_android.models.announcements.AnnouncementModels;
 import com.njitdev.sa_android.utils.ModelListener;
 
-public class AnnouncementArticleBodyActivity extends AppCompatActivity {
+public class AnnouncementsArticleActivity extends AppCompatActivity {
 
     private String articleID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_announcement_article_body);
+        setContentView(R.layout.activity_announcements_article);
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {

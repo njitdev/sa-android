@@ -39,6 +39,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.njitdev.sa_android.R;
+import com.njitdev.sa_android.models.library.Book;
+import com.njitdev.sa_android.models.library.LibraryModels;
 import com.njitdev.sa_android.utils.ModelListener;
 
 import java.util.ArrayList;
@@ -108,7 +110,7 @@ public class LibraryActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(LibraryActivity.this, BookDetailsActivity.class);
+                Intent intent = new Intent(LibraryActivity.this, LibraryBookDetailsActivity.class);
                 Book book = mBooks.get(position);
 
                 // Pass book info to details activity

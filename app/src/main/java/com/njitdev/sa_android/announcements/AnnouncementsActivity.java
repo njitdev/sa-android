@@ -16,7 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.njitdev.sa_android.school_announcement;
+package com.njitdev.sa_android.announcements;
 
 import android.content.Context;
 import android.content.Intent;
@@ -37,12 +37,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.njitdev.sa_android.R;
+import com.njitdev.sa_android.models.announcements.AnnouncementModels;
+import com.njitdev.sa_android.models.announcements.Article;
 import com.njitdev.sa_android.utils.ModelListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SchoolAnnouncementActivity extends AppCompatActivity {
+public class AnnouncementsActivity extends AppCompatActivity {
 
     private List<Article> mArticles = new ArrayList<>();
     private AnnouncementsAdapter mAdapter;
@@ -50,7 +52,7 @@ public class SchoolAnnouncementActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_school_announcement);
+        setContentView(R.layout.activity_announcements);
 
         // Remove ActionBar shadow
         ActionBar actionBar = getSupportActionBar();
@@ -87,7 +89,7 @@ public class SchoolAnnouncementActivity extends AppCompatActivity {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(SchoolAnnouncementActivity.this, AnnouncementArticleBodyActivity.class);
+                Intent intent = new Intent(AnnouncementsActivity.this, AnnouncementsArticleActivity.class);
                 intent.putExtra("articleID", mArticles.get(position).article_id);
                 startActivity(intent);
             }
@@ -122,7 +124,7 @@ public class SchoolAnnouncementActivity extends AppCompatActivity {
                     mArticles.addAll(result);
                     mAdapter.notifyDataSetChanged();
                 } else {
-                    Toast.makeText(SchoolAnnouncementActivity.this, message, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AnnouncementsActivity.this, message, Toast.LENGTH_SHORT).show();
                 }
             }
         });

@@ -1,6 +1,6 @@
 package com.njitdev.sa_android;
 
-import com.njitdev.sa_android.messageboard.MessageBoardModels;
+import com.njitdev.sa_android.models.messageboard.MessageBoardModels;
 import com.njitdev.sa_android.utils.ModelListener;
 
 import org.junit.Before;
