@@ -18,23 +18,42 @@
 
 package com.njitdev.sa_android.home;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.toolbox.Volley;
 import com.njitdev.sa_android.R;
 import com.njitdev.sa_android.library.LibraryActivity;
 import com.njitdev.sa_android.login.LoginActivity;
 import com.njitdev.sa_android.messageboard.MessageBoardActivity;
-import com.njitdev.sa_android.school_announcement.SchoolAnnouncementActivity;
+import com.njitdev.sa_android.models.school.SchoolSystemModels;
+import com.njitdev.sa_android.models.school.StudentBasicInfo;
+import com.njitdev.sa_android.announcements.AnnouncementsActivity;
 import com.njitdev.sa_android.test.TestActivity;
+import com.njitdev.sa_android.utils.ModelListener;
 import com.njitdev.sa_android.utils.SAGlobal;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class HomeActivity extends AppCompatActivity {
+
+    private String mLastSessionID = ""; // Help detecting new user sessions
+    private StudentBasicInfo mStudentBasicInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,53 +63,18 @@ public class HomeActivity extends AppCompatActivity {
         // Initialize shared request queue
         SAGlobal.sharedRequestQueue = Volley.newRequestQueue(getApplicationContext());
 
-        Button buttonHomeMessageBoard = (Button) findViewById(R.id.buttonHomeMessageBoard);
-        buttonHomeMessageBoard.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(HomeActivity.this, MessageBoardActivity.class);
-                        startActivity(intent);
-                    }
-                });
+        // Initialize menu list
+        updateMenu();
 
+        // TODO: For testing
         Button buttonHomeTest = (Button) findViewById(R.id.buttonHomeTest);
         buttonHomeTest.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent(HomeActivity.this, TestActivity.class);
-                        startActivity(intent);
+                        startActivity(new Intent(HomeActivity.this, TestActivity.class));
                     }
                 });
-
-        Button buttonHomeSchoolAnnouncement = (Button) findViewById(R.id.buttonHomeSchoolAnnouncement);
-        buttonHomeSchoolAnnouncement.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(HomeActivity.this, SchoolAnnouncementActivity.class);
-                        startActivity(intent);
-                    }
-                });
-
-        Button btnLibrary = (Button) findViewById(R.id.btnLibrary);
-        btnLibrary.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(HomeActivity.this, LibraryActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        Button btnLogin = (Button) findViewById(R.id.btnLogin);
-        btnLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(HomeActivity.this, LoginActivity.class);
-                startActivity(i);
-            }
-        });
     }
 
     @Override
@@ -98,5 +82,157 @@ public class HomeActivity extends AppCompatActivity {
         super.onStart();
         TextView lblSessionID = (TextView) findViewById(R.id.lblSessionID);
         lblSessionID.setText("session_id: " + SAGlobal.student_session_id);
+
+        // Update data
+        autoUpdateData();
+    }
+
+    // Create main menu
+    // This re-creates adapter and list items every time
+    private void updateMenu() {
+        HomeMenuAdapter mMenuAdapter;
+        List<HomeMenuItem> mMenuItems;
+
+        mMenuItems = new ArrayList<>();
+        mMenuAdapter = new HomeMenuAdapter(this, R.layout.list_item_home, mMenuItems);
+        ListView listView = (ListView) findViewById(R.id.listView);
+        listView.setAdapter(mMenuAdapter);
+
+        // OnClick
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                switch (i) {
+                    case 0:
+                        // Login (for now)
+                        startActivity(new Intent(HomeActivity.this, LoginActivity.class));
+                        break;
+                    case 1:
+                        // Class schedule
+                        break;
+                    case 2:
+                        // Grades
+                        break;
+                    case 3:
+                        // Library
+                        startActivity(new Intent(HomeActivity.this, LibraryActivity.class));
+                        break;
+                    case 4:
+                        // Announcements
+                        startActivity(new Intent(HomeActivity.this, AnnouncementsActivity.class));
+                        break;
+                    case 5:
+                        // Message baord
+                        startActivity(new Intent(HomeActivity.this, MessageBoardActivity.class));
+                        break;
+                }
+            }
+        });
+
+        // Re-create menu items
+        mMenuItems.clear();
+
+        // Login / user info
+        HomeMenuItem item = new HomeMenuItem("", null, R.drawable.ic_user);
+        if (mStudentBasicInfo != null) {
+            item.title = mStudentBasicInfo.student_name;
+
+            // Subtitle
+            item.subtitle = "";
+            if (mStudentBasicInfo.student_department != null)
+                item.subtitle += mStudentBasicInfo.student_department;
+
+            if (mStudentBasicInfo.student_enroll_year != null)
+                item.subtitle += ", " + mStudentBasicInfo.student_enroll_year + " 级";
+
+        } else {
+            item.title = "点此登录";
+            item.subtitle = null;
+        }
+        mMenuItems.add(item);
+
+        // Class schedule
+        mMenuItems.add(new HomeMenuItem("课程表", null, R.drawable.ic_class_schedule));
+
+        // Grades
+        mMenuItems.add(new HomeMenuItem("成绩查询", null, R.drawable.ic_grades));
+
+        // Completely static items
+        mMenuItems.add(new HomeMenuItem("图书馆", null, R.drawable.ic_library));
+        mMenuItems.add(new HomeMenuItem("校内通知", null, R.drawable.ic_announcements));
+        mMenuItems.add(new HomeMenuItem("留言板", null, R.drawable.ic_msgboard));
+
+        // Update ListView
+        mMenuAdapter.notifyDataSetChanged();
+    }
+
+    // Automatically update school systems data and attempt to login if required
+    // TODO: Currently this just assumes user is logged in
+    private void autoUpdateData() {
+
+        // If session changed
+        if (SAGlobal.student_session_id != null && !SAGlobal.student_session_id.equals(mLastSessionID)) {
+            // Copy string
+            mLastSessionID = new String(SAGlobal.student_session_id);
+
+            // Fetch basic info
+            SchoolSystemModels.studentBasicInfo(SAGlobal.student_session_id, null, new ModelListener<StudentBasicInfo>() {
+                @Override
+                public void onData(StudentBasicInfo result, String message) {
+                    if (result == null) {
+                        Toast.makeText(HomeActivity.this, message, Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    mStudentBasicInfo = result;
+                    updateMenu();
+                }
+            });
+        }
+    }
+}
+
+class HomeMenuItem {
+    String title;
+    String subtitle;
+    int iconResource;
+
+    HomeMenuItem(String title, String subtitle, int iconResource) {
+        this.title = title;
+        this.subtitle = subtitle;
+        this.iconResource = iconResource;
+    }
+}
+
+class HomeMenuAdapter extends ArrayAdapter<HomeMenuItem> {
+
+    private Context mContext;
+    private int mResource;
+    private List<HomeMenuItem> mMenuItems;
+
+    HomeMenuAdapter(Context context, int resource, List<HomeMenuItem> menuItems) {
+        super(context, resource, menuItems);
+        mContext = context;
+        mResource = resource;
+        mMenuItems = menuItems;
+    }
+
+    @NonNull
+    @Override
+    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+        if (convertView == null)
+            convertView = LayoutInflater.from(mContext).inflate(mResource, parent, false);
+
+        // Locate item
+        HomeMenuItem menuItem = mMenuItems.get(position);
+
+        // Icon
+        ImageView imgIcon = (ImageView) convertView.findViewById(R.id.imgIcon);
+        imgIcon.setImageResource(menuItem.iconResource);
+
+        // Text
+        TextView lblTitle = (TextView) convertView.findViewById(R.id.lblTitle);
+        lblTitle.setText(menuItem.title);
+
+        return convertView;
     }
 }

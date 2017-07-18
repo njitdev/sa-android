@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.njitdev.sa_android.library.BookDetailsActivity">
+    tools:context="com.njitdev.sa_android.library.LibraryBookDetailsActivity">
 
     <TextView
         android:id="@+id/lblTitle"

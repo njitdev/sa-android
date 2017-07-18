@@ -31,7 +31,7 @@
         <activity android:name=".test.TestActivity" />
 
         <activity
-            android:name=".school_announcement.SchoolAnnouncementActivity"
+            android:name=".announcements.AnnouncementsActivity"
             android:label="校内通知">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -39,11 +39,11 @@
         </activity>
 
         <activity
-            android:name=".school_announcement.AnnouncementArticleBodyActivity"
+            android:name=".announcements.AnnouncementsArticleActivity"
             android:label="通知浏览">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".school_announcement.SchoolAnnouncementActivity"/>
+                android:value=".announcements.AnnouncementsActivity"/>
         </activity>
 
         <activity
@@ -56,7 +56,7 @@
         </activity>
 
         <activity
-            android:name=".library.BookDetailsActivity"
+            android:name=".library.LibraryBookDetailsActivity"
             android:label="图书详情">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

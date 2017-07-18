@@ -34,12 +34,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.njitdev.sa_android.R;
+import com.njitdev.sa_android.models.library.BookInventory;
+import com.njitdev.sa_android.models.library.LibraryModels;
 import com.njitdev.sa_android.utils.ModelListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class BookDetailsActivity extends AppCompatActivity {
+public class LibraryBookDetailsActivity extends AppCompatActivity {
 
     private List<BookInventory> mInventory = new ArrayList<>();
     private DetailsAdapter mAdapter;
@@ -47,7 +49,7 @@ public class BookDetailsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_book_details);
+        setContentView(R.layout.activity_library_book_details);
 
         // Create adapter
         ListView listView = (ListView) findViewById(R.id.listView);
@@ -74,7 +76,7 @@ public class BookDetailsActivity extends AppCompatActivity {
                 pbBusy.setVisibility(View.INVISIBLE);
 
                 if (result == null) {
-                    Toast.makeText(BookDetailsActivity.this, message, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LibraryBookDetailsActivity.this, message, Toast.LENGTH_SHORT).show();
                     return;
                 }
                 mInventory.clear();

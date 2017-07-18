@@ -16,9 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.njitdev.sa_android.models;
-
-import android.util.Log;
+package com.njitdev.sa_android.models.school;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -31,6 +29,7 @@ import com.njitdev.sa_android.utils.SAGlobal;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -67,7 +66,56 @@ public class SchoolSystemModels {
             @Override
             public void onErrorResponse(VolleyError error) {
                 listener.onData(null, "连接学校服务器失败");
-                Log.d("sa-android", new String(error.networkResponse.data));
+            }
+        });
+        SAGlobal.sharedRequestQueue.add(req);
+    }
+
+    // Fetch student basic info
+    public static void studentBasicInfo(String session_id, String student_id, final ModelListener<StudentBasicInfo> listener) {
+        // Build GET URL
+        // TODO: Find a better way
+        String url = baseURL + "/student/basic-info?session_id=";
+        try {
+            url += URLEncoder.encode(session_id, "UTF-8");
+
+            // Optional fields
+            if (student_id != null) url += "&student_id=" + URLEncoder.encode(student_id, "UTF-8");
+        } catch (Exception e) { e.printStackTrace(); }
+
+        // Make request
+        JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    JSONObject result = response.getJSONObject("result");
+                    StudentBasicInfo basicInfo = new StudentBasicInfo();
+
+                    basicInfo.student_name = result.getString("student_name");
+                    basicInfo.student_department = result.getString("student_department");
+
+                    // Optional fields
+                    if (result.has("student_id") && !result.isNull("student_id"))
+                        basicInfo.student_id = result.getString("student_id");
+
+                    if (result.has("student_enroll_year") && !result.isNull("student_enroll_year"))
+                        basicInfo.student_id = result.getString("student_enroll_year");
+
+                    if (result.has("student_major") && !result.isNull("student_major"))
+                        basicInfo.student_id = result.getString("student_major");
+
+                    if (result.has("student_class") && !result.isNull("student_class"))
+                        basicInfo.student_id = result.getString("student_class");
+
+                    listener.onData(basicInfo, "ok");
+                } catch (JSONException e) {
+                    listener.onData(null, "数据解析失败");
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                listener.onData(null, "连接学校服务器失败");
             }
         });
         SAGlobal.sharedRequestQueue.add(req);

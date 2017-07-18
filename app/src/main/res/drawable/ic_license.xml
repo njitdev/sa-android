@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="463.079dp"
+    android:height="463.079dp"
+    android:viewportHeight="463.079"
+    android:viewportWidth="463.079">
+
+    <path
+        android:fillColor="#1A6FB0"
+        android:pathData="M463.079,23.497c0-8.284-6.716-15-15-15H15c-8.284,0-15,6.716-15,15v334.679
+c0,8.284,6.716,15,15,15h433.079c8.284,0,15-6.716,15-15V23.497z" />
+    <path
+        android:fillColor="#165C92"
+        android:pathData="M463.079,23.497c0-8.284-6.716-15-15-15H228.474v364.679h219.605
+c8.284,0,15-6.716,15-15L463.079,23.497L463.079,23.497z" />
+    <path
+        android:fillColor="#CD2A00"
+        android:pathData="M 373.597 454.583 L 338.812 438.308 L 304.027 454.583 L 304.027 346.9 L 373.597 346.9 Z" />
+    <path
+        android:fillColor="#AB2300"
+        android:pathData="M 338.813 346.9 L 338.813 438.308 L 373.597 454.582 L 373.597 346.9 Z" />
+    <path
+        android:fillColor="#FFD422"
+        android:pathData="M 338.812 218.53 C 380.387443683 218.53 414.091 252.233556317 414.091 293.809 C 414.091 335.384443683 380.387443683 369.088 338.812 369.088 C 297.236556317 369.088 263.533 335.384443683 263.533 293.809 C 263.533 252.233556317 297.236556317 218.53 338.812 218.53 Z" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M377.638,108.349H79.31c-8.284,0-15-6.716-15-15s6.716-15,15-15h298.328
+c8.284,0,15,6.716,15,15S385.922,108.349,377.638,108.349z" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M377.638,177.344H79.31c-8.284,0-15-6.716-15-15s6.716-15,15-15h298.328
+c8.284,0,15,6.716,15,15S385.922,177.344,377.638,177.344z" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M175.038,312.546H79.31c-8.284,0-15-6.716-15-15s6.716-15,15-15h95.729
+c8.284,0,15,6.716,15,15S183.322,312.546,175.038,312.546z" />
+    <path
+        android:fillColor="#EEBF00"
+        android:pathData="M338.813,218.529v150.558c41.575,0,75.279-33.704,75.279-75.279
+C414.091,252.233,380.388,218.529,338.813,218.529z" />
+</vector>
