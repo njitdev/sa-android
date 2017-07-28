@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- GA tracking ID -->
+    <string name="ga_trackingId" translatable="false">UA-61812304-1</string>
+
+    <!-- Enable automatic Activity measurement -->
+    <bool name="ga_autoActivityTracking">true</bool>
+
+    <!-- Screen names Override -->
+    <screenName name="com.njitdev.sa_android.home.HomeActivity">HomeActivity</screenName>
+    <screenName name="com.njitdev.sa_android.announcements.AnnouncementsActivity">AnnouncementsActivity</screenName>
+    <screenName name="com.njitdev.sa_android.announcements.AnnouncementsArticleActivity">AnnouncementsArticleActivity</screenName>
+    <screenName name="com.njitdev.sa_android.library.LibraryActivity">LibraryActivity</screenName>
+    <screenName name="com.njitdev.sa_android.library.LibraryBookDetailsActivity">LibraryBookDetailsActivity</screenName>
+    <screenName name="com.njitdev.sa_android.login.LoginActivity">LoginActivity</screenName>
+    <screenName name="com.njitdev.sa_android.messageboard.MessageBoardActivity">MessageBoardActivity</screenName>
+</resources>
