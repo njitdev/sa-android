@@ -12,6 +12,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <meta-data
+            android:name="com.google.android.gms.analytics.globalConfigResource"
+            android:resource="@xml/ga_global_tracker" />
+
         <activity android:name=".home.HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -43,13 +47,13 @@
             android:label="通知浏览">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".announcements.AnnouncementsActivity"/>
+                android:value=".announcements.AnnouncementsActivity" />
         </activity>
 
         <activity
             android:name=".library.LibraryActivity"
-            android:label="图书馆"
-            android:configChanges="orientation|screenSize">
+            android:configChanges="orientation|screenSize"
+            android:label="图书馆">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".home.HomeActivity" />

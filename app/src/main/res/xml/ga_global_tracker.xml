@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Set the dispatch period to 10 seconds, since almost all -->
+    <!-- users in China don't have Google Play Services, and we don't -->
+    <!-- want to install a background service just for sending analytics data. -->
+    <integer name="ga_dispatchPeriod">10</integer>
+</resources>

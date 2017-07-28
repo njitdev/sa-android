@@ -18,10 +18,27 @@
 
 package com.njitdev.sa_android.utils;
 
+import android.content.Context;
+
 import com.android.volley.RequestQueue;
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.Tracker;
+import com.njitdev.sa_android.R;
 
 public class SAGlobal {
     public static RequestQueue sharedRequestQueue;
     public static String student_session_id;
-    static String installation_id;
+    public static String installation_id;
+
+    // Google Analytics
+    private static GoogleAnalytics analytics;
+    private static Tracker tracker;
+
+    synchronized public static Tracker getGATracker(Context context) {
+        if (tracker == null) {
+            analytics = GoogleAnalytics.getInstance(context);
+            tracker = analytics.newTracker(R.xml.ga_app_tracker);
+        }
+        return tracker;
+    }
 }

@@ -63,6 +63,9 @@ public class HomeActivity extends AppCompatActivity {
         // Initialize shared request queue
         SAGlobal.sharedRequestQueue = Volley.newRequestQueue(getApplicationContext());
 
+        // Initialize Google Analytics
+        SAGlobal.getGATracker(this);
+
         // Initialize menu list
         updateMenu();
 
