@@ -46,7 +46,7 @@ public class SAUtils {
 
             // Error reporting
             // Reports uncaught exceptions by default
-            Rollbar.init(context, "b321f22cfeaa4ea4b4b22c1f2d0222e2", "production");
+            Rollbar.init(context, SAConfig.rollbarClientID, "production");
         }
 
         // Send start event
