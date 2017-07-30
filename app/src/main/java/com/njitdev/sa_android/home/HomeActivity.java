@@ -46,6 +46,7 @@ import com.njitdev.sa_android.announcements.AnnouncementsActivity;
 import com.njitdev.sa_android.test.TestActivity;
 import com.njitdev.sa_android.utils.ModelListener;
 import com.njitdev.sa_android.utils.SAGlobal;
+import com.njitdev.sa_android.utils.SAUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,11 +61,8 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        // Initialize shared request queue
-        SAGlobal.sharedRequestQueue = Volley.newRequestQueue(getApplicationContext());
-
-        // Initialize Google Analytics
-        SAGlobal.getGATracker(this);
+        // App init
+        SAUtils.appInit(getApplicationContext());
 
         // Initialize menu list
         updateMenu();
