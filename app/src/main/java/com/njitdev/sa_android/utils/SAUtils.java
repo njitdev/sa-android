@@ -20,10 +20,39 @@ package com.njitdev.sa_android.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Build;
+
+import com.android.volley.toolbox.Volley;
+import com.njitdev.sa_android.models.analytics.AnalyticsModels;
+import com.rollbar.android.Rollbar;
 
 import java.util.UUID;
 
 public class SAUtils {
+    // Application initialization
+    public static void appInit(Context context) {
+        // Shared request queue
+        SAGlobal.sharedRequestQueue = Volley.newRequestQueue(context);
+
+        // Google Analytics
+        SAGlobal.getGATracker(context);
+
+        if (SAConfig.developmentMode) {
+            // Development mode
+            SAConfig.baseURL = "https://sa-api-dev.njitdev.com";
+        } else {
+            // Production mode
+            SAConfig.baseURL = "https://sa-api-prd.njitdev.com";
+
+            // Error reporting
+            // Reports uncaught exceptions by default
+            Rollbar.init(context, SAConfig.rollbarClientID, "production");
+        }
+
+        // Send start event
+        AnalyticsModels.sendStartEvent(installationID(context));
+    }
+
     // Write a KV pair to local storage
     public static void writeKVStore(Context context, String key, String value) {
         SharedPreferences sp = context.getSharedPreferences("sa-android", Context.MODE_PRIVATE);
@@ -49,5 +78,29 @@ public class SAUtils {
             SAGlobal.installation_id = uuid;
         }
         return SAGlobal.installation_id;
+    }
+
+    // Get device model
+    // https://stackoverflow.com/a/12707479/1690380
+    public static String getDeviceModel() {
+        String manufacturer = Build.MANUFACTURER;
+        String model = Build.MODEL;
+        if (model.startsWith(manufacturer)) {
+            return capitalize(model);
+        } else {
+            return capitalize(manufacturer) + " " + model;
+        }
+    }
+
+    private static String capitalize(String s) {
+        if (s == null || s.length() == 0) {
+            return "";
+        }
+        char first = s.charAt(0);
+        if (Character.isUpperCase(first)) {
+            return s;
+        } else {
+            return Character.toUpperCase(first) + s.substring(1);
+        }
     }
 }

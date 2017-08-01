@@ -19,6 +19,8 @@
 package com.njitdev.sa_android.utils;
 
 public class SAConfig {
-    public static String baseURL = "https://sa-api-dev.njitdev.com";
+    public static Boolean developmentMode = true;
+    public static String baseURL;
     public static String schoolIdentifier = "gdut";
+    public static String rollbarClientID = "b321f22cfeaa4ea4b4b22c1f2d0222e2";
 }
