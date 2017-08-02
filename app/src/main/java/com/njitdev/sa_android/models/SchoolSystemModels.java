@@ -24,7 +24,9 @@ public class SchoolSystemModels {
     private static String baseURL = SAConfig.baseURL + "/school/" + SAConfig.schoolIdentifier;
 
     // Authentication - submit
-    public static void submitAuthInfo(String installation_id, String student_login, String student_password, String captcha, final ModelListener<String> listener) {
+    public static void submitAuthInfo(String installation_id,
+                                      String student_login, String student_password, String captcha,
+                                      final ModelListener<String> listener) {
         // Prepare parameters
         Map<String, String> map = new HashMap<>();
         map.put("installation_id", installation_id);
