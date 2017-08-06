@@ -18,8 +18,6 @@
 
 package com.njitdev.sa_android.models.analytics;
 
-import android.util.Log;
-
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;

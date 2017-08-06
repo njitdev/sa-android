@@ -26,11 +26,14 @@ import com.njitdev.sa_android.utils.ModelListener;
 import com.njitdev.sa_android.utils.SAConfig;
 import com.njitdev.sa_android.utils.SAGlobal;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class SchoolSystemModels {
@@ -81,7 +84,9 @@ public class SchoolSystemModels {
 
             // Optional fields
             if (student_id != null) url += "&student_id=" + URLEncoder.encode(student_id, "UTF-8");
-        } catch (Exception e) { e.printStackTrace(); }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         // Make request
         JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
@@ -119,5 +124,68 @@ public class SchoolSystemModels {
             }
         });
         SAGlobal.sharedRequestQueue.add(req);
+    }
+
+    // Fetch ClassSchedule
+    public static void fetchClassSchedule(String session_id, final ModelListener<List<List<ClassSchedule>>> listener) {
+        // Build GET URL
+        String url = baseURL + "/class/term?session_id=";
+        try {
+            url += URLEncoder.encode(session_id, "UTF-8");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest r = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                // Deserialize JSON
+                try {
+                    JSONObject jsonResult = response.getJSONObject("result");
+                    JSONArray jsonClasses = jsonResult.getJSONArray("classes");
+
+                    // TODO: find a better way
+                    SAGlobal.current_week_in_term = jsonResult.getInt("current_week");
+
+                    // populate result
+                    List<List<ClassSchedule>> classes = new ArrayList<>();
+
+                    // Loop through all weeks
+                    for (int j = 0; j < jsonClasses.length(); j++) {
+                        List<ClassSchedule> classesOfWeek = new ArrayList<>();
+                        JSONArray jsonClassesOfWeek = jsonClasses.getJSONArray(j);
+
+                        for (int i = 0; i < jsonClassesOfWeek.length(); i++) {
+                            JSONObject jsonClassSchedule = jsonClassesOfWeek.getJSONObject(i);
+                            ClassSchedule classSchedule = new ClassSchedule();
+                            classSchedule.week = jsonClassSchedule.getInt("week");
+                            classSchedule.day_of_week = jsonClassSchedule.getInt("day_of_week");
+                            classSchedule.classes_in_day = jsonClassSchedule.getString("classes_in_day");
+                            classSchedule.title = jsonClassSchedule.getString("title");
+                            classSchedule.instructor = jsonClassSchedule.getString("instructor");
+                            classSchedule.location = jsonClassSchedule.getString("location");
+
+                            // Optional fields
+                            if (jsonClassSchedule.has("type") || !jsonClassSchedule.isNull("type"))
+                                classSchedule.type = jsonClassSchedule.getString("type");
+
+                            classesOfWeek.add(classSchedule);
+                        }
+                        classes.add(classesOfWeek);
+                    }
+                    listener.onData(classes, "ok");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    listener.onData(null, "数据错误，获取课程表失败");
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+                listener.onData(null, "网络错误，获取课程表失败");
+            }
+        });
+        SAGlobal.sharedRequestQueue.add(r);
     }
 }
