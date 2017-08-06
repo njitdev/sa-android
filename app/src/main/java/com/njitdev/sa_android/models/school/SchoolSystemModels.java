@@ -26,15 +26,22 @@ import com.njitdev.sa_android.utils.ModelListener;
 import com.njitdev.sa_android.utils.SAConfig;
 import com.njitdev.sa_android.utils.SAGlobal;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class SchoolSystemModels {
     private static String baseURL = SAConfig.baseURL + "/school/" + SAConfig.schoolIdentifier;
+    private static int currentWeek;
+    //getter() for return currentWeek
+    public int getCurrentWeek(){
+        return currentWeek;
+    }
 
     // Authentication - submit
     public static void submitAuthInfo(String installation_id, String student_login, String student_password, String captcha, final ModelListener<String> listener) {
@@ -120,4 +127,60 @@ public class SchoolSystemModels {
         });
         SAGlobal.sharedRequestQueue.add(req);
     }
+
+    // Fetch CrouseScheduleInfo
+    static void fetchList(int sessionID, final ModelListener<ArrayList<ArrayList<CrouseScheduleInfo>>> listener) {
+        JsonObjectRequest r = new JsonObjectRequest(Request.Method.GET,
+                baseURL + "/class/term?session_id=" + sessionID, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    //override onResponseMethod
+                    public void onResponse(JSONObject response) {
+                        //deserilizing jsonObject
+                        try {
+                            JSONObject result = response.getJSONObject("result");
+                            currentWeek = result.getInt("current_week");
+                            JSONArray classes = result.getJSONArray("classes");
+
+                            // populate result
+                            ArrayList<ArrayList<CrouseScheduleInfo>> classesList = new ArrayList<>();
+                            for(int j = 0; j < classes.length(); j++){
+                                ArrayList<CrouseScheduleInfo> classesDayList = new ArrayList<>();
+                                JSONArray classesArrayForWeek = classes.getJSONArray(j);
+                                for(int i = 0; i < classesArrayForWeek.length(); i++){
+                                    JSONObject classesForDay = classesArrayForWeek.getJSONObject(i);
+                                    CrouseScheduleInfo crouseScheduleInfo = new CrouseScheduleInfo();
+
+                                    crouseScheduleInfo.week = classesForDay.getInt("week");
+                                    crouseScheduleInfo.day_of_week = classesForDay.getInt("day_of_week");
+                                    crouseScheduleInfo.classes_in_day = classesForDay.getString("classes_in_day");
+                                    crouseScheduleInfo.title = classesForDay.getString("title");
+                                    crouseScheduleInfo.instructor = classesForDay.getString("instructor");
+                                    crouseScheduleInfo.location = classesForDay.getString("location");
+                                    crouseScheduleInfo.type = classesForDay.getString("type");
+
+                                    classesDayList.add(crouseScheduleInfo);
+                                }
+                                classesList.add(classesDayList);
+                            }
+
+                            listener.onData(classesList, "ok");
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            listener.onData(null, "数据错误，获取课程表失败");
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+                listener.onData(null, "网络错误，获取课程表失败");
+            }
+        });
+        SAGlobal.sharedRequestQueue.add(r);
+    }
+
+
+
+
 }
