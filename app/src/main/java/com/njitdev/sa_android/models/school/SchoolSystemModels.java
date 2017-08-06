@@ -33,15 +33,11 @@ import org.json.JSONObject;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class SchoolSystemModels {
     private static String baseURL = SAConfig.baseURL + "/school/" + SAConfig.schoolIdentifier;
-    private static int currentWeek;
-    //getter() for return currentWeek
-    public int getCurrentWeek(){
-        return currentWeek;
-    }
 
     // Authentication - submit
     public static void submitAuthInfo(String installation_id, String student_login, String student_password, String captcha, final ModelListener<String> listener) {
@@ -88,7 +84,9 @@ public class SchoolSystemModels {
 
             // Optional fields
             if (student_id != null) url += "&student_id=" + URLEncoder.encode(student_id, "UTF-8");
-        } catch (Exception e) { e.printStackTrace(); }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         // Make request
         JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
@@ -128,49 +126,60 @@ public class SchoolSystemModels {
         SAGlobal.sharedRequestQueue.add(req);
     }
 
-    // Fetch CrouseScheduleInfo
-    static void fetchList(int sessionID, final ModelListener<ArrayList<ArrayList<CrouseScheduleInfo>>> listener) {
-        JsonObjectRequest r = new JsonObjectRequest(Request.Method.GET,
-                baseURL + "/class/term?session_id=" + sessionID, null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    //override onResponseMethod
-                    public void onResponse(JSONObject response) {
-                        //deserilizing jsonObject
-                        try {
-                            JSONObject result = response.getJSONObject("result");
-                            currentWeek = result.getInt("current_week");
-                            JSONArray classes = result.getJSONArray("classes");
+    // Fetch ClassSchedule
+    public static void fetchClassSchedule(String session_id, final ModelListener<List<List<ClassSchedule>>> listener) {
+        // Build GET URL
+        String url = baseURL + "/class/term?session_id=";
+        try {
+            url += URLEncoder.encode(session_id, "UTF-8");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-                            // populate result
-                            ArrayList<ArrayList<CrouseScheduleInfo>> classesList = new ArrayList<>();
-                            for(int j = 0; j < classes.length(); j++){
-                                ArrayList<CrouseScheduleInfo> classesDayList = new ArrayList<>();
-                                JSONArray classesArrayForWeek = classes.getJSONArray(j);
-                                for(int i = 0; i < classesArrayForWeek.length(); i++){
-                                    JSONObject classesForDay = classesArrayForWeek.getJSONObject(i);
-                                    CrouseScheduleInfo crouseScheduleInfo = new CrouseScheduleInfo();
+        JsonObjectRequest r = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                // Deserialize JSON
+                try {
+                    JSONObject jsonResult = response.getJSONObject("result");
+                    JSONArray jsonClasses = jsonResult.getJSONArray("classes");
 
-                                    crouseScheduleInfo.week = classesForDay.getInt("week");
-                                    crouseScheduleInfo.day_of_week = classesForDay.getInt("day_of_week");
-                                    crouseScheduleInfo.classes_in_day = classesForDay.getString("classes_in_day");
-                                    crouseScheduleInfo.title = classesForDay.getString("title");
-                                    crouseScheduleInfo.instructor = classesForDay.getString("instructor");
-                                    crouseScheduleInfo.location = classesForDay.getString("location");
-                                    crouseScheduleInfo.type = classesForDay.getString("type");
+                    // TODO: find a better way
+                    SAGlobal.current_week_in_term = jsonResult.getInt("current_week");
 
-                                    classesDayList.add(crouseScheduleInfo);
-                                }
-                                classesList.add(classesDayList);
-                            }
+                    // populate result
+                    List<List<ClassSchedule>> classes = new ArrayList<>();
 
-                            listener.onData(classesList, "ok");
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            listener.onData(null, "数据错误，获取课程表失败");
+                    // Loop through all weeks
+                    for (int j = 0; j < jsonClasses.length(); j++) {
+                        List<ClassSchedule> classesOfWeek = new ArrayList<>();
+                        JSONArray jsonClassesOfWeek = jsonClasses.getJSONArray(j);
+
+                        for (int i = 0; i < jsonClassesOfWeek.length(); i++) {
+                            JSONObject jsonClassSchedule = jsonClassesOfWeek.getJSONObject(i);
+                            ClassSchedule classSchedule = new ClassSchedule();
+                            classSchedule.week = jsonClassSchedule.getInt("week");
+                            classSchedule.day_of_week = jsonClassSchedule.getInt("day_of_week");
+                            classSchedule.classes_in_day = jsonClassSchedule.getString("classes_in_day");
+                            classSchedule.title = jsonClassSchedule.getString("title");
+                            classSchedule.instructor = jsonClassSchedule.getString("instructor");
+                            classSchedule.location = jsonClassSchedule.getString("location");
+
+                            // Optional fields
+                            if (jsonClassSchedule.has("type") || !jsonClassSchedule.isNull("type"))
+                                classSchedule.type = jsonClassSchedule.getString("type");
+
+                            classesOfWeek.add(classSchedule);
                         }
+                        classes.add(classesOfWeek);
                     }
-                }, new Response.ErrorListener() {
+                    listener.onData(classes, "ok");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    listener.onData(null, "数据错误，获取课程表失败");
+                }
+            }
+        }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 error.printStackTrace();
@@ -179,8 +188,4 @@ public class SchoolSystemModels {
         });
         SAGlobal.sharedRequestQueue.add(r);
     }
-
-
-
-
 }

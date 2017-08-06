@@ -27,8 +27,9 @@ import com.njitdev.sa_android.R;
 
 public class SAGlobal {
     public static RequestQueue sharedRequestQueue;
-    public static String student_session_id;
     public static String installation_id;
+    public static String student_session_id;
+    public static int current_week_in_term;
 
     // Google Analytics
     private static GoogleAnalytics analytics;
