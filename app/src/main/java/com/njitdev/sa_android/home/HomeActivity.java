@@ -40,6 +40,7 @@ import com.njitdev.sa_android.announcements.AnnouncementsActivity;
 import com.njitdev.sa_android.library.LibraryActivity;
 import com.njitdev.sa_android.login.LoginActivity;
 import com.njitdev.sa_android.messageboard.MessageBoardActivity;
+import com.njitdev.sa_android.models.school.ClassSchedule;
 import com.njitdev.sa_android.models.school.SchoolSystemModels;
 import com.njitdev.sa_android.models.school.StudentBasicInfo;
 import com.njitdev.sa_android.test.TestActivity;
@@ -51,9 +52,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
+    // Help detecting new user sessions
+    private String mLastSessionID = "";
 
-    private String mLastSessionID = ""; // Help detecting new user sessions
+    // School system data of current session
     private StudentBasicInfo mStudentBasicInfo;
+    private List<List<ClassSchedule>> mClassSchedule;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,10 +112,10 @@ public class HomeActivity extends AppCompatActivity {
                         startActivity(new Intent(HomeActivity.this, LoginActivity.class));
                         break;
                     case 1:
-                        // Class schedule
+                        // TODO: Class schedule
                         break;
                     case 2:
-                        // Grades
+                        // TODO: Grades
                         break;
                     case 3:
                         // Library
@@ -181,10 +185,22 @@ public class HomeActivity extends AppCompatActivity {
                 public void onData(StudentBasicInfo result, String message) {
                     if (result == null) {
                         Toast.makeText(HomeActivity.this, message, Toast.LENGTH_SHORT).show();
-                        return;
+                    } else {
+                        mStudentBasicInfo = result;
+                        updateMenu();
                     }
-                    mStudentBasicInfo = result;
-                    updateMenu();
+                }
+            });
+
+            // Fetch class schedule
+            SchoolSystemModels.fetchClassSchedule(SAGlobal.student_session_id, new ModelListener<List<List<ClassSchedule>>>() {
+                @Override
+                public void onData(List<List<ClassSchedule>> result, String message) {
+                    if (result == null) {
+                        Toast.makeText(HomeActivity.this, message, Toast.LENGTH_SHORT).show();
+                    } else {
+                        mClassSchedule = result;
+                    }
                 }
             });
         }
