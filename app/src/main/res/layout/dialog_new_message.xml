@@ -7,28 +7,28 @@
     <EditText
         android:id="@+id/lblUserName"
         android:layout_width="0dp"
-        android:layout_height="40dp"
+        android:layout_height="48dp"
+        android:layout_marginLeft="16dp"
         android:layout_marginRight="0dp"
         android:layout_marginTop="20dp"
         android:ems="10"
         android:hint="昵称"
         android:inputType="textPersonName"
-        android:textSize="13sp"
-        app:layout_constraintRight_toLeftOf="@+id/txtUserContact"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginLeft="16dp"
+        android:textSize="15sp"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintHorizontal_bias="0.0" />
+        app:layout_constraintRight_toLeftOf="@+id/txtUserContact"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/txtUserContact"
         android:layout_width="wrap_content"
-        android:layout_height="40dp"
+        android:layout_height="48dp"
         android:layout_marginRight="16dp"
         android:layout_marginTop="0dp"
         android:ems="10"
         android:hint="联系方式(仅后台可见)"
-        android:textSize="13sp"
+        android:textSize="15sp"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@+id/lblUserName" />
 
@@ -43,7 +43,7 @@
         android:hint="留言"
         android:inputType="textMultiLine"
         android:maxHeight="90dp"
-        android:textSize="13sp"
+        android:textSize="15sp"
         app:layout_constraintLeft_toLeftOf="@+id/lblUserName"
         app:layout_constraintRight_toRightOf="@+id/txtUserContact"
         app:layout_constraintTop_toBottomOf="@+id/lblUserName" />
