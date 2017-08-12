@@ -57,13 +57,13 @@ public class SchoolSystemModels {
 
                     listener.onData(authInitInfo, "ok");
                 } catch (JSONException e) {
-                    listener.onData(null, "数据解析失败");
+                    listener.onData(null, "教务系统返回非法数据");
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                listener.onData(null, "连接学校服务器失败");
+                listener.onData(null, "教务系统太烂无法通信，请稍后再试");
             }
         });
         SAGlobal.sharedRequestQueue.add(req);
@@ -121,16 +121,16 @@ public class SchoolSystemModels {
                         }
                         listener.onData(new AuthResult(true, session_id), "ok");
                     } else {
-                        listener.onData(new AuthResult(false, null), "登录失败，请检查用户名和密码");
+                        listener.onData(new AuthResult(false, null), "登录失败，可能因为输入内容不正确，或教务系统太烂无法通信，请稍后再试");
                     }
                 } catch (JSONException e) {
-                    listener.onData(new AuthResult(false, null), "数据解析失败");
+                    listener.onData(new AuthResult(false, null), "教务系统返回非法数据");
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                listener.onData(new AuthResult(false, null), "连接学校服务器失败");
+                listener.onData(new AuthResult(false, null), "教务系统太烂无法通信，请稍后再试");
             }
         });
         SAGlobal.sharedRequestQueue.add(req);
