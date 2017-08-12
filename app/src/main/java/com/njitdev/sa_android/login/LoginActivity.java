@@ -21,6 +21,7 @@ package com.njitdev.sa_android.login;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -30,6 +31,7 @@ import android.widget.Toast;
 
 import com.njitdev.sa_android.R;
 import com.njitdev.sa_android.models.school.AuthInitInfo;
+import com.njitdev.sa_android.models.school.AuthResult;
 import com.njitdev.sa_android.models.school.SchoolSystemModels;
 import com.njitdev.sa_android.utils.ModelListener;
 import com.njitdev.sa_android.utils.SAGlobal;
@@ -71,6 +73,19 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        // Enter key
+        txtCaptcha.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                if ((keyEvent.getAction() == KeyEvent.ACTION_DOWN) && (keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
+                    // Perform action on key press
+                    btnLogin.callOnClick();
+                    return false;
+                }
+                return false;
+            }
+        });
+
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -86,14 +101,18 @@ public class LoginActivity extends AppCompatActivity {
                 setUIBusy(true);
 
                 // Send login info
-                SchoolSystemModels.authSubmit(SAUtils.installationID(getApplicationContext()), tempSessionID, studentLogin, studentPassword, captcha, new ModelListener<String>() {
+                SchoolSystemModels.authSubmit(SAUtils.installationID(getApplicationContext()), tempSessionID, studentLogin, studentPassword, captcha, new ModelListener<AuthResult>() {
                     @Override
-                    public void onData(String result, String message) {
+                    public void onData(AuthResult result, String message) {
                         setUIBusy(false);
-                        if (result != null) {
+                        if (result.auth_result) {
                             // Succeeded
-                            // Save session_id in memory
-                            SAGlobal.student_session_id = tempSessionID;
+                            // Save session_id globally in memory
+                            if (result.session_id != null) {
+                                SAGlobal.student_session_id = result.session_id;
+                            } else {
+                                SAGlobal.student_session_id = tempSessionID;
+                            }
 
                             // Save username / password to local storage
                             SAUtils.writeKVStore(getApplicationContext(), "student_login", studentLogin);

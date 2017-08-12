@@ -13,16 +13,17 @@
         android:layout_height="45dp"
         android:layout_marginLeft="0dp"
         android:layout_marginRight="0dp"
+        android:layout_marginTop="8dp"
         android:ems="10"
         android:hint="验证码"
         android:maxLines="1"
         android:selectAllOnFocus="true"
+        android:singleLine="true"
         android:textSize="16sp"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="@+id/txtStudentLogin"
         app:layout_constraintRight_toRightOf="@+id/txtStudentLogin"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/txtStudentPassword"
-        app:layout_constraintHorizontal_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/txtStudentPassword" />
 
     <EditText
         android:id="@+id/txtStudentLogin"

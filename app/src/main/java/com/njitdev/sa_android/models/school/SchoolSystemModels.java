@@ -96,7 +96,7 @@ public class SchoolSystemModels {
     }
 
     // Authentication - submit
-    public static void authSubmit(String installation_id, String session_id, String student_login, String student_password, String captcha, final ModelListener<String> listener) {
+    public static void authSubmit(String installation_id, String session_id, String student_login, String student_password, String captcha, final ModelListener<AuthResult> listener) {
         // Prepare parameters
         Map<String, String> map = new HashMap<>();
         map.put("installation_id", installation_id);
@@ -111,21 +111,26 @@ public class SchoolSystemModels {
             public void onResponse(JSONObject response) {
                 try {
                     JSONObject result = response.getJSONObject("result");
+
                     // Check auth_result
                     if (result.getBoolean("auth_result")) {
-                        // Pass session_id
-                        listener.onData(result.getString("session_id"), "ok");
+                        // Handle session_id
+                        String session_id = null;
+                        if (!result.isNull("session_id")) {
+                            session_id = result.getString("session_id");
+                        }
+                        listener.onData(new AuthResult(true, session_id), "ok");
                     } else {
-                        listener.onData(null, "登录失败，请检查用户名和密码");
+                        listener.onData(new AuthResult(false, null), "登录失败，请检查用户名和密码");
                     }
                 } catch (JSONException e) {
-                    listener.onData(null, "数据解析失败");
+                    listener.onData(new AuthResult(false, null), "数据解析失败");
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                listener.onData(null, "连接学校服务器失败");
+                listener.onData(new AuthResult(false, null), "连接学校服务器失败");
             }
         });
         SAGlobal.sharedRequestQueue.add(req);
