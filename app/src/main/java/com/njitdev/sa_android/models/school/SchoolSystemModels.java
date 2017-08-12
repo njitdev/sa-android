@@ -121,7 +121,7 @@ public class SchoolSystemModels {
                         }
                         listener.onData(new AuthResult(true, session_id), "ok");
                     } else {
-                        listener.onData(new AuthResult(false, null), "登录失败，可能因为输入内容不正确，或教务系统太烂无法通信，请稍后再试");
+                        listener.onData(new AuthResult(false, null), "登录失败，可能因为输入不正确，或教务系统无法连接");
                     }
                 } catch (JSONException e) {
                     listener.onData(new AuthResult(false, null), "教务系统返回非法数据");

@@ -122,7 +122,7 @@ public class LoginActivity extends AppCompatActivity {
                             LoginActivity.this.finish();
                         } else {
                             // Failed
-                            Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, message, Toast.LENGTH_LONG).show();
 
                             // Reset auth
                             initAuth();
