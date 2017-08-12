@@ -18,15 +18,18 @@
 
 package com.njitdev.sa_android.login;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.njitdev.sa_android.R;
+import com.njitdev.sa_android.models.school.AuthInitInfo;
 import com.njitdev.sa_android.models.school.SchoolSystemModels;
 import com.njitdev.sa_android.utils.ModelListener;
 import com.njitdev.sa_android.utils.SAGlobal;
@@ -34,15 +37,23 @@ import com.njitdev.sa_android.utils.SAUtils;
 
 public class LoginActivity extends AppCompatActivity {
 
+    private EditText txtStudentLogin, txtStudentPassword, txtCaptcha;
+    private ImageView imgCaptcha;
+    private Button btnLogin;
+
+    private String tempSessionID;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
         // Controls
-        final EditText txtStudentLogin = (EditText) findViewById(R.id.txtStudentLogin);
-        final EditText txtStudentPassword = (EditText) findViewById(R.id.txtStudentPassword);
-        Button btnLogin = (Button) findViewById(R.id.btnLogin);
+        txtStudentLogin = (EditText) findViewById(R.id.txtStudentLogin);
+        txtStudentPassword = (EditText) findViewById(R.id.txtStudentPassword);
+        txtCaptcha = (EditText) findViewById(R.id.txtCaptcha);
+        btnLogin = (Button) findViewById(R.id.btnLogin);
+        imgCaptcha = (ImageView) findViewById(R.id.imgCaptcha);
 
         // Fill with saved credentials if available
         String studentLogin = SAUtils.readKVStore(getApplicationContext(), "student_login");
@@ -53,11 +64,19 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         // Events
+        imgCaptcha.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                fetchCaptcha(tempSessionID);
+            }
+        });
+
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final String studentLogin = txtStudentLogin.getText().toString();
                 final String studentPassword = txtStudentPassword.getText().toString();
+                final String captcha = txtCaptcha.getText().toString();
                 if (studentLogin.length() == 0 || studentPassword.length() == 0) {
                     Toast.makeText(LoginActivity.this, "请填写用户名和密码", Toast.LENGTH_SHORT).show();
                     return;
@@ -67,14 +86,14 @@ public class LoginActivity extends AppCompatActivity {
                 setUIBusy(true);
 
                 // Send login info
-                SchoolSystemModels.submitAuthInfo(SAUtils.installationID(getApplicationContext()), studentLogin, studentPassword, null, new ModelListener<String>() {
+                SchoolSystemModels.authSubmit(SAUtils.installationID(getApplicationContext()), tempSessionID, studentLogin, studentPassword, captcha, new ModelListener<String>() {
                     @Override
                     public void onData(String result, String message) {
                         setUIBusy(false);
                         if (result != null) {
                             // Succeeded
                             // Save session_id in memory
-                            SAGlobal.student_session_id = result;
+                            SAGlobal.student_session_id = tempSessionID;
 
                             // Save username / password to local storage
                             SAUtils.writeKVStore(getApplicationContext(), "student_login", studentLogin);
@@ -85,21 +104,24 @@ public class LoginActivity extends AppCompatActivity {
                         } else {
                             // Failed
                             Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
+
+                            // Reset auth
+                            initAuth();
                         }
                     }
                 });
             }
         });
+
+        // Init auth
+        initAuth();
     }
 
     private void setUIBusy(Boolean busy) {
-        EditText txtUserLogin = (EditText) findViewById(R.id.txtStudentLogin);
-        EditText txtUserPassword = (EditText) findViewById(R.id.txtStudentPassword);
-        Button btnLogin = (Button) findViewById(R.id.btnLogin);
-
         // Enable / disable
-        txtUserLogin.setEnabled(!busy);
-        txtUserPassword.setEnabled(!busy);
+        txtStudentLogin.setEnabled(!busy);
+        txtStudentPassword.setEnabled(!busy);
+        txtCaptcha.setEnabled(!busy);
         btnLogin.setEnabled(!busy);
 
         // Spinner
@@ -109,5 +131,46 @@ public class LoginActivity extends AppCompatActivity {
         } else {
             pbBusy.setVisibility(View.INVISIBLE);
         }
+    }
+
+    private void initAuth() {
+        setUIBusy(true);
+        SchoolSystemModels.authInit(new ModelListener<AuthInitInfo>() {
+            @Override
+            public void onData(AuthInitInfo result, String message) {
+                setUIBusy(false);
+                if (result == null) {
+                    Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                // Assign temp session_id
+                tempSessionID = result.session_id;
+                // Check if captcha is required
+                if (result.captcha_enabled) {
+                    // Required, fetch captcha
+                    fetchCaptcha(tempSessionID);
+                } else {
+                    EditText txtCaptcha = (EditText) findViewById(R.id.txtCaptcha);
+                    txtCaptcha.setHint("无需验证码");
+                    txtCaptcha.setEnabled(false);
+                }
+            }
+        });
+    }
+
+    private void fetchCaptcha(String session_id) {
+        setUIBusy(true);
+        SchoolSystemModels.authCaptcha(session_id, new ModelListener<Bitmap>() {
+            @Override
+            public void onData(Bitmap result, String message) {
+                setUIBusy(false);
+                if (result == null) {
+                    Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                imgCaptcha.setImageBitmap(result);
+            }
+        });
     }
 }

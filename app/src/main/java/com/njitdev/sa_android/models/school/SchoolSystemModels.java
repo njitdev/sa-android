@@ -18,9 +18,13 @@
 
 package com.njitdev.sa_android.models.school;
 
+import android.graphics.Bitmap;
+import android.widget.ImageView;
+
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.njitdev.sa_android.utils.ModelListener;
 import com.njitdev.sa_android.utils.SAConfig;
@@ -39,11 +43,64 @@ import java.util.Map;
 public class SchoolSystemModels {
     private static String baseURL = SAConfig.baseURL + "/school/" + SAConfig.schoolIdentifier;
 
+    // Authentication - initialization
+    public static void authInit(final ModelListener<AuthInitInfo> listener) {
+        JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET, baseURL + "/auth/init", null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    JSONObject result = response.getJSONObject("result");
+
+                    AuthInitInfo authInitInfo = new AuthInitInfo();
+                    authInitInfo.session_id = result.getString("session_id");
+                    authInitInfo.captcha_enabled = result.getBoolean("captcha_enabled");
+
+                    listener.onData(authInitInfo, "ok");
+                } catch (JSONException e) {
+                    listener.onData(null, "数据解析失败");
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                listener.onData(null, "连接学校服务器失败");
+            }
+        });
+        SAGlobal.sharedRequestQueue.add(req);
+    }
+
+    // Authentication - captcha
+    public static void authCaptcha(String session_id, final ModelListener<Bitmap> listener) {
+        // Build GET URL
+        // TODO: Find a better way
+        String url = baseURL + "/auth/captcha?session_id=";
+        try {
+            url += URLEncoder.encode(session_id, "UTF-8");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // Create ImageRequest, which automatically decodes image data
+        ImageRequest req = new ImageRequest(url, new Response.Listener<Bitmap>() {
+            @Override
+            public void onResponse(Bitmap response) {
+                listener.onData(response, "ok");
+            }
+        }, 0, 0, ImageView.ScaleType.CENTER, Bitmap.Config.ARGB_4444, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                listener.onData(null, "获取验证码失败");
+            }
+        });
+        SAGlobal.sharedRequestQueue.add(req);
+    }
+
     // Authentication - submit
-    public static void submitAuthInfo(String installation_id, String student_login, String student_password, String captcha, final ModelListener<String> listener) {
+    public static void authSubmit(String installation_id, String session_id, String student_login, String student_password, String captcha, final ModelListener<String> listener) {
         // Prepare parameters
         Map<String, String> map = new HashMap<>();
         map.put("installation_id", installation_id);
+        map.put("session_id", session_id);
         map.put("student_login", student_login);
         map.put("student_password", student_password);
         map.put("captcha", captcha); // Optional
