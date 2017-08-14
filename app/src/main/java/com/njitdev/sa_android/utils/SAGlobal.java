@@ -24,12 +24,16 @@ import com.android.volley.RequestQueue;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
 import com.njitdev.sa_android.R;
+import com.njitdev.sa_android.models.school.ClassSchedule;
+
+import java.util.List;
 
 public class SAGlobal {
     public static RequestQueue sharedRequestQueue;
     public static String installation_id;
     public static String student_session_id;
     public static int current_week_in_term;
+    public static List<List<ClassSchedule>> mClassSchedule;
 
     // Google Analytics
     private static GoogleAnalytics analytics;

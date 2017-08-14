@@ -37,6 +37,7 @@ import android.widget.Toast;
 
 import com.njitdev.sa_android.R;
 import com.njitdev.sa_android.announcements.AnnouncementsActivity;
+import com.njitdev.sa_android.courseschedule.CourseScheduleActivity;
 import com.njitdev.sa_android.library.LibraryActivity;
 import com.njitdev.sa_android.login.LoginActivity;
 import com.njitdev.sa_android.messageboard.MessageBoardActivity;
@@ -57,7 +58,7 @@ public class HomeActivity extends AppCompatActivity {
 
     // School system data of current session
     private StudentBasicInfo mStudentBasicInfo;
-    private List<List<ClassSchedule>> mClassSchedule;
+   // private List<List<ClassSchedule>> mClassSchedule;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,6 +114,7 @@ public class HomeActivity extends AppCompatActivity {
                         break;
                     case 1:
                         // TODO: Class schedule
+                        startActivity(new Intent(HomeActivity.this, CourseScheduleActivity.class));
                         break;
                     case 2:
                         // TODO: Grades
@@ -199,7 +201,7 @@ public class HomeActivity extends AppCompatActivity {
                     if (result == null) {
                         Toast.makeText(HomeActivity.this, message, Toast.LENGTH_SHORT).show();
                     } else {
-                        mClassSchedule = result;
+                        SAGlobal.mClassSchedule = result;
                     }
                 }
             });
