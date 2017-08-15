@@ -33,10 +33,10 @@ public class CourseScheduleActivity extends AppCompatActivity {
         initListView();
     }
 
-    private void populateClassScheduleList(){
+    private void populateClassScheduleList() {
         mClassScheduleList = new LinkedList<>();
-            for(int i = 0; i < SAGlobal.mClassSchedule.size(); i++){
-            for(int j = 0; j < SAGlobal.mClassSchedule.get(i).size(); j++){
+            for(int i = 0; i < SAGlobal.mClassSchedule.size(); i++) {
+            for(int j = 0; j < SAGlobal.mClassSchedule.get(i).size(); j++) {
                 mClassScheduleList.add(SAGlobal.mClassSchedule.get(i).get(j));
             }
         }
@@ -51,7 +51,7 @@ public class CourseScheduleActivity extends AppCompatActivity {
 
     }
 
-    class ClassScheduleAdapter extends ArrayAdapter<ClassSchedule>{
+    class ClassScheduleAdapter extends ArrayAdapter<ClassSchedule> {
 
         private Context mContext;
         private int mResource;
@@ -64,7 +64,7 @@ public class CourseScheduleActivity extends AppCompatActivity {
             this.mClassSchedules = classSchedules;
         }
 
-        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent){
+        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
             if (convertView == null) {
                 convertView = LayoutInflater.from(mContext).inflate(mResource, parent, false);
             }
@@ -76,10 +76,10 @@ public class CourseScheduleActivity extends AppCompatActivity {
 
             ClassSchedule classSchedule = mClassSchedules.get(position);
 
-            TVclassInDay.setText(classSchedule.getClasses_in_day());
-            TVclassTitle.setText(classSchedule.getTitle());
-            TVclassInstructor.setText(classSchedule.getInstructor());
-            TVclassLocation.setText(classSchedule.getLocation());
+            TVclassInDay.setText(classSchedule.classes_in_day);
+            TVclassTitle.setText(classSchedule.title);
+            TVclassInstructor.setText(classSchedule.instructor);
+            TVclassLocation.setText(classSchedule.location);
 
             return convertView;
         }

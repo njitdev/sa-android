@@ -19,67 +19,11 @@
 package com.njitdev.sa_android.models.school;
 
 public class ClassSchedule {
-    private int week;
-    private int day_of_week;
-    private String classes_in_day;
-    private String title;
-    private String instructor;
-    private String location;
-    private String type;
-
-    public int getWeek() {
-        return week;
-    }
-
-    public int getDay_of_week() {
-        return day_of_week;
-    }
-
-    public String getClasses_in_day() {
-        return classes_in_day;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getInstructor() {
-        return instructor;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setWeek(int week) {
-        this.week = week;
-    }
-
-    public void setDay_of_week(int day_of_week) {
-        this.day_of_week = day_of_week;
-    }
-
-    public void setClasses_in_day(String classes_in_day) {
-        this.classes_in_day = classes_in_day;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void setInstructor(String instructor) {
-        this.instructor = instructor;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
+    public int week;
+    public int day_of_week;
+    public String classes_in_day;
+    public String title;
+    public String instructor;
+    public String location;
+    public String type;
 }
