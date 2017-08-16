@@ -220,16 +220,16 @@ public class SchoolSystemModels {
                         for (int i = 0; i < jsonClassesOfWeek.length(); i++) {
                             JSONObject jsonClassSchedule = jsonClassesOfWeek.getJSONObject(i);
                             ClassSchedule classSchedule = new ClassSchedule();
-                            classSchedule.setWeek(jsonClassSchedule.getInt("week"));
-                            classSchedule.setDay_of_week(jsonClassSchedule.getInt("day_of_week"));
-                            classSchedule.setClasses_in_day(jsonClassSchedule.getString("classes_in_day"));
-                            classSchedule.setTitle(jsonClassSchedule.getString("title"));
-                            classSchedule.setInstructor(jsonClassSchedule.getString("instructor"));
-                            classSchedule.setLocation(jsonClassSchedule.getString("location"));
+                            classSchedule.week = jsonClassSchedule.getInt("week");
+                            classSchedule.day_of_week = jsonClassSchedule.getInt("day_of_week");
+                            classSchedule.classes_in_day = jsonClassSchedule.getString("classes_in_day");
+                            classSchedule.title = jsonClassSchedule.getString("title");
+                            classSchedule.instructor = jsonClassSchedule.getString("instructor");
+                            classSchedule.location = jsonClassSchedule.getString("location");
 
                             // Optional fields
                             if (jsonClassSchedule.has("type") || !jsonClassSchedule.isNull("type"))
-                                classSchedule.setType(jsonClassSchedule.getString("type"));
+                                classSchedule.type = jsonClassSchedule.getString("type");
 
                             classesOfWeek.add(classSchedule);
                         }
