@@ -32,6 +32,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -90,6 +91,19 @@ public class HomeActivity extends AppCompatActivity {
 
         // Update data
         autoUpdateData();
+    }
+
+    private void setUIBusy(Boolean busy) {
+        ListView listView = (ListView) findViewById(R.id.listView);
+        ProgressBar pbBusy = (ProgressBar) findViewById(R.id.pbBusy);
+
+        listView.setEnabled(!busy);
+
+        if (busy) {
+            pbBusy.setVisibility(View.VISIBLE);
+        } else {
+            pbBusy.setVisibility(View.INVISIBLE);
+        }
     }
 
     // Create main menu
@@ -181,10 +195,13 @@ public class HomeActivity extends AppCompatActivity {
             // Copy string
             mLastSessionID = new String(SAGlobal.student_session_id);
 
+            setUIBusy(true);
+
             // Fetch basic info
             SchoolSystemModels.studentBasicInfo(SAGlobal.student_session_id, null, new ModelListener<StudentBasicInfo>() {
                 @Override
                 public void onData(StudentBasicInfo result, String message) {
+                    setUIBusy(false);
                     if (result == null) {
                         Toast.makeText(HomeActivity.this, message, Toast.LENGTH_SHORT).show();
                     } else {
