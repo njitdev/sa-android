@@ -189,7 +189,7 @@ public class SchoolSystemModels {
     }
 
     // Fetch ClassSchedule
-     public static void fetchClassSchedule(String session_id, final ModelListener<List<List<ClassSchedule>>> listener) {
+    public static void fetchClassSchedule(String session_id, final ModelListener<List<List<ClassSchedule>>> listener) {
         // Build GET URL
         String url = baseURL + "/class/term?session_id=";
         try {
@@ -207,7 +207,7 @@ public class SchoolSystemModels {
                     JSONArray jsonClasses = jsonResult.getJSONArray("classes");
 
                     // TODO: find a better way
-                    SAGlobal.current_week_in_term = jsonResult.getInt("current_week");
+                    SAGlobal.currentWeekNumber = jsonResult.getInt("current_week");
 
                     // populate result
                     List<List<ClassSchedule>> classes = new ArrayList<>();

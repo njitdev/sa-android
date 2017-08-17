@@ -29,19 +29,19 @@ import com.njitdev.sa_android.models.school.ClassSchedule;
 import java.util.List;
 
 public class SAGlobal {
+    static String installationID;
     public static RequestQueue sharedRequestQueue;
-    public static String installation_id;
-    public static String student_session_id;
-    public static int current_week_in_term;
-    public static List<List<ClassSchedule>> mClassSchedule;
+    public static String studentSessionID;
+
+    public static int currentWeekNumber;
+    public static List<List<ClassSchedule>> dataClassSchedule;
 
     // Google Analytics
-    private static GoogleAnalytics analytics;
     private static Tracker tracker;
 
-    synchronized public static Tracker getGATracker(Context context) {
+    synchronized static Tracker getGATracker(Context context) {
         if (tracker == null) {
-            analytics = GoogleAnalytics.getInstance(context);
+            GoogleAnalytics analytics = GoogleAnalytics.getInstance(context);
             tracker = analytics.newTracker(R.xml.ga_app_tracker);
         }
         return tracker;
