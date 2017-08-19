@@ -78,9 +78,9 @@ public class LibraryActivity extends AppCompatActivity {
                     // Set busy
                     setUIBusy(true);
 
-                    LibraryModels.search(txtKeyword.getText().toString(), new ModelListener<ArrayList<Book>>() {
+                    LibraryModels.search(txtKeyword.getText().toString(), new ModelListener<List<Book>>() {
                         @Override
-                        public void onData(ArrayList<Book> result, String message) {
+                        public void onData(List<Book> result, String message) {
 
                             // Set not busy
                             setUIBusy(false);
