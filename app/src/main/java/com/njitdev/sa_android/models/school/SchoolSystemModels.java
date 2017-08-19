@@ -251,9 +251,8 @@ public class SchoolSystemModels {
         SAGlobal.sharedRequestQueue.add(r);
     }
 
-    // Fetch Grade
+    // Fetch grades
     public static void fetchGrade(String session_id, final ModelListener<List<GradeItem>> listener) {
-
         // Build GET URL
         String url = baseURL + "/grades?session_id=";
         try {
@@ -268,10 +267,11 @@ public class SchoolSystemModels {
             public void onResponse(JSONObject response) {
                 List<GradeItem> result = new ArrayList<>();
                 try {
-                    JSONArray grade = response.getJSONArray("result");
-                    for (int i = 0; i < grade.length(); i++) {
-                        JSONObject jsonGrade = grade.getJSONObject(i);
+                    JSONArray jsonGrades = response.getJSONArray("result");
+                    for (int i = 0; i < jsonGrades.length(); i++) {
+                        JSONObject jsonGrade = jsonGrades.getJSONObject(i);
                         GradeItem gradeItem = new GradeItem();
+
                         gradeItem.course_name = jsonGrade.getString("course_name");
                         gradeItem.score = jsonGrade.getString("score");
 
@@ -291,6 +291,7 @@ public class SchoolSystemModels {
                             gradeItem.grade_point = jsonGrade.getString("grade_point");
                         if (jsonGrade.has("exam_type") && !jsonGrade.isNull("exam_type"))
                             gradeItem.exam_type = jsonGrade.getString("exam_type");
+
                         result.add(gradeItem);
                     }
                     listener.onData(result, "OK");

@@ -31,12 +31,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class AnnouncementModels {
     private static String baseURL = SAConfig.baseURL + "/school/" + SAConfig.schoolIdentifier + "/announcements";
     private static String articleURL = baseURL + "/article";
 
-    public static void fetchArticleList(int category, final ModelListener<ArrayList<Article>> listener) {
+    public static void fetchArticleList(int category, final ModelListener<List<Article>> listener) {
         JsonObjectRequest r = new JsonObjectRequest(Request.Method.GET, baseURL + "?category=" + category, null,
                 new Response.Listener<JSONObject>() {
 
@@ -44,7 +45,7 @@ public class AnnouncementModels {
                     public void onResponse(JSONObject response) {
                         try {
                             JSONArray result = response.getJSONArray("result");
-                            ArrayList<Article> list = new ArrayList<>();
+                            List<Article> list = new ArrayList<>();
 
                             for (int i = 0; i < result.length(); i++) {
                                 JSONObject object = result.getJSONObject(i);
