@@ -250,4 +250,60 @@ public class SchoolSystemModels {
         });
         SAGlobal.sharedRequestQueue.add(r);
     }
+
+    // Fetch Grade
+    public static void fetchGrade(String session_id, final ModelListener<ArrayList<GradeItem>> listener) {
+
+        // Build GET URL
+        String url = baseURL + "/grades?session_id=";
+        try {
+            url += URLEncoder.encode(session_id, "UTF-8");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // Make request
+        JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                ArrayList<GradeItem> result = new ArrayList<>();
+                try {
+                    JSONArray grade = response.getJSONArray("result");
+                    for (int i = 0; i < grade.length(); i++) {
+                        JSONObject jsonGrade = grade.getJSONObject(i);
+                        GradeItem gradeItem = new GradeItem();
+                        gradeItem.course_name = jsonGrade.getString("course_name");
+                        gradeItem.score = jsonGrade.getString("score");
+
+                        if (jsonGrade.has("course_id") && !jsonGrade.isNull("course_id"))
+                            gradeItem.course_id = jsonGrade.getString("course_id");
+                        if (jsonGrade.has("course_category") && !jsonGrade.isNull("course_category"))
+                            gradeItem.course_category = jsonGrade.getString("course_category");
+                        if (jsonGrade.has("course_isrequired") && !jsonGrade.isNull("course_isrequired"))
+                            gradeItem.course_isrequired = jsonGrade.getString("course_isrequired");
+                        if (jsonGrade.has("course_hours") && !jsonGrade.isNull("course_hours"))
+                            gradeItem.course_hours = jsonGrade.getString("course_hours");
+                        if (jsonGrade.has("term") && !jsonGrade.isNull("term"))
+                            gradeItem.term = jsonGrade.getString("term");
+                        if (jsonGrade.has("credits") && !jsonGrade.isNull("credits"))
+                            gradeItem.credits = jsonGrade.getString("credits");
+                        if (jsonGrade.has("grade_point") && !jsonGrade.isNull("grade_point"))
+                            gradeItem.grade_point = jsonGrade.getString("grade_point");
+                        if (jsonGrade.has("exam_type") && !jsonGrade.isNull("exam_type"))
+                            gradeItem.exam_type = jsonGrade.getString("exam_type");
+                        result.add(gradeItem);
+                    }
+                    listener.onData(result, "OK");
+                } catch (JSONException e) {
+                    listener.onData(null, "解析数据失败");
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                listener.onData(null, "连接学校服务器失败");
+            }
+        });
+        SAGlobal.sharedRequestQueue.add(req);
+    }
 }
