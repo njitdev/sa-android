@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="70dp">
+
+
+    <TextView
+        android:id="@+id/lblSessions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
+        android:text="10, 11, 12"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.5" />
+
+    <View
+        android:id="@+id/viewDivider"
+        android:layout_width="1dp"
+        android:layout_height="42dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
+        android:background="#AAAAAA"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/lblSessions"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/lblTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="8dp"
+        android:text="Title"
+        app:layout_constraintLeft_toRightOf="@+id/viewDivider"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/viewDivider" />
+
+    <TextView
+        android:id="@+id/lblInstructor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Instructor"
+        app:layout_constraintBottom_toBottomOf="@+id/viewDivider"
+        app:layout_constraintLeft_toLeftOf="@+id/lblTitle" />
+
+    <TextView
+        android:id="@+id/lblLocation"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:text="Location"
+        app:layout_constraintBottom_toBottomOf="@+id/viewDivider"
+        app:layout_constraintLeft_toRightOf="@+id/lblInstructor"
+        app:layout_constraintRight_toRightOf="@+id/lblTitle" />
+
+</android.support.constraint.ConstraintLayout>

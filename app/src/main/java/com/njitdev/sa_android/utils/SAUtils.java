@@ -67,17 +67,17 @@ public class SAUtils {
         return sp.getString(key, null);
     }
 
-    // Get installation_id (generate if not already)
+    // Get installationID (generate if not already)
     public static String installationID(Context context) {
-        if (SAGlobal.installation_id == null) {
-            String uuid = readKVStore(context, "installation_id");
+        if (SAGlobal.installationID == null) {
+            String uuid = readKVStore(context, "installationID");
             if (uuid == null) {
                 uuid = UUID.randomUUID().toString().replaceAll("-", "").substring(0, 20);
-                writeKVStore(context, "installation_id", uuid);
+                writeKVStore(context, "installationID", uuid);
             }
-            SAGlobal.installation_id = uuid;
+            SAGlobal.installationID = uuid;
         }
-        return SAGlobal.installation_id;
+        return SAGlobal.installationID;
     }
 
     // Get device model

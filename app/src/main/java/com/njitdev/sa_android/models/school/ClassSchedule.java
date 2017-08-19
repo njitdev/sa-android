@@ -19,11 +19,11 @@
 package com.njitdev.sa_android.models.school;
 
 public class ClassSchedule {
-    int week;
-    int day_of_week;
-    String classes_in_day;
-    String title;
-    String instructor;
-    String location;
-    String type;
+    public int week;
+    public int day_of_week;
+    public String classes_in_day;
+    public String title;
+    public String instructor;
+    public String location;
+    public String type;
 }

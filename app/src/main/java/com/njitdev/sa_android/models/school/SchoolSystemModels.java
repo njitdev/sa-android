@@ -207,7 +207,7 @@ public class SchoolSystemModels {
                     JSONArray jsonClasses = jsonResult.getJSONArray("classes");
 
                     // TODO: find a better way
-                    SAGlobal.current_week_in_term = jsonResult.getInt("current_week");
+                    SAGlobal.currentWeekNumber = jsonResult.getInt("current_week");
 
                     // populate result
                     List<List<ClassSchedule>> classes = new ArrayList<>();

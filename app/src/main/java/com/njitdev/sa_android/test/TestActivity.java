@@ -56,7 +56,7 @@ public class TestActivity extends AppCompatActivity {
 
         populateListView();
 
-        SchoolSystemModels.fetchClassSchedule(SAGlobal.student_session_id, new ModelListener<List<List<ClassSchedule>>>() {
+        SchoolSystemModels.fetchClassSchedule(SAGlobal.studentSessionID, new ModelListener<List<List<ClassSchedule>>>() {
             @Override
             public void onData(List<List<ClassSchedule>> result, String message) {
                 if (result == null) {
@@ -64,11 +64,11 @@ public class TestActivity extends AppCompatActivity {
                     return;
                 }
                 Log.d("sa-api", "" + result.size());
-                Log.d("sa-api", "current_week_in_term " + SAGlobal.current_week_in_term);
+                Log.d("sa-api", "currentWeekNumber " + SAGlobal.currentWeekNumber);
             }
         });
 
-        SchoolSystemModels.fetchGrade(SAGlobal.student_session_id, new ModelListener<List<GradeItem>>() {
+        SchoolSystemModels.fetchGrade(SAGlobal.studentSessionID, new ModelListener<List<GradeItem>>() {
             @Override
             public void onData(List<GradeItem> result, String message) {
                 if (result == null) {

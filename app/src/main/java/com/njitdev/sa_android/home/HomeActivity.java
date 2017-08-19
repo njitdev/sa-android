@@ -38,6 +38,7 @@ import android.widget.Toast;
 
 import com.njitdev.sa_android.R;
 import com.njitdev.sa_android.announcements.AnnouncementsActivity;
+import com.njitdev.sa_android.classschedule.ClassScheduleActivity;
 import com.njitdev.sa_android.library.LibraryActivity;
 import com.njitdev.sa_android.login.LoginActivity;
 import com.njitdev.sa_android.messageboard.MessageBoardActivity;
@@ -58,7 +59,6 @@ public class HomeActivity extends AppCompatActivity {
 
     // School system data of current session
     private StudentBasicInfo mStudentBasicInfo;
-    private List<List<ClassSchedule>> mClassSchedule;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,7 +86,7 @@ public class HomeActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         TextView lblSessionID = (TextView) findViewById(R.id.lblSessionID);
-        lblSessionID.setText("session_id: " + SAGlobal.student_session_id);
+        lblSessionID.setText("session_id: " + SAGlobal.studentSessionID);
 
         // Update data
         autoUpdateData();
@@ -126,7 +126,7 @@ public class HomeActivity extends AppCompatActivity {
                         startActivity(new Intent(HomeActivity.this, LoginActivity.class));
                         break;
                     case 1:
-                        // TODO: Class schedule
+                        startActivity(new Intent(HomeActivity.this, ClassScheduleActivity.class));
                         break;
                     case 2:
                         // TODO: Grades
@@ -189,14 +189,14 @@ public class HomeActivity extends AppCompatActivity {
     private void autoUpdateData() {
 
         // If session changed
-        if (SAGlobal.student_session_id != null && !SAGlobal.student_session_id.equals(mLastSessionID)) {
+        if (SAGlobal.studentSessionID != null && !SAGlobal.studentSessionID.equals(mLastSessionID)) {
             // Copy string
-            mLastSessionID = new String(SAGlobal.student_session_id);
+            mLastSessionID = new String(SAGlobal.studentSessionID);
 
             setUIBusy(true);
 
             // Fetch basic info
-            SchoolSystemModels.studentBasicInfo(SAGlobal.student_session_id, null, new ModelListener<StudentBasicInfo>() {
+            SchoolSystemModels.studentBasicInfo(SAGlobal.studentSessionID, null, new ModelListener<StudentBasicInfo>() {
                 @Override
                 public void onData(StudentBasicInfo result, String message) {
                     setUIBusy(false);
@@ -210,13 +210,13 @@ public class HomeActivity extends AppCompatActivity {
             });
 
             // Fetch class schedule
-            SchoolSystemModels.fetchClassSchedule(SAGlobal.student_session_id, new ModelListener<List<List<ClassSchedule>>>() {
+            SchoolSystemModels.fetchClassSchedule(SAGlobal.studentSessionID, new ModelListener<List<List<ClassSchedule>>>() {
                 @Override
                 public void onData(List<List<ClassSchedule>> result, String message) {
                     if (result == null) {
                         Toast.makeText(HomeActivity.this, message, Toast.LENGTH_SHORT).show();
                     } else {
-                        mClassSchedule = result;
+                        SAGlobal.dataClassSchedule = result;
                     }
                 }
             });

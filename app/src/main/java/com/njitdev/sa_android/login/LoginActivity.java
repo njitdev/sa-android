@@ -109,9 +109,9 @@ public class LoginActivity extends AppCompatActivity {
                             // Succeeded
                             // Save session_id globally in memory
                             if (result.session_id != null) {
-                                SAGlobal.student_session_id = result.session_id;
+                                SAGlobal.studentSessionID = result.session_id;
                             } else {
-                                SAGlobal.student_session_id = tempSessionID;
+                                SAGlobal.studentSessionID = tempSessionID;
                             }
 
                             // Save username / password to local storage
