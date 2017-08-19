@@ -116,9 +116,9 @@ public class AnnouncementsActivity extends AppCompatActivity {
         mAdapter.notifyDataSetChanged();
 
         setBusy(true);
-        AnnouncementModels.fetchArticleList(category, new ModelListener<ArrayList<Article>>() {
+        AnnouncementModels.fetchArticleList(category, new ModelListener<List<Article>>() {
             @Override
-            public void onData(ArrayList<Article> result, String message) {
+            public void onData(List<Article> result, String message) {
                 setBusy(false);
                 if (result != null) {
                     mArticles.addAll(result);
