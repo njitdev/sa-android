@@ -31,16 +31,17 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class LibraryModels {
     private static String baseURL = SAConfig.baseURL + "/library/" + SAConfig.schoolIdentifier;
 
-    public static void search(String keyword, final ModelListener<ArrayList<Book>> listener) {
+    public static void search(String keyword, final ModelListener<List<Book>> listener) {
         JsonObjectRequest r = new JsonObjectRequest(Request.Method.GET, baseURL + "/search?keyword=" + keyword, null, new Response.Listener<JSONObject>() {
 
             @Override
             public void onResponse(JSONObject response) {
-                ArrayList<Book> result = new ArrayList<>();
+                List<Book> result = new ArrayList<>();
                 try {
                     JSONArray books = response.getJSONArray("result");
                     for (int i = 0; i < books.length(); i++) {
@@ -78,12 +79,12 @@ public class LibraryModels {
         SAGlobal.sharedRequestQueue.add(r);
     }
 
-    public static void details(String bookId, final ModelListener<ArrayList<BookInventory>> listener) {
+    public static void details(String bookId, final ModelListener<List<BookInventory>> listener) {
         JsonObjectRequest r = new JsonObjectRequest(Request.Method.GET, baseURL + "/details?book_id=" + bookId, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 // Parse response here
-                ArrayList<BookInventory> result = new ArrayList<>();
+                List<BookInventory> result = new ArrayList<>();
                 try {
                     JSONArray bookInventories = response.getJSONObject("result").getJSONArray("inventory");
                     for (int i = 0; i < bookInventories.length(); i++) {

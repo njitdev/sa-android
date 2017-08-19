@@ -68,9 +68,9 @@ public class TestActivity extends AppCompatActivity {
             }
         });
 
-        SchoolSystemModels.fetchGrade(SAGlobal.student_session_id, new ModelListener<ArrayList<GradeItem>>() {
+        SchoolSystemModels.fetchGrade(SAGlobal.student_session_id, new ModelListener<List<GradeItem>>() {
             @Override
-            public void onData(ArrayList<GradeItem> result, String message) {
+            public void onData(List<GradeItem> result, String message) {
                 if (result == null) {
                     Toast.makeText(TestActivity.this, message, Toast.LENGTH_SHORT).show();
                     return;

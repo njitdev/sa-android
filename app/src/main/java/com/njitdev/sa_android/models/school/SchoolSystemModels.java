@@ -252,7 +252,7 @@ public class SchoolSystemModels {
     }
 
     // Fetch Grade
-    public static void fetchGrade(String session_id, final ModelListener<ArrayList<GradeItem>> listener) {
+    public static void fetchGrade(String session_id, final ModelListener<List<GradeItem>> listener) {
 
         // Build GET URL
         String url = baseURL + "/grades?session_id=";
@@ -266,7 +266,7 @@ public class SchoolSystemModels {
         JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                ArrayList<GradeItem> result = new ArrayList<>();
+                List<GradeItem> result = new ArrayList<>();
                 try {
                     JSONArray grade = response.getJSONArray("result");
                     for (int i = 0; i < grade.length(); i++) {

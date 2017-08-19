@@ -69,9 +69,9 @@ public class LibraryBookDetailsActivity extends AppCompatActivity {
         String book_inventory = getIntent().getStringExtra("book_inventory");
         String book_available = getIntent().getStringExtra("book_available");
 
-        LibraryModels.details(book_id, new ModelListener<ArrayList<BookInventory>>() {
+        LibraryModels.details(book_id, new ModelListener<List<BookInventory>>() {
             @Override
-            public void onData(ArrayList<BookInventory> result, String message) {
+            public void onData(List<BookInventory> result, String message) {
                 // Hide ProgressBar
                 pbBusy.setVisibility(View.INVISIBLE);
 
