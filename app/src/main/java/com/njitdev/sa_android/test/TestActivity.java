@@ -68,7 +68,7 @@ public class TestActivity extends AppCompatActivity {
             }
         });
 
-        SchoolSystemModels.fetchGrade(SAGlobal.student_session_id, new ModelListener<List<GradeItem>>() {
+        SchoolSystemModels.fetchGrade(SAGlobal.studentSessionID, new ModelListener<List<GradeItem>>() {
             @Override
             public void onData(List<GradeItem> result, String message) {
                 if (result == null) {
