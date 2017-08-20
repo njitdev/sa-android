@@ -43,6 +43,7 @@ import com.njitdev.sa_android.library.LibraryActivity;
 import com.njitdev.sa_android.login.LoginActivity;
 import com.njitdev.sa_android.messageboard.MessageBoardActivity;
 import com.njitdev.sa_android.models.school.ClassSchedule;
+import com.njitdev.sa_android.models.school.GradeItem;
 import com.njitdev.sa_android.models.school.SchoolSystemModels;
 import com.njitdev.sa_android.models.school.StudentBasicInfo;
 import com.njitdev.sa_android.test.TestActivity;
@@ -217,6 +218,18 @@ public class HomeActivity extends AppCompatActivity {
                         Toast.makeText(HomeActivity.this, message, Toast.LENGTH_SHORT).show();
                     } else {
                         SAGlobal.dataClassSchedule = result;
+                    }
+                }
+            });
+
+            // Fetch grades
+            SchoolSystemModels.fetchGrades(SAGlobal.studentSessionID, new ModelListener<List<GradeItem>>() {
+                @Override
+                public void onData(List<GradeItem> result, String message) {
+                    if (result == null) {
+                        Toast.makeText(HomeActivity.this, message, Toast.LENGTH_SHORT).show();
+                    } else {
+                        SAGlobal.dataGrades = result;
                     }
                 }
             });

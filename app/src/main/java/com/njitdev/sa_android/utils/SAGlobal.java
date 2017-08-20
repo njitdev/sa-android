@@ -25,6 +25,7 @@ import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
 import com.njitdev.sa_android.R;
 import com.njitdev.sa_android.models.school.ClassSchedule;
+import com.njitdev.sa_android.models.school.GradeItem;
 
 import java.util.List;
 
@@ -35,6 +36,7 @@ public class SAGlobal {
 
     public static int currentWeekNumber;
     public static List<List<ClassSchedule>> dataClassSchedule;
+    public static List<GradeItem> dataGrades;
 
     // Google Analytics
     private static Tracker tracker;
