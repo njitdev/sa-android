@@ -252,7 +252,7 @@ public class SchoolSystemModels {
     }
 
     // Fetch grades
-    public static void fetchGrade(String session_id, final ModelListener<List<GradeItem>> listener) {
+    public static void fetchGrades(String session_id, final ModelListener<List<GradeItem>> listener) {
         // Build GET URL
         String url = baseURL + "/grades?session_id=";
         try {
