@@ -20,14 +20,12 @@ package com.njitdev.sa_android.classschedule;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,14 +34,15 @@ import com.njitdev.sa_android.R;
 import com.njitdev.sa_android.models.school.ClassSchedule;
 import com.njitdev.sa_android.utils.SAGlobal;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ClassScheduleActivity extends AppCompatActivity {
 
-    private ClassScheduleAdapter mAdapter;
     private List<List<ClassSchedule>> mClassSchedule;
-    private List<ClassSchedule> mClassScheduleList;
+    private List<Object> mSectionedClassScheduleList;
+    private int mSelectedWeekNumber;
+    private String[] mWeekDays = {"周一", "周二", "周三", "周四", "周五", "周六", "周日"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +51,8 @@ public class ClassScheduleActivity extends AppCompatActivity {
 
         // Process data
         mClassSchedule = SAGlobal.dataClassSchedule;
+        mSelectedWeekNumber = SAGlobal.currentWeekNumber;
+
         if (mClassSchedule == null) {
             Toast.makeText(this, "DEBUG: No Class Data", Toast.LENGTH_SHORT).show();
         } else {
@@ -60,53 +61,118 @@ public class ClassScheduleActivity extends AppCompatActivity {
         }
     }
 
-    // TODO: Group by day
+    // Generate contents for mSectionedClassScheduleList, as
+    // Section header string, ClassSchedule objects, ...
+    // e.g. "周一", ClassSchedule, ClassSchedule, "周二", ClassSchedule, ...
     private void populateClassScheduleList() {
-        mClassScheduleList = new LinkedList<>();
-        for (int i = 0; i < mClassSchedule.size(); i++) {
-            for (int j = 0; j < mClassSchedule.get(i).size(); j++) {
-                mClassScheduleList.add(mClassSchedule.get(i).get(j));
+        mSectionedClassScheduleList = new ArrayList<>();
+
+        // Create a list with 7 empty lists
+        List<List<ClassSchedule>> groupedClasses = new ArrayList<>();
+        for (int i = 0; i < 7; i++) {
+            groupedClasses.add(new ArrayList<ClassSchedule>());
+        }
+
+        // Get classes of selected week and fill each list in groupedClasses with classes of each day
+        List<ClassSchedule> weekClasses = mClassSchedule.get(mSelectedWeekNumber);
+        for (int i = 0; i < weekClasses.size(); i++) {
+            ClassSchedule c = weekClasses.get(i);
+            groupedClasses.get(c.day_of_week - 1).add(c);
+        }
+
+        // Fill mSectionedClassScheduleList as defined structure
+        for (int i = 0; i < groupedClasses.size(); i++) {
+            if (groupedClasses.get(i).size() != 0) {
+                mSectionedClassScheduleList.add(mWeekDays[i]);
+            }
+            for (int j = 0; j < groupedClasses.get(i).size(); j++) {
+                mSectionedClassScheduleList.add(groupedClasses.get(i).get(j));
             }
         }
     }
 
     private void initListView() {
         final ListView listView = (ListView) findViewById(R.id.listView);
-        mAdapter = new ClassScheduleAdapter(listView.getContext(), R.layout.list_item_class_schedule, mClassScheduleList);
-        listView.setAdapter(mAdapter);
+        listView.setAdapter(new ClassScheduleAdapterWithTitle(listView.getContext(), mSectionedClassScheduleList));
     }
 
-    private class ClassScheduleAdapter extends ArrayAdapter<ClassSchedule> {
+    private class ClassScheduleAdapterWithTitle extends BaseAdapter {
 
+        private final int CLASS_ITEM = 0;
+        private final int HEADER = 1;
+
+        List<Object> mList;
         private Context mContext;
-        private int mResource;
-        private List<ClassSchedule> mClassSchedules;
 
-        ClassScheduleAdapter(@NonNull Context context, @LayoutRes int resource, @NonNull List<ClassSchedule> classSchedules) {
-            super(context, resource, classSchedules);
-            this.mContext = context;
-            this.mResource = resource;
-            this.mClassSchedules = classSchedules;
+        ClassScheduleAdapterWithTitle(Context context, List<Object> list) {
+            mList = list;
+            mContext = context;
         }
 
+        @Override
+        public int getItemViewType(int position) {
+            if (mList.get(position) instanceof ClassSchedule) {
+                return CLASS_ITEM;
+            } else {
+                return HEADER;
+            }
+        }
+
+        @Override
+        public int getViewTypeCount() {
+            return 2;
+        }
+
+        @Override
+        public int getCount() {
+            return mList.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return mList.get(position);
+        }
+
+        @Override
+        public long getItemId(int i) {
+            return i;
+        }
+
+        @Override
         @NonNull
-        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+        public View getView(int position, @NonNull View convertView, @NonNull ViewGroup parent) {
             if (convertView == null) {
-                convertView = LayoutInflater.from(mContext).inflate(mResource, parent, false);
+                switch (getItemViewType(position)) {
+                    case CLASS_ITEM:
+                        convertView = LayoutInflater.from(mContext).inflate(R.layout.list_item_class_schedule, parent, false);
+                        break;
+
+                    case HEADER:
+                        convertView = LayoutInflater.from(mContext).inflate(R.layout.list_item_section_header, parent, false);
+                        break;
+                }
             }
 
-            TextView lblSessions = (TextView) convertView.findViewById(R.id.lblSessions);
-            TextView lblTitle = (TextView) convertView.findViewById(R.id.lblTitle);
-            TextView lblInstructor = (TextView) convertView.findViewById(R.id.lblInstructor);
-            TextView lblLocation = (TextView) convertView.findViewById(R.id.lblLocation);
+            switch (getItemViewType(position)) {
+                case CLASS_ITEM:
+                    TextView lblSessions = (TextView) convertView.findViewById(R.id.lblSessions);
+                    TextView lblTitle = (TextView) convertView.findViewById(R.id.lblTitle);
+                    TextView lblInstructor = (TextView) convertView.findViewById(R.id.lblInstructor);
+                    TextView lblLocation = (TextView) convertView.findViewById(R.id.lblLocation);
 
-            ClassSchedule classSchedule = mClassSchedules.get(position);
+                    ClassSchedule classSchedule = (ClassSchedule) mList.get(position);
 
-            lblSessions.setText(classSchedule.classes_in_day);
-            lblTitle.setText(classSchedule.title);
-            lblInstructor.setText(classSchedule.instructor);
-            lblLocation.setText(classSchedule.location);
+                    lblSessions.setText(classSchedule.classes_in_day);
+                    lblTitle.setText(classSchedule.title);
+                    lblInstructor.setText(classSchedule.instructor);
+                    lblLocation.setText(classSchedule.location);
+                    break;
 
+                case HEADER:
+                    TextView lblHeader = (TextView) convertView.findViewById(R.id.textView_classSchedule_header);
+                    lblHeader.setText((String) mList.get(position));
+                    break;
+            }
             return convertView;
         }
     }
