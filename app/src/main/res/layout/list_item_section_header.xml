@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="match_parent"
+              android:background="@color/colorSectionHeaderBackground"
+              android:orientation="vertical"
+              android:paddingBottom="4dp"
+              android:paddingLeft="14dp"
+              android:paddingTop="4dp">
 
     <TextView
         android:id="@+id/textView_classSchedule_header"

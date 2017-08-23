@@ -36,6 +36,8 @@ import org.json.JSONObject;
 
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -206,10 +208,10 @@ public class SchoolSystemModels {
                     JSONObject jsonResult = response.getJSONObject("result");
                     JSONArray jsonClasses = jsonResult.getJSONArray("classes");
 
-                    // TODO: find a better way
+                    // TODO: find a better way to store current week number
                     SAGlobal.currentWeekNumber = jsonResult.getInt("current_week");
 
-                    // populate result
+                    // Populate result
                     List<List<ClassSchedule>> classes = new ArrayList<>();
 
                     // Loop through all weeks
@@ -233,6 +235,15 @@ public class SchoolSystemModels {
 
                             classesOfWeek.add(classSchedule);
                         }
+
+                        // Sort classes by sections in day
+                        Collections.sort(classesOfWeek, new Comparator<ClassSchedule>() {
+                            @Override
+                            public int compare(ClassSchedule c1, ClassSchedule c2) {
+                                return c1.classes_in_day.compareTo(c2.classes_in_day);
+                            }
+                        });
+
                         classes.add(classesOfWeek);
                     }
                     listener.onData(classes, "ok");

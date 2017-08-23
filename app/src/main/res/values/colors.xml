@@ -5,4 +5,5 @@
     <color name="colorAccent">#448AFF</color>
     <color name="colorDarkGray">#333333</color>
     <color name="colorLightGray">#cccccc</color>
+    <color name="colorSectionHeaderBackground">#efefef</color>
 </resources>
