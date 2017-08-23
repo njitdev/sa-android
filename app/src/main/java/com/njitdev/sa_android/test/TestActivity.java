@@ -34,7 +34,6 @@ import com.njitdev.sa_android.models.school.SchoolSystemModels;
 import com.njitdev.sa_android.utils.ModelListener;
 import com.njitdev.sa_android.utils.SAGlobal;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class TestActivity extends AppCompatActivity {
@@ -68,7 +67,7 @@ public class TestActivity extends AppCompatActivity {
             }
         });
 
-        SchoolSystemModels.fetchGrade(SAGlobal.studentSessionID, new ModelListener<List<GradeItem>>() {
+        SchoolSystemModels.fetchGrades(SAGlobal.studentSessionID, new ModelListener<List<GradeItem>>() {
             @Override
             public void onData(List<GradeItem> result, String message) {
                 if (result == null) {
