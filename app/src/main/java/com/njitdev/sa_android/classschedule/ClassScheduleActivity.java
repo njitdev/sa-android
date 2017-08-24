@@ -99,7 +99,7 @@ public class ClassScheduleActivity extends AppCompatActivity {
                 return true;
 
             case R.id.menuItemWeekNumber:
-                return false;
+                return true;
         }
         return onOptionsItemSelected(item);
     }
