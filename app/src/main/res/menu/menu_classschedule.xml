@@ -5,6 +5,11 @@
       tools:context=".classschedule.ClassScheduleActivity">
 
 
+    <item
+        android:id="@+id/TextviewWeek"
+        android:actionViewClass="android.widget.TextView"
+        android:title="Disconected"
+        app:showAsAction="always"/>
 
     <item
         android:id="@+id/lastWeek"

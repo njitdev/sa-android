@@ -18,6 +18,7 @@
 
 package com.njitdev.sa_android.classschedule;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -63,17 +64,20 @@ public class ClassScheduleActivity extends AppCompatActivity {
             populateClassScheduleList();
             initListView();
         }
-
-        //ActionBar actionBar = getSupportActionBar();
-        //getSupportActionBar().setCustomView(R.layout.actionbar_classschedule);
-
-        //NavigationView n = (NavigationView) findViewById(R.layout.actionbar_classschedule);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_classschedule, menu);
         return super.onCreateOptionsMenu(menu);
+    }
+
+    //find textview and show weeknumber use textview: weekNumber
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        String weekNumber = "第" + mSelectedWeekNumber + "周";
+        menu.findItem(R.id.TextviewWeek).setTitle(weekNumber);
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
@@ -92,21 +96,22 @@ public class ClassScheduleActivity extends AppCompatActivity {
                 showNextWeekClassList();
                 return true;
 
+            case R.id.TextviewWeek:
+                return true;
+
         }
         return onOptionsItemSelected(item);
     }
 
     private void showLastWeekClassList() {
-        if (mSelectedWeekNumber <= 0) {
-            Toast.makeText(this, "this is the first week", Toast.LENGTH_SHORT);
-            initListView();
-            return;
-        }
         if (mClassSchedule == null) {
             Toast.makeText(this, "DEBUG: No Class Data", Toast.LENGTH_SHORT).show();
+        } else if (mSelectedWeekNumber <= 1) {
+            Toast.makeText(this, "已经是第一周啦", Toast.LENGTH_SHORT).show();
         } else {
             mSelectedWeekNumber--;
             populateClassScheduleList();
+            refreshActionBarMenu(this);
             initListView();
         }
     }
@@ -114,15 +119,19 @@ public class ClassScheduleActivity extends AppCompatActivity {
     private void showNextWeekClassList() {
         if (mClassSchedule == null) {
             Toast.makeText(this, "DEBUG: No Class Data", Toast.LENGTH_SHORT).show();
-        } else if (mSelectedWeekNumber >= mClassSchedule.size()) {
-            Toast.makeText(this, "this is the last week", Toast.LENGTH_SHORT);
-            initListView();
-            return;
+        } else if (mSelectedWeekNumber >= mClassSchedule.size() - 1) {
+            Toast.makeText(this, "19周是最后一周", Toast.LENGTH_SHORT).show();
         } else {
             mSelectedWeekNumber++;
+            refreshActionBarMenu(this);
             populateClassScheduleList();
             initListView();
         }
+    }
+
+    //refresh action bar with week number
+    private void refreshActionBarMenu(Activity activity) {
+        activity.invalidateOptionsMenu();
     }
 
     // Generate contents for mSectionedClassScheduleList, as
@@ -241,4 +250,5 @@ public class ClassScheduleActivity extends AppCompatActivity {
             return convertView;
         }
     }
+
 }
