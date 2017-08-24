@@ -21,8 +21,12 @@ package com.njitdev.sa_android.classschedule;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -59,6 +63,66 @@ public class ClassScheduleActivity extends AppCompatActivity {
             populateClassScheduleList();
             initListView();
         }
+
+        //ActionBar actionBar = getSupportActionBar();
+        //getSupportActionBar().setCustomView(R.layout.actionbar_classschedule);
+
+        //NavigationView n = (NavigationView) findViewById(R.layout.actionbar_classschedule);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_classschedule, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
+
+            case R.id.lastWeek:
+                showLastWeekClassList();
+                return true;
+
+            case R.id.nextWeek:
+                showNextWeekClassList();
+                return true;
+
+        }
+        return onOptionsItemSelected(item);
+    }
+
+    private void showLastWeekClassList() {
+        if (mSelectedWeekNumber <= 0) {
+            Toast.makeText(this, "this is the first week", Toast.LENGTH_SHORT);
+            initListView();
+            return;
+        }
+        if (mClassSchedule == null) {
+            Toast.makeText(this, "DEBUG: No Class Data", Toast.LENGTH_SHORT).show();
+        } else {
+            mSelectedWeekNumber--;
+            populateClassScheduleList();
+            initListView();
+        }
+    }
+
+    private void showNextWeekClassList() {
+        if (mClassSchedule == null) {
+            Toast.makeText(this, "DEBUG: No Class Data", Toast.LENGTH_SHORT).show();
+        } else if (mSelectedWeekNumber >= mClassSchedule.size()) {
+            Toast.makeText(this, "this is the last week", Toast.LENGTH_SHORT);
+            initListView();
+            return;
+        } else {
+            mSelectedWeekNumber++;
+            populateClassScheduleList();
+            initListView();
+        }
     }
 
     // Generate contents for mSectionedClassScheduleList, as
@@ -74,6 +138,7 @@ public class ClassScheduleActivity extends AppCompatActivity {
         }
 
         // Get classes of selected week and fill each list in groupedClasses with classes of each day
+        Log.d("weeknumber", "populateClassScheduleList: " + mSelectedWeekNumber);
         List<ClassSchedule> weekClasses = mClassSchedule.get(mSelectedWeekNumber);
         for (int i = 0; i < weekClasses.size(); i++) {
             ClassSchedule c = weekClasses.get(i);
