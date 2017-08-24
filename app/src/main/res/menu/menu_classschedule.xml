@@ -6,18 +6,18 @@
 
 
     <item
-        android:id="@+id/TextviewWeek"
+        android:id="@+id/menuItemWeekNumber"
         android:actionViewClass="android.widget.TextView"
-        android:title="Disconected"
+        android:title="WeekNumber"
         app:showAsAction="always"/>
 
     <item
-        android:id="@+id/lastWeek"
+        android:id="@+id/menuItemPreviousWeek"
         android:title="上周"
         app:showAsAction="always"/>
 
     <item
-        android:id="@+id/nextWeek"
+        android:id="@+id/menuItemNextWeek"
         android:title="下周"
         app:showAsAction="always"/>
 

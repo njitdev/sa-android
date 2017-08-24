@@ -24,7 +24,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -59,7 +58,11 @@ public class ClassScheduleActivity extends AppCompatActivity {
         mSelectedWeekNumber = SAGlobal.currentWeekNumber;
 
         if (mClassSchedule == null) {
-            Toast.makeText(this, "DEBUG: No Class Data", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "没有课程表数据，请先登录或更新数据", Toast.LENGTH_SHORT).show();
+            this.finish();
+        } else if (mClassSchedule.size() == 0) {
+            Toast.makeText(this, "课程表为空，请稍后更新数据", Toast.LENGTH_SHORT).show();
+            this.finish();
         } else {
             populateClassScheduleList();
             initListView();
@@ -72,43 +75,37 @@ public class ClassScheduleActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
-    //find textview and show weeknumber use textview: weekNumber
+    // Update week number in menu
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         String weekNumber = "第" + mSelectedWeekNumber + "周";
-        menu.findItem(R.id.TextviewWeek).setTitle(weekNumber);
+        menu.findItem(R.id.menuItemWeekNumber).setTitle(weekNumber);
         return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-
             case android.R.id.home:
                 NavUtils.navigateUpFromSameTask(this);
                 return true;
 
-            case R.id.lastWeek:
-                showLastWeekClassList();
+            case R.id.menuItemPreviousWeek:
+                showPreviousWeek();
                 return true;
 
-            case R.id.nextWeek:
-                showNextWeekClassList();
+            case R.id.menuItemNextWeek:
+                showNextWeek();
                 return true;
 
-            case R.id.TextviewWeek:
-                return true;
-
+            case R.id.menuItemWeekNumber:
+                return false;
         }
         return onOptionsItemSelected(item);
     }
 
-    private void showLastWeekClassList() {
-        if (mClassSchedule == null) {
-            Toast.makeText(this, "DEBUG: No Class Data", Toast.LENGTH_SHORT).show();
-        } else if (mSelectedWeekNumber <= 1) {
-            Toast.makeText(this, "已经是第一周啦", Toast.LENGTH_SHORT).show();
-        } else {
+    private void showPreviousWeek() {
+        if (mSelectedWeekNumber > 1) {
             mSelectedWeekNumber--;
             populateClassScheduleList();
             refreshActionBarMenu(this);
@@ -116,11 +113,9 @@ public class ClassScheduleActivity extends AppCompatActivity {
         }
     }
 
-    private void showNextWeekClassList() {
-        if (mClassSchedule == null) {
-            Toast.makeText(this, "DEBUG: No Class Data", Toast.LENGTH_SHORT).show();
-        } else if (mSelectedWeekNumber >= mClassSchedule.size() - 1) {
-            Toast.makeText(this, "19周是最后一周", Toast.LENGTH_SHORT).show();
+    private void showNextWeek() {
+        if (mSelectedWeekNumber >= mClassSchedule.size() - 1) {
+            Toast.makeText(this, "已经是最后一周啦", Toast.LENGTH_SHORT).show();
         } else {
             mSelectedWeekNumber++;
             refreshActionBarMenu(this);
@@ -129,7 +124,7 @@ public class ClassScheduleActivity extends AppCompatActivity {
         }
     }
 
-    //refresh action bar with week number
+    // Refresh action bar to update week number
     private void refreshActionBarMenu(Activity activity) {
         activity.invalidateOptionsMenu();
     }
@@ -147,7 +142,6 @@ public class ClassScheduleActivity extends AppCompatActivity {
         }
 
         // Get classes of selected week and fill each list in groupedClasses with classes of each day
-        Log.d("weeknumber", "populateClassScheduleList: " + mSelectedWeekNumber);
         List<ClassSchedule> weekClasses = mClassSchedule.get(mSelectedWeekNumber);
         for (int i = 0; i < weekClasses.size(); i++) {
             ClassSchedule c = weekClasses.get(i);
@@ -250,5 +244,4 @@ public class ClassScheduleActivity extends AppCompatActivity {
             return convertView;
         }
     }
-
 }
