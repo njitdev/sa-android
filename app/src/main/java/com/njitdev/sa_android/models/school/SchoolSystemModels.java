@@ -279,6 +279,8 @@ public class SchoolSystemModels {
                 List<GradeItem> result = new ArrayList<>();
                 try {
                     JSONArray jsonGrades = response.getJSONArray("result");
+
+                    // Loop for all courses
                     for (int i = 0; i < jsonGrades.length(); i++) {
                         JSONObject jsonGrade = jsonGrades.getJSONObject(i);
                         GradeItem gradeItem = new GradeItem();
@@ -286,6 +288,7 @@ public class SchoolSystemModels {
                         gradeItem.course_name = jsonGrade.getString("course_name");
                         gradeItem.score = jsonGrade.getString("score");
 
+                        // Optional fields
                         if (jsonGrade.has("course_id") && !jsonGrade.isNull("course_id"))
                             gradeItem.course_id = jsonGrade.getString("course_id");
                         if (jsonGrade.has("course_category") && !jsonGrade.isNull("course_category"))

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="8dp">
+
+    <TextView
+        android:id="@+id/lblCourseName"
+        android:layout_width="wrap_content"
+        android:layout_height="19dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:text="TextView"
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/lblCredits"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="2dp"
+        android:text="TextView"
+        app:layout_constraintRight_toLeftOf="@+id/txtCredits"
+        app:layout_constraintBottom_toBottomOf="@+id/lblCourseName"
+        android:layout_marginBottom="0dp" />
+
+    <TextView
+        android:id="@+id/lblCourseInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="8dp"
+        android:text="TextView"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:textSize="13dp"
+        app:layout_constraintLeft_toLeftOf="@+id/lblCourseName"
+        app:layout_constraintTop_toBottomOf="@+id/lblCourseName" />
+
+    <TextView
+        android:id="@+id/lblScore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="0dp"
+        android:layout_marginTop="0dp"
+        android:text="TextView"
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+        android:textColor="@android:color/holo_green_dark"
+        android:textSize="17dp"
+        app:layout_constraintRight_toRightOf="@+id/txtCredits"
+        app:layout_constraintTop_toTopOf="@+id/lblCourseInfo" />
+
+    <TextView
+        android:id="@+id/txtCredits"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="2dp"
+        android:layout_marginRight="8dp"
+        android:text="学分"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:textSize="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/lblCourseName"
+        app:layout_constraintRight_toRightOf="parent" />
+</android.support.constraint.ConstraintLayout>

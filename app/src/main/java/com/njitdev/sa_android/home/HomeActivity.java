@@ -39,6 +39,7 @@ import android.widget.Toast;
 import com.njitdev.sa_android.R;
 import com.njitdev.sa_android.announcements.AnnouncementsActivity;
 import com.njitdev.sa_android.classschedule.ClassScheduleActivity;
+import com.njitdev.sa_android.grades.GradesActivity;
 import com.njitdev.sa_android.library.LibraryActivity;
 import com.njitdev.sa_android.login.LoginActivity;
 import com.njitdev.sa_android.messageboard.MessageBoardActivity;
@@ -130,7 +131,8 @@ public class HomeActivity extends AppCompatActivity {
                         startActivity(new Intent(HomeActivity.this, ClassScheduleActivity.class));
                         break;
                     case 2:
-                        // TODO: Grades
+                        // Grades
+                        startActivity(new Intent(HomeActivity.this, GradesActivity.class));
                         break;
                     case 3:
                         // Library

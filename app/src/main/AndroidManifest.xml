@@ -18,10 +18,10 @@
         <activity android:name=".home.HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".messageboard.MessageBoardActivity"
             android:label="留言板"
@@ -30,56 +30,43 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".home.HomeActivity" />
         </activity>
-
         <activity android:name=".test.TestActivity" />
-
         <activity
             android:name=".announcements.AnnouncementsActivity"
-            android:label="校内通知">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".home.HomeActivity" />
+            android:label="校内通知"
+            android:parentActivityName=".home.HomeActivity">
         </activity>
-
         <activity
             android:name=".announcements.AnnouncementsArticleActivity"
-            android:label="通知浏览">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".announcements.AnnouncementsActivity" />
+            android:label="通知浏览"
+            android:parentActivityName=".announcements.AnnouncementsActivity">
         </activity>
-
         <activity
             android:name=".library.LibraryActivity"
             android:configChanges="orientation|screenSize"
-            android:label="图书馆">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".home.HomeActivity" />
+            android:label="图书馆"
+            android:parentActivityName=".home.HomeActivity">
         </activity>
-
         <activity
             android:name=".library.LibraryBookDetailsActivity"
-            android:label="图书详情">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".library.LibraryActivity" />
+            android:label="图书详情"
+            android:parentActivityName=".library.LibraryActivity">
         </activity>
-
         <activity
             android:name=".login.LoginActivity"
-            android:label="登录">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".home.HomeActivity" />
+            android:label="登录"
+            android:parentActivityName=".home.HomeActivity">
         </activity>
-
         <activity
             android:name=".classschedule.ClassScheduleActivity"
-            android:label="课程表">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".home.HomeActivity" />
+            android:label="课程表"
+            android:parentActivityName=".home.HomeActivity">
+        </activity>
+        <activity
+            android:name=".grades.GradesActivity"
+            android:label="成绩查询"
+            android:parentActivityName=".home.HomeActivity">
         </activity>
     </application>
+
 </manifest>
