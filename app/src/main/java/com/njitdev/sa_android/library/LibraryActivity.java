@@ -152,7 +152,7 @@ class LibraryAdapter extends ArrayAdapter<Book> {
     private int mResource;
     private List<Book> mBooks;
 
-    public LibraryAdapter(@NonNull Context context, @LayoutRes int resource, @NonNull List<Book> objects) {
+    LibraryAdapter(@NonNull Context context, @LayoutRes int resource, @NonNull List<Book> objects) {
         super(context, resource, objects);
         mContext = context;
         mResource = resource;
