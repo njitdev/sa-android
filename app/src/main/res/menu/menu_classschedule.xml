@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:context=".classschedule.ClassScheduleActivity">
+
+
+    <item
+        android:id="@+id/menuItemWeekNumber"
+        android:actionViewClass="android.widget.TextView"
+        android:title="WeekNumber"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/menuItemPreviousWeek"
+        android:title="上周"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/menuItemNextWeek"
+        android:title="下周"
+        app:showAsAction="always"/>
+
+</menu>

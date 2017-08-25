@@ -18,11 +18,15 @@
 
 package com.njitdev.sa_android.classschedule;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -54,11 +58,75 @@ public class ClassScheduleActivity extends AppCompatActivity {
         mSelectedWeekNumber = SAGlobal.currentWeekNumber;
 
         if (mClassSchedule == null) {
-            Toast.makeText(this, "DEBUG: No Class Data", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "没有课程表数据，请先登录或更新数据", Toast.LENGTH_SHORT).show();
+            this.finish();
+        } else if (mClassSchedule.size() == 0) {
+            Toast.makeText(this, "课程表为空，请稍后更新数据", Toast.LENGTH_SHORT).show();
+            this.finish();
         } else {
             populateClassScheduleList();
             initListView();
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_classschedule, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    // Update week number in menu
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        String weekNumber = "第" + mSelectedWeekNumber + "周";
+        menu.findItem(R.id.menuItemWeekNumber).setTitle(weekNumber);
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
+
+            case R.id.menuItemPreviousWeek:
+                showPreviousWeek();
+                return true;
+
+            case R.id.menuItemNextWeek:
+                showNextWeek();
+                return true;
+
+            case R.id.menuItemWeekNumber:
+                return true;
+        }
+        return onOptionsItemSelected(item);
+    }
+
+    private void showPreviousWeek() {
+        if (mSelectedWeekNumber > 1) {
+            mSelectedWeekNumber--;
+            populateClassScheduleList();
+            refreshActionBarMenu(this);
+            initListView();
+        }
+    }
+
+    private void showNextWeek() {
+        if (mSelectedWeekNumber >= mClassSchedule.size() - 1) {
+            Toast.makeText(this, "已经是最后一周啦", Toast.LENGTH_SHORT).show();
+        } else {
+            mSelectedWeekNumber++;
+            refreshActionBarMenu(this);
+            populateClassScheduleList();
+            initListView();
+        }
+    }
+
+    // Refresh action bar to update week number
+    private void refreshActionBarMenu(Activity activity) {
+        activity.invalidateOptionsMenu();
     }
 
     // Generate contents for mSectionedClassScheduleList, as
