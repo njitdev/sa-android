@@ -38,7 +38,7 @@ public class GradesActivity extends AppCompatActivity {
         // Create adapter
         // Set data
         mGrade = SAGlobal.dataGrades;
-
+        
         if (mGrade == null) {
             Toast.makeText(this, "没有成绩数据，请先登录或更新数据", Toast.LENGTH_SHORT).show();
             this.finish();
