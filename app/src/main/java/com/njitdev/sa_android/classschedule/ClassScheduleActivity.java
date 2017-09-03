@@ -58,7 +58,7 @@ public class ClassScheduleActivity extends AppCompatActivity {
         mSelectedWeekNumber = SAGlobal.currentWeekNumber;
 
         if (mClassSchedule == null) {
-            Toast.makeText(this, "没有课程表数据，请先登录或更新数据", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "ERROR: Null Data", Toast.LENGTH_SHORT).show();
             this.finish();
         } else if (mClassSchedule.size() == 0) {
             Toast.makeText(this, "课程表为空，请稍后更新数据", Toast.LENGTH_SHORT).show();

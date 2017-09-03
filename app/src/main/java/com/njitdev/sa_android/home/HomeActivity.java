@@ -25,11 +25,12 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -47,7 +48,6 @@ import com.njitdev.sa_android.models.school.ClassSchedule;
 import com.njitdev.sa_android.models.school.GradeItem;
 import com.njitdev.sa_android.models.school.SchoolSystemModels;
 import com.njitdev.sa_android.models.school.StudentBasicInfo;
-import com.njitdev.sa_android.test.TestActivity;
 import com.njitdev.sa_android.utils.ModelListener;
 import com.njitdev.sa_android.utils.SAGlobal;
 import com.njitdev.sa_android.utils.SAUtils;
@@ -62,6 +62,10 @@ public class HomeActivity extends AppCompatActivity {
     // School system data of current session
     private StudentBasicInfo mStudentBasicInfo;
 
+    // UI data
+    private boolean mUIBusy = false;
+    private int mRemainingFetch = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,29 +76,47 @@ public class HomeActivity extends AppCompatActivity {
 
         // Initialize menu list
         updateMenu();
+    }
 
-        // TODO: For testing
-        Button buttonHomeTest = (Button) findViewById(R.id.buttonHomeTest);
-        buttonHomeTest.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        startActivity(new Intent(HomeActivity.this, TestActivity.class));
-                    }
-                });
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_home, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Skip if UI is busy
+        if (mUIBusy)
+            return onOptionsItemSelected(item);
+
+        switch (item.getItemId()) {
+            case R.id.menuItemUpdateData:
+                if (SAGlobal.studentSessionID == null) {
+                    Toast.makeText(this, "请先登录账号~", Toast.LENGTH_SHORT).show();
+                } else {
+                    autoUpdateData();
+                }
+                return true;
+
+            case R.id.menuItemLogin:
+                startActivity(new Intent(HomeActivity.this, LoginActivity.class));
+                return true;
+        }
+        return onOptionsItemSelected(item);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        TextView lblSessionID = (TextView) findViewById(R.id.lblSessionID);
-        lblSessionID.setText("session_id: " + SAGlobal.studentSessionID);
 
         // Update data
         autoUpdateData();
     }
 
     private void setUIBusy(Boolean busy) {
+        mUIBusy = busy;
+
         ListView listView = (ListView) findViewById(R.id.listView);
         ProgressBar pbBusy = (ProgressBar) findViewById(R.id.pbBusy);
 
@@ -124,15 +146,25 @@ public class HomeActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 switch (i) {
                     case 0:
-                        // Login (for now)
-                        startActivity(new Intent(HomeActivity.this, LoginActivity.class));
+                        // Login if not already
+                        if (SAGlobal.studentSessionID == null)
+                            startActivity(new Intent(HomeActivity.this, LoginActivity.class));
                         break;
                     case 1:
-                        startActivity(new Intent(HomeActivity.this, ClassScheduleActivity.class));
+                        // Class Schedule
+                        if (SAGlobal.dataClassSchedule != null) {
+                            startActivity(new Intent(HomeActivity.this, ClassScheduleActivity.class));
+                        } else {
+                            Toast.makeText(HomeActivity.this, "没有课程表数据，请先登录", Toast.LENGTH_SHORT).show();
+                        }
                         break;
                     case 2:
                         // Grades
-                        startActivity(new Intent(HomeActivity.this, GradesActivity.class));
+                        if (SAGlobal.dataClassSchedule != null) {
+                            startActivity(new Intent(HomeActivity.this, GradesActivity.class));
+                        } else {
+                            Toast.makeText(HomeActivity.this, "没有成绩数据，请先登录", Toast.LENGTH_SHORT).show();
+                        }
                         break;
                     case 3:
                         // Library
@@ -167,21 +199,30 @@ public class HomeActivity extends AppCompatActivity {
                 item.subtitle += ", " + mStudentBasicInfo.student_enroll_year + " 级";
 
         } else {
-            item.title = "点此登录";
-            item.subtitle = null;
+            item.title = "未登录";
+            item.subtitle = "请登录教务系统账号";
         }
         mMenuItems.add(item);
 
         // Class schedule
-        mMenuItems.add(new HomeMenuItem("课程表", null, R.drawable.ic_class_schedule));
+        mMenuItems.add(new HomeMenuItem("课程表", "查看本学期课表", R.drawable.ic_class_schedule));
 
         // Grades
-        mMenuItems.add(new HomeMenuItem("成绩查询", null, R.drawable.ic_grades));
+        item = new HomeMenuItem("成绩查询", "查询筛选成绩", R.drawable.ic_grades);
+        if (SAGlobal.dataGrades != null) {
+            int n = SAGlobal.dataGrades.size();
+            if (n == 0) {
+                item.subtitle = "还没有成绩";
+            } else {
+                item.subtitle = n + " 门课程";
+            }
+        }
+        mMenuItems.add(item);
 
         // Completely static items
-        mMenuItems.add(new HomeMenuItem("图书馆", null, R.drawable.ic_library));
-        mMenuItems.add(new HomeMenuItem("校内通知", null, R.drawable.ic_announcements));
-        mMenuItems.add(new HomeMenuItem("留言板", null, R.drawable.ic_msgboard));
+        mMenuItems.add(new HomeMenuItem("图书馆", "检索图书馆藏", R.drawable.ic_library));
+        mMenuItems.add(new HomeMenuItem("校内通知", "学校官方通知", R.drawable.ic_announcements));
+        mMenuItems.add(new HomeMenuItem("留言板", "App 讨论区", R.drawable.ic_msgboard));
 
         // Update ListView
         mMenuAdapter.notifyDataSetChanged();
@@ -196,19 +237,24 @@ public class HomeActivity extends AppCompatActivity {
             // Copy string
             mLastSessionID = new String(SAGlobal.studentSessionID);
 
+            // Track data fetching progress
+            mRemainingFetch = 3;
+
             setUIBusy(true);
 
             // Fetch basic info
             SchoolSystemModels.studentBasicInfo(SAGlobal.studentSessionID, null, new ModelListener<StudentBasicInfo>() {
                 @Override
                 public void onData(StudentBasicInfo result, String message) {
-                    setUIBusy(false);
                     if (result == null) {
                         Toast.makeText(HomeActivity.this, message, Toast.LENGTH_SHORT).show();
                     } else {
                         mStudentBasicInfo = result;
                         updateMenu();
                     }
+
+                    // Unlock UI if all data fetched
+                    if (--mRemainingFetch == 0) setUIBusy(false);
                 }
             });
 
@@ -220,7 +266,9 @@ public class HomeActivity extends AppCompatActivity {
                         Toast.makeText(HomeActivity.this, message, Toast.LENGTH_SHORT).show();
                     } else {
                         SAGlobal.dataClassSchedule = result;
+                        updateMenu();
                     }
+                    if (--mRemainingFetch == 0) setUIBusy(false);
                 }
             });
 
@@ -232,7 +280,9 @@ public class HomeActivity extends AppCompatActivity {
                         Toast.makeText(HomeActivity.this, message, Toast.LENGTH_SHORT).show();
                     } else {
                         SAGlobal.dataGrades = result;
+                        updateMenu();
                     }
+                    if (--mRemainingFetch == 0) setUIBusy(false);
                 }
             });
         }
@@ -279,7 +329,10 @@ class HomeMenuAdapter extends ArrayAdapter<HomeMenuItem> {
 
         // Text
         TextView lblTitle = (TextView) convertView.findViewById(R.id.lblTitle);
+        TextView lblSubTitle = (TextView) convertView.findViewById(R.id.lblSubtitle);
+
         lblTitle.setText(menuItem.title);
+        lblSubTitle.setText(menuItem.subtitle);
 
         return convertView;
     }
