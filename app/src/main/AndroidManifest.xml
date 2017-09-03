@@ -15,10 +15,11 @@
             android:name="com.google.android.gms.analytics.globalConfigResource"
             android:resource="@xml/ga_global_tracker"/>
 
-        <activity android:name=".home.HomeActivity">
+        <activity
+            android:name=".home.HomeActivity"
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
-
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
@@ -26,14 +27,12 @@
             android:name=".messageboard.MessageBoardActivity"
             android:label="留言板"
             android:parentActivityName=".home.HomeActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".home.HomeActivity"/>
         </activity>
         <activity android:name=".test.TestActivity"/>
         <activity
             android:name=".announcements.AnnouncementsActivity"
             android:label="校内通知"
+            android:launchMode="singleTop"
             android:parentActivityName=".home.HomeActivity">
         </activity>
         <activity
@@ -45,6 +44,7 @@
             android:name=".library.LibraryActivity"
             android:configChanges="orientation|screenSize"
             android:label="图书馆"
+            android:launchMode="singleTop"
             android:parentActivityName=".home.HomeActivity">
         </activity>
         <activity

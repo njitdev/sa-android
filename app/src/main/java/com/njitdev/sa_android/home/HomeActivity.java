@@ -76,6 +76,9 @@ public class HomeActivity extends AppCompatActivity {
 
         // Initialize menu list
         updateMenu();
+
+        // Update data
+        loadCachedData();
     }
 
     @Override
@@ -87,15 +90,14 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Skip if UI is busy
-        if (mUIBusy)
-            return onOptionsItemSelected(item);
+        if (mUIBusy) return true;
 
         switch (item.getItemId()) {
             case R.id.menuItemUpdateData:
                 if (SAGlobal.studentSessionID == null) {
                     Toast.makeText(this, "请先登录账号~", Toast.LENGTH_SHORT).show();
                 } else {
-                    autoUpdateData();
+                    verifyLoginAndUpdateData();
                 }
                 return true;
 
@@ -110,8 +112,12 @@ public class HomeActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        // Update data
-        autoUpdateData();
+        // Update data on session change
+        if (SAGlobal.studentSessionID != null && !SAGlobal.studentSessionID.equals(mLastSessionID)) {
+            // Copy current session ID
+            mLastSessionID = SAGlobal.studentSessionID;
+            verifyLoginAndUpdateData();
+        }
     }
 
     private void setUIBusy(Boolean busy) {
@@ -146,9 +152,6 @@ public class HomeActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 switch (i) {
                     case 0:
-                        // Login if not already
-                        if (SAGlobal.studentSessionID == null)
-                            startActivity(new Intent(HomeActivity.this, LoginActivity.class));
                         break;
                     case 1:
                         // Class Schedule
@@ -175,7 +178,7 @@ public class HomeActivity extends AppCompatActivity {
                         startActivity(new Intent(HomeActivity.this, AnnouncementsActivity.class));
                         break;
                     case 5:
-                        // Message baord
+                        // Message board
                         startActivity(new Intent(HomeActivity.this, MessageBoardActivity.class));
                         break;
                 }
@@ -228,64 +231,72 @@ public class HomeActivity extends AppCompatActivity {
         mMenuAdapter.notifyDataSetChanged();
     }
 
-    // Automatically update school systems data and attempt to login if required
-    // TODO: Currently this just assumes user is logged in
-    private void autoUpdateData() {
+    private void loadCachedData() {
 
-        // If session changed
-        if (SAGlobal.studentSessionID != null && !SAGlobal.studentSessionID.equals(mLastSessionID)) {
-            // Copy string
-            mLastSessionID = new String(SAGlobal.studentSessionID);
+    }
 
-            // Track data fetching progress
-            mRemainingFetch = 3;
-
+    // Automatically test login status and update school systems data
+    private void verifyLoginAndUpdateData() {
+        // If session available
+        if (SAGlobal.studentSessionID != null) {
+            // Fetch basic info to test login status
             setUIBusy(true);
-
-            // Fetch basic info
             SchoolSystemModels.studentBasicInfo(SAGlobal.studentSessionID, null, new ModelListener<StudentBasicInfo>() {
                 @Override
                 public void onData(StudentBasicInfo result, String message) {
                     if (result == null) {
-                        Toast.makeText(HomeActivity.this, message, Toast.LENGTH_SHORT).show();
+                        setUIBusy(false);
+                        Toast.makeText(HomeActivity.this, "因学校系统限制，需重新登录", Toast.LENGTH_LONG).show();
+                        HomeActivity.this.startActivity(new Intent(HomeActivity.this, LoginActivity.class));
                     } else {
                         mStudentBasicInfo = result;
                         updateMenu();
-                    }
 
-                    // Unlock UI if all data fetched
-                    if (--mRemainingFetch == 0) setUIBusy(false);
-                }
-            });
-
-            // Fetch class schedule
-            SchoolSystemModels.fetchClassSchedule(SAGlobal.studentSessionID, new ModelListener<List<List<ClassSchedule>>>() {
-                @Override
-                public void onData(List<List<ClassSchedule>> result, String message) {
-                    if (result == null) {
-                        Toast.makeText(HomeActivity.this, message, Toast.LENGTH_SHORT).show();
-                    } else {
-                        SAGlobal.dataClassSchedule = result;
-                        updateMenu();
+                        // Continue to fetch all other data
+                        fetchAllData();
                     }
-                    if (--mRemainingFetch == 0) setUIBusy(false);
-                }
-            });
-
-            // Fetch grades
-            SchoolSystemModels.fetchGrades(SAGlobal.studentSessionID, new ModelListener<List<GradeItem>>() {
-                @Override
-                public void onData(List<GradeItem> result, String message) {
-                    if (result == null) {
-                        Toast.makeText(HomeActivity.this, message, Toast.LENGTH_SHORT).show();
-                    } else {
-                        SAGlobal.dataGrades = result;
-                        updateMenu();
-                    }
-                    if (--mRemainingFetch == 0) setUIBusy(false);
                 }
             });
         }
+    }
+
+    // Fetch all data expect basic info
+    private void fetchAllData() {
+        // Skip if not logged in
+        if (SAGlobal.studentSessionID == null) return;
+
+        // Track data fetching progress
+        mRemainingFetch = 2;
+
+        setUIBusy(true);
+
+        // Fetch class schedule
+        SchoolSystemModels.fetchClassSchedule(SAGlobal.studentSessionID, new ModelListener<List<List<ClassSchedule>>>() {
+            @Override
+            public void onData(List<List<ClassSchedule>> result, String message) {
+                if (result == null) {
+                    Toast.makeText(HomeActivity.this, message, Toast.LENGTH_SHORT).show();
+                } else {
+                    SAGlobal.dataClassSchedule = result;
+                    updateMenu();
+                }
+                if (--mRemainingFetch == 0) setUIBusy(false);
+            }
+        });
+
+        // Fetch grades
+        SchoolSystemModels.fetchGrades(SAGlobal.studentSessionID, new ModelListener<List<GradeItem>>() {
+            @Override
+            public void onData(List<GradeItem> result, String message) {
+                if (result == null) {
+                    Toast.makeText(HomeActivity.this, message, Toast.LENGTH_SHORT).show();
+                } else {
+                    SAGlobal.dataGrades = result;
+                    updateMenu();
+                }
+                if (--mRemainingFetch == 0) setUIBusy(false);
+            }
+        });
     }
 }
 

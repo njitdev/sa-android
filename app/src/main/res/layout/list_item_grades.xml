@@ -11,13 +11,14 @@
         android:layout_width="0dp"
         android:layout_height="19dp"
         android:layout_marginLeft="16dp"
+        android:layout_marginRight="8dp"
         android:layout_marginTop="16dp"
         android:text="TextView"
         android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+        android:textColor="@color/colorDarkGray"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintRight_toLeftOf="@+id/lblCredits"
-        android:layout_marginRight="8dp" />
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
         android:id="@+id/lblCredits"
