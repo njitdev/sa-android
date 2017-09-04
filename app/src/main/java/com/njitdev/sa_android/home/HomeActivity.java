@@ -37,6 +37,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.njitdev.sa_android.R;
 import com.njitdev.sa_android.announcements.AnnouncementsActivity;
 import com.njitdev.sa_android.classschedule.ClassScheduleActivity;
@@ -58,9 +60,6 @@ import java.util.List;
 public class HomeActivity extends AppCompatActivity {
     // Help detecting new user sessions
     private String mLastSessionID = "";
-
-    // School system data of current session
-    private StudentBasicInfo mStudentBasicInfo;
 
     // UI data
     private boolean mUIBusy = false;
@@ -190,16 +189,17 @@ public class HomeActivity extends AppCompatActivity {
 
         // Login / user info
         HomeMenuItem item = new HomeMenuItem("", null, R.drawable.ic_user);
-        if (mStudentBasicInfo != null) {
-            item.title = mStudentBasicInfo.student_name;
+        if (SAGlobal.dataStudentBasicInfo != null) {
+            StudentBasicInfo basicInfo = SAGlobal.dataStudentBasicInfo;
+            item.title = basicInfo.student_name;
 
             // Subtitle
             item.subtitle = "";
-            if (mStudentBasicInfo.student_department != null)
-                item.subtitle += mStudentBasicInfo.student_department;
+            if (basicInfo.student_department != null)
+                item.subtitle += basicInfo.student_department;
 
-            if (mStudentBasicInfo.student_enroll_year != null)
-                item.subtitle += ", " + mStudentBasicInfo.student_enroll_year + " 级";
+            if (basicInfo.student_enroll_year != null)
+                item.subtitle += ", " + basicInfo.student_enroll_year + " 级";
 
         } else {
             item.title = "未登录";
@@ -232,7 +232,45 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void loadCachedData() {
+        Gson gson = new Gson();
+        SAGlobal.studentSessionID = SAUtils.readKVStore(getApplicationContext(), "cache_session_id");
+        mLastSessionID = SAGlobal.studentSessionID; // Prevent auto update
+        if (SAGlobal.studentSessionID == null) {
+            return;
+        }
 
+        SAGlobal.dataStudentBasicInfo = gson.fromJson(
+                SAUtils.readKVStore(getApplicationContext(), "cache_student_basic_info"),
+                StudentBasicInfo.class
+        );
+
+        SAGlobal.dataClassSchedule = gson.fromJson(
+                SAUtils.readKVStore(getApplicationContext(), "cache_class_schedule"),
+                new TypeToken<List<List<ClassSchedule>>>(){}.getType()
+        );
+
+        SAGlobal.dataGrades = gson.fromJson(
+                SAUtils.readKVStore(getApplicationContext(), "cache_grades"),
+                new TypeToken<List<GradeItem>>(){}.getType());
+
+        updateMenu();
+    }
+
+    private void cacheSessionData() {
+        // Serialize objects and write to local storage
+        Gson gson = new Gson();
+
+        if (SAGlobal.studentSessionID != null)
+            SAUtils.writeKVStore(getApplicationContext(), "cache_session_id", SAGlobal.studentSessionID);
+
+        if (SAGlobal.dataStudentBasicInfo != null)
+            SAUtils.writeKVStore(getApplicationContext(), "cache_student_basic_info", gson.toJson(SAGlobal.dataStudentBasicInfo));
+
+        if (SAGlobal.dataClassSchedule != null)
+            SAUtils.writeKVStore(getApplicationContext(), "cache_class_schedule", gson.toJson(SAGlobal.dataClassSchedule));
+
+        if (SAGlobal.dataGrades != null)
+            SAUtils.writeKVStore(getApplicationContext(), "cache_grades", gson.toJson(SAGlobal.dataGrades));
     }
 
     // Automatically test login status and update school systems data
@@ -244,12 +282,12 @@ public class HomeActivity extends AppCompatActivity {
             SchoolSystemModels.studentBasicInfo(SAGlobal.studentSessionID, null, new ModelListener<StudentBasicInfo>() {
                 @Override
                 public void onData(StudentBasicInfo result, String message) {
+                    setUIBusy(false);
                     if (result == null) {
-                        setUIBusy(false);
                         Toast.makeText(HomeActivity.this, "因学校系统限制，需重新登录", Toast.LENGTH_LONG).show();
                         HomeActivity.this.startActivity(new Intent(HomeActivity.this, LoginActivity.class));
                     } else {
-                        mStudentBasicInfo = result;
+                        SAGlobal.dataStudentBasicInfo = result;
                         updateMenu();
 
                         // Continue to fetch all other data
@@ -280,7 +318,7 @@ public class HomeActivity extends AppCompatActivity {
                     SAGlobal.dataClassSchedule = result;
                     updateMenu();
                 }
-                if (--mRemainingFetch == 0) setUIBusy(false);
+                if (--mRemainingFetch == 0) doneFetchingData();
             }
         });
 
@@ -294,9 +332,14 @@ public class HomeActivity extends AppCompatActivity {
                     SAGlobal.dataGrades = result;
                     updateMenu();
                 }
-                if (--mRemainingFetch == 0) setUIBusy(false);
+                if (--mRemainingFetch == 0) doneFetchingData();
             }
         });
+    }
+
+    private void doneFetchingData() {
+        cacheSessionData();
+        setUIBusy(false);
     }
 }
 
