@@ -19,11 +19,17 @@
 package com.njitdev.sa_android.utils;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Build;
+import android.support.v7.app.AlertDialog;
 
 import com.android.volley.toolbox.Volley;
+import com.njitdev.sa_android.BuildConfig;
 import com.njitdev.sa_android.models.analytics.AnalyticsModels;
+import com.njitdev.sa_android.models.version.VersionModels;
 import com.rollbar.android.Rollbar;
 
 import java.util.UUID;
@@ -51,6 +57,44 @@ public class SAUtils {
 
         // Send start event
         AnalyticsModels.sendStartEvent(installationID(context));
+    }
+
+    // Version check
+    public static void checkForNewVersion(final Context context) {
+        VersionModels.fetchLatestVersion(new ModelListener<String>() {
+            @Override
+            public void onData(String result, String message) {
+                if (result != null) {
+                    if (!result.equals(BuildConfig.VERSION_NAME)) {
+                        // Update available
+                        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                        builder.setTitle("发现新版本");
+                        builder.setMessage("版本号: " + result + "\n建议及时更新");
+                        builder.setCancelable(true);
+
+                        builder.setPositiveButton("更新", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Intent intent = new Intent(Intent.ACTION_VIEW);
+                                intent.setData(Uri.parse("https://mygdut.com/downloads/android_latest.apk"));
+                                context.startActivity(intent);
+                                dialogInterface.dismiss();
+                            }
+                        });
+
+                        builder.setNegativeButton("先不更新", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.cancel();
+                            }
+                        });
+
+                        AlertDialog alert = builder.create();
+                        alert.show();
+                    }
+                }
+            }
+        });
     }
 
     // Write a KV pair to local storage

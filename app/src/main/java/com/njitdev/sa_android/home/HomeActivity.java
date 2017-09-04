@@ -78,6 +78,9 @@ public class HomeActivity extends AppCompatActivity {
 
         // Update data
         loadCachedData();
+
+        // Check for new version
+        SAUtils.checkForNewVersion(this);
     }
 
     @Override
