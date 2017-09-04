@@ -10,6 +10,10 @@ The system currently supports 1 school.
 
 - `GDUT`: Guangdong University of Technology
 
+## Release Signing Keys
+
+Signing keys are PGP-encrypted before commited into version control. Keystore passwords are `njitdev`.
+
 ## License
 ```
 sa-android

@@ -54,11 +54,11 @@ public class GradesActivity extends AppCompatActivity {
         mGrade = SAGlobal.dataGrades;
 
         if (mGrade == null) {
-            Toast.makeText(this, "没有成绩数据，请先登录或更新数据", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "ERROR: Null Data", Toast.LENGTH_SHORT).show();
             this.finish();
             return;
         } else if (mGrade.size() == 0) {
-            Toast.makeText(this, "还没有成绩", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "还没有成绩~", Toast.LENGTH_SHORT).show();
             this.finish();
             return;
         }

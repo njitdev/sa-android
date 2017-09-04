@@ -168,13 +168,13 @@ public class SchoolSystemModels {
                         basicInfo.student_id = result.getString("student_id");
 
                     if (result.has("student_enroll_year") && !result.isNull("student_enroll_year"))
-                        basicInfo.student_id = result.getString("student_enroll_year");
+                        basicInfo.student_enroll_year = result.getString("student_enroll_year");
 
                     if (result.has("student_major") && !result.isNull("student_major"))
-                        basicInfo.student_id = result.getString("student_major");
+                        basicInfo.student_major = result.getString("student_major");
 
                     if (result.has("student_class") && !result.isNull("student_class"))
-                        basicInfo.student_id = result.getString("student_class");
+                        basicInfo.student_class = result.getString("student_class");
 
                     listener.onData(basicInfo, "ok");
                 } catch (JSONException e) {

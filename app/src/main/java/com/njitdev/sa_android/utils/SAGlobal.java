@@ -26,15 +26,18 @@ import com.google.android.gms.analytics.Tracker;
 import com.njitdev.sa_android.R;
 import com.njitdev.sa_android.models.school.ClassSchedule;
 import com.njitdev.sa_android.models.school.GradeItem;
+import com.njitdev.sa_android.models.school.StudentBasicInfo;
 
 import java.util.List;
 
 public class SAGlobal {
     static String installationID;
     public static RequestQueue sharedRequestQueue;
-    public static String studentSessionID;
 
+    // Student session data
+    public static String studentSessionID;
     public static int currentWeekNumber;
+    public static StudentBasicInfo dataStudentBasicInfo;
     public static List<List<ClassSchedule>> dataClassSchedule;
     public static List<GradeItem> dataGrades;
 

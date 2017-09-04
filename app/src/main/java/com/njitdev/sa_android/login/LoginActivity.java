@@ -138,9 +138,9 @@ public class LoginActivity extends AppCompatActivity {
 
     private void setUIBusy(Boolean busy) {
         // Enable / disable
-        txtStudentLogin.setEnabled(!busy);
-        txtStudentPassword.setEnabled(!busy);
         txtCaptcha.setEnabled(!busy);
+        txtStudentPassword.setEnabled(!busy);
+        txtStudentLogin.setEnabled(!busy);
         btnLogin.setEnabled(!busy);
 
         // Spinner
