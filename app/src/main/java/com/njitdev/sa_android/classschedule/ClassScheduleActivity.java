@@ -36,6 +36,7 @@ import android.widget.Toast;
 
 import com.njitdev.sa_android.R;
 import com.njitdev.sa_android.models.school.ClassSchedule;
+import com.njitdev.sa_android.models.school.SchoolSystemModels;
 import com.njitdev.sa_android.utils.SAGlobal;
 
 import java.util.ArrayList;
@@ -55,7 +56,8 @@ public class ClassScheduleActivity extends AppCompatActivity {
 
         // Process data
         mClassSchedule = SAGlobal.dataClassSchedule;
-        mSelectedWeekNumber = SAGlobal.currentWeekNumber;
+        mSelectedWeekNumber = SchoolSystemModels.safeCurrentWeek(SAGlobal.dataClassStartReferenceWeek, mClassSchedule.size());
+        if (mSelectedWeekNumber == 0) mSelectedWeekNumber = 1;
 
         if (mClassSchedule == null) {
             Toast.makeText(this, "ERROR: Null Data", Toast.LENGTH_SHORT).show();

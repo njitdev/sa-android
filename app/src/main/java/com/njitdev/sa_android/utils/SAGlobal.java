@@ -36,9 +36,9 @@ public class SAGlobal {
 
     // Student session data
     public static String studentSessionID;
-    public static int currentWeekNumber;
     public static StudentBasicInfo dataStudentBasicInfo;
     public static List<List<ClassSchedule>> dataClassSchedule;
+    public static int dataClassStartReferenceWeek;
     public static List<GradeItem> dataGrades;
 
     // Google Analytics

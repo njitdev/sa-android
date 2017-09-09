@@ -29,6 +29,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.njitdev.sa_android.utils.ModelListener;
 import com.njitdev.sa_android.utils.SAConfig;
 import com.njitdev.sa_android.utils.SAGlobal;
+import com.njitdev.sa_android.utils.SAUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -209,7 +210,7 @@ public class SchoolSystemModels {
                     JSONArray jsonClasses = jsonResult.getJSONArray("classes");
 
                     // TODO: find a better way to store current week number
-                    SAGlobal.currentWeekNumber = jsonResult.getInt("current_week");
+                    SAGlobal.dataClassStartReferenceWeek = jsonResult.getInt("start_reference_week");
 
                     // Populate result
                     List<List<ClassSchedule>> classes = new ArrayList<>();
@@ -260,6 +261,18 @@ public class SchoolSystemModels {
             }
         });
         SAGlobal.sharedRequestQueue.add(r);
+    }
+
+    public static int safeCurrentWeek(int start_reference_week, int week_array_size) {
+        if (start_reference_week == 0) {
+            return 0;
+        }
+
+        int current_week = SAUtils.currentReferenceWeek() - start_reference_week + 1;
+        if (current_week < 1 || current_week >= week_array_size) {
+            current_week = 0;
+        }
+        return current_week;
     }
 
     // Fetch grades
