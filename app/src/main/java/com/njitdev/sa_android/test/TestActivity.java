@@ -63,7 +63,6 @@ public class TestActivity extends AppCompatActivity {
                     return;
                 }
                 Log.d("sa-api", "" + result.size());
-                Log.d("sa-api", "currentWeekNumber " + SAGlobal.currentWeekNumber);
             }
         });
 

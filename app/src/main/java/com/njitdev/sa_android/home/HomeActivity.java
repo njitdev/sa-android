@@ -252,6 +252,10 @@ public class HomeActivity extends AppCompatActivity {
                 new TypeToken<List<List<ClassSchedule>>>(){}.getType()
         );
 
+        String v = SAUtils.readKVStore(getApplicationContext(), "cache_class_start_reference_week");
+        if (v != null)
+            SAGlobal.dataClassStartReferenceWeek = Integer.parseInt(v);
+
         SAGlobal.dataGrades = gson.fromJson(
                 SAUtils.readKVStore(getApplicationContext(), "cache_grades"),
                 new TypeToken<List<GradeItem>>(){}.getType());
@@ -269,8 +273,10 @@ public class HomeActivity extends AppCompatActivity {
         if (SAGlobal.dataStudentBasicInfo != null)
             SAUtils.writeKVStore(getApplicationContext(), "cache_student_basic_info", gson.toJson(SAGlobal.dataStudentBasicInfo));
 
-        if (SAGlobal.dataClassSchedule != null)
+        if (SAGlobal.dataClassSchedule != null) {
             SAUtils.writeKVStore(getApplicationContext(), "cache_class_schedule", gson.toJson(SAGlobal.dataClassSchedule));
+            SAUtils.writeKVStore(getApplicationContext(), "cache_class_start_reference_week", "" + SAGlobal.dataClassStartReferenceWeek);
+        }
 
         if (SAGlobal.dataGrades != null)
             SAUtils.writeKVStore(getApplicationContext(), "cache_grades", gson.toJson(SAGlobal.dataGrades));

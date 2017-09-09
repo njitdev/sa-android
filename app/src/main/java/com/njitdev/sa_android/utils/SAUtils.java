@@ -32,6 +32,9 @@ import com.njitdev.sa_android.models.analytics.AnalyticsModels;
 import com.njitdev.sa_android.models.version.VersionModels;
 import com.rollbar.android.Rollbar;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.UUID;
 
 public class SAUtils {
@@ -68,15 +71,19 @@ public class SAUtils {
                     if (!result.equals(BuildConfig.VERSION_NAME)) {
                         // Update available
                         AlertDialog.Builder builder = new AlertDialog.Builder(context);
+
                         builder.setTitle("发现新版本");
-                        builder.setMessage("版本号: " + result + "\n建议及时更新");
+                        builder.setMessage(
+                                BuildConfig.VERSION_NAME + " -> " + result +
+                                "\n\n新版本通常包含重要的功能和bug修复，建议及时更新");
+
                         builder.setCancelable(true);
 
                         builder.setPositiveButton("更新", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 Intent intent = new Intent(Intent.ACTION_VIEW);
-                                intent.setData(Uri.parse("https://mygdut.com/downloads/android_latest.apk"));
+                                intent.setData(Uri.parse("https://mygdut.com/dl/mygdut_latest.apk"));
                                 context.startActivity(intent);
                                 dialogInterface.dismiss();
                             }
@@ -145,6 +152,18 @@ public class SAUtils {
             return s;
         } else {
             return Character.toUpperCase(first) + s.substring(1);
+        }
+    }
+
+    // Get current reference week (number of weeks since 1970-01-05)
+    public static int currentReferenceWeek() {
+        try {
+            SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
+            Date ref = f.parse("1970-01-05");
+            Date current = new Date();
+            return (int)(((float)(current.getTime() - ref.getTime())) / 1000 / 86400 / 7);
+        } catch (Exception e) {
+            return 0;
         }
     }
 }

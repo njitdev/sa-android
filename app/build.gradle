@@ -7,8 +7,8 @@ android {
         applicationId "com.njitdev.sa_android_gdut"
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 100
-        versionName "0.1.0"
+        versionCode 110
+        versionName "0.1.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
