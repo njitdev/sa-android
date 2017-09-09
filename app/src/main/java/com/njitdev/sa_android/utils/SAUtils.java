@@ -83,7 +83,7 @@ public class SAUtils {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 Intent intent = new Intent(Intent.ACTION_VIEW);
-                                intent.setData(Uri.parse("https://mygdut.com/dl/mygdut_latest.apk"));
+                                intent.setData(Uri.parse("https://mygdut.com/dl/mygdut-latest.apk"));
                                 context.startActivity(intent);
                                 dialogInterface.dismiss();
                             }
