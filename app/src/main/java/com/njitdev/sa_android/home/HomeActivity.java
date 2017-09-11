@@ -97,7 +97,7 @@ public class HomeActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.menuItemUpdateData:
                 if (SAGlobal.studentSessionID == null) {
-                    Toast.makeText(this, "请先登录账号~", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "还没登录～！请先登录账号", Toast.LENGTH_SHORT).show();
                 } else {
                     verifyLoginAndUpdateData();
                 }

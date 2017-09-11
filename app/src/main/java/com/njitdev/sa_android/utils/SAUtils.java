@@ -25,6 +25,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
 import android.support.v7.app.AlertDialog;
+import android.widget.Toast;
 
 import com.android.volley.toolbox.Volley;
 import com.njitdev.sa_android.BuildConfig;
@@ -32,7 +33,6 @@ import com.njitdev.sa_android.models.analytics.AnalyticsModels;
 import com.njitdev.sa_android.models.version.VersionModels;
 import com.rollbar.android.Rollbar;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
@@ -40,23 +40,28 @@ import java.util.UUID;
 public class SAUtils {
     // Application initialization
     public static void appInit(Context context) {
-        // Shared request queue
-        SAGlobal.sharedRequestQueue = Volley.newRequestQueue(context);
-
-        // Google Analytics
-        SAGlobal.getGATracker(context);
-
-        if (SAConfig.developmentMode) {
+        // Set developmentMode
+        if (BuildConfig.BUILD_TYPE.equals("debug")) {
             // Development mode
+            SAConfig.developmentMode = true;
             SAConfig.baseURL = "https://sa-api-dev.njitdev.com";
+
+            Toast.makeText(context, "Debug mode: " + BuildConfig.FLAVOR, Toast.LENGTH_LONG).show();
         } else {
             // Production mode
+            SAConfig.developmentMode = false;
             SAConfig.baseURL = "https://sa-api-prd.njitdev.com";
 
             // Error reporting
             // Reports uncaught exceptions by default
             Rollbar.init(context, SAConfig.rollbarClientID, "production");
         }
+
+        // Google Analytics
+        SAGlobal.getGATracker(context);
+
+        // Create shared request queue
+        SAGlobal.sharedRequestQueue = Volley.newRequestQueue(context);
 
         // Send start event
         AnalyticsModels.sendStartEvent(installationID(context));
@@ -68,33 +73,56 @@ public class SAUtils {
             @Override
             public void onData(String result, String message) {
                 if (result != null) {
-                    if (!result.equals(BuildConfig.VERSION_NAME)) {
+                    if (result.compareTo(BuildConfig.VERSION_NAME) > 0) {
                         // Update available
                         AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
-                        builder.setTitle("发现新版本");
-                        builder.setMessage(
-                                BuildConfig.VERSION_NAME + " -> " + result +
-                                "\n\n新版本通常包含重要的功能和bug修复，建议及时更新");
+                        // Generate message
+                        String updateMessage = BuildConfig.VERSION_NAME + " -> " + result + "\n\n旧版本 bug 很多！建议及时更新 :)";
+                        if (BuildConfig.FLAVOR.equals("market")) {
+                            updateMessage += "\n请到你下载本应用的市场更新";
+                        }
 
+                        builder.setTitle("发现新版本");
+                        builder.setMessage(updateMessage);
                         builder.setCancelable(true);
 
-                        builder.setPositiveButton("更新", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                Intent intent = new Intent(Intent.ACTION_VIEW);
-                                intent.setData(Uri.parse("https://mygdut.com/dl/mygdut-latest.apk"));
-                                context.startActivity(intent);
-                                dialogInterface.dismiss();
-                            }
-                        });
+                        // Different dialog for download version and market version
+                        if (BuildConfig.FLAVOR.equals("market")) {
+                            builder.setPositiveButton("关闭", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dialogInterface.dismiss();
+                                }
+                            });
 
-                        builder.setNegativeButton("先不更新", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                dialogInterface.cancel();
-                            }
-                        });
+                            builder.setNegativeButton("直接下载安装包", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                                    intent.setData(Uri.parse(SAConfig.apkDownloadURL));
+                                    context.startActivity(intent);
+                                    dialogInterface.dismiss();
+                                }
+                            });
+                        } else {
+                            builder.setPositiveButton("更新", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                                    intent.setData(Uri.parse(SAConfig.apkDownloadURL));
+                                    context.startActivity(intent);
+                                    dialogInterface.dismiss();
+                                }
+                            });
+
+                            builder.setNegativeButton("先不更新", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dialogInterface.cancel();
+                                }
+                            });
+                        }
 
                         AlertDialog alert = builder.create();
                         alert.show();
