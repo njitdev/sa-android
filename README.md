@@ -9,6 +9,7 @@ Android client is working in progress.
 The system currently supports 1 school.
 
 - `GDUT`: Guangdong University of Technology
+
   Beta version has been released on [Google Play Store](https://play.google.com/store/apps/details?id=com.njitdev.sa_android_gdut)
 
 ## Release Signing Keys
