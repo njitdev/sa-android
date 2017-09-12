@@ -92,7 +92,7 @@ public class SchoolSystemModels {
         }, 0, 0, ImageView.ScaleType.CENTER, Bitmap.Config.ARGB_4444, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                listener.onData(null, "获取验证码失败");
+                listener.onData(null, "获取验证码失败 :( 请重试几次");
             }
         });
         SAGlobal.sharedRequestQueue.add(req);
@@ -185,7 +185,7 @@ public class SchoolSystemModels {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                listener.onData(null, "连接学校服务器失败");
+                listener.onData(null, "学校服务器太破，连接失败。请尝试重新登录~");
             }
         });
         SAGlobal.sharedRequestQueue.add(req);
@@ -257,7 +257,7 @@ public class SchoolSystemModels {
             @Override
             public void onErrorResponse(VolleyError error) {
                 error.printStackTrace();
-                listener.onData(null, "网络错误，获取课程表失败");
+                listener.onData(null, "学校服务器太破，连接失败。请尝试重新登录~");
             }
         });
         SAGlobal.sharedRequestQueue.add(r);
@@ -329,7 +329,7 @@ public class SchoolSystemModels {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                listener.onData(null, "连接学校服务器失败");
+                listener.onData(null, "学校服务器太破，连接失败。请尝试重新登录~");
             }
         });
         SAGlobal.sharedRequestQueue.add(req);

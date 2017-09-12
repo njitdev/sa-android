@@ -10,6 +10,8 @@ The system currently supports 1 school.
 
 - `GDUT`: Guangdong University of Technology
 
+  Beta version has been released on [Google Play Store](https://play.google.com/store/apps/details?id=com.njitdev.sa_android_gdut)
+
 ## Release Signing Keys
 
 Signing keys are PGP-encrypted before commited into version control. Keystore passwords are `njitdev`.
