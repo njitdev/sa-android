@@ -299,11 +299,12 @@ public class SchoolSystemModels {
                         GradeItem gradeItem = new GradeItem();
 
                         gradeItem.course_name = jsonGrade.getString("course_name");
-                        gradeItem.score = jsonGrade.getString("score");
 
                         // Optional fields
                         if (jsonGrade.has("course_id") && !jsonGrade.isNull("course_id"))
                             gradeItem.course_id = jsonGrade.getString("course_id");
+                        if (jsonGrade.has("score") && !jsonGrade.isNull("score"))
+                            gradeItem.score = jsonGrade.getString("score");
                         if (jsonGrade.has("course_category") && !jsonGrade.isNull("course_category"))
                             gradeItem.course_category = jsonGrade.getString("course_category");
                         if (jsonGrade.has("course_isrequired") && !jsonGrade.isNull("course_isrequired"))
