@@ -44,13 +44,13 @@ public class SAUtils {
         if (BuildConfig.BUILD_TYPE.equals("debug")) {
             // Development mode
             SAConfig.developmentMode = true;
-            SAConfig.baseURL = "https://sa-api-dev.njitdev.com";
+            SAConfig.baseURL = "https://api.blupig.net/sa-api-dev";
 
             Toast.makeText(context, "Debug mode: " + BuildConfig.FLAVOR, Toast.LENGTH_LONG).show();
         } else {
             // Production mode
             SAConfig.developmentMode = false;
-            SAConfig.baseURL = "https://sa-api-prd.njitdev.com";
+            SAConfig.baseURL = "https://api.blupig.net/sa-api-prd";
 
             // Error reporting
             // Reports uncaught exceptions by default
